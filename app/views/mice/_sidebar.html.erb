@@ -1,0 +1,12 @@
+<% if user_signed_in? %>
+  <div class="subnav">
+  <div class="subnav-title">
+    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>小鼠管理</span></a>
+  </div>
+  <ul class="subnav-menu">
+    <li class="bar1">
+    <%= link_to "小鼠信息", mice_url%>
+    </li>
+  </ul>
+</div>
+<% end %>

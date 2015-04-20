@@ -1,0 +1,68 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+$(document).on("ready one:load", function() {
+    $(".save_btn").click(function(){
+      $(".user_form").submit();
+      });
+    });
+$(function () { 
+    $(".main-nav li").removeClass("active");
+    $(".nav5").addClass("active");
+    $(".subnav-menu li").removeClass("active");
+    $(".bar1").addClass("active");
+    $('#breeds').DataTable({
+        "language": {
+        "sSearch": "<span>请输入关键字查找:</span> ",
+        "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+        "lengthMenu": "_MENU_  <span>条每页</span>"
+
+        },
+        "deferRnder": true,
+        "processing": true,
+        "iDisplayLength": 25,
+        "stateSave": true,
+        "aaSorting": [[0,'desc']],
+        "serverSide": true,
+        "scrollY": "500px",
+        "ajax": {
+        "url": "<%= get_data_breeds_path %>",
+        "method": "post",
+        "dataType": "json"
+        }
+        });
+      $('.dataTables_filter input').attr("placeholder", "请输入...");
+      $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
+    });
+</script>
+<div class="box box-color box-bordered breed_box"> <div class="box-title">
+    <h3><i class="icon-list"></i>
+      繁殖信息 
+    </h3>
+    <div style="float:right; padding-right:2px;">
+      <%= link_to '新增', new_breed_path ,:remote => true,:class => 'new btn btn-small' %>
+    </div>
+  </div>
+  <div class="box-content nopadding">
+    <table id="breeds" class="table table-bordered dataTable-scroll-x">
+      <thead>
+        <tr>
+          <th>父本</th>
+          <th>母本</th>
+          <th>所处位子</th>
+          <th>合笼日期</th>
+          <th>是否还在使用</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+  <%= render :partial => "sidebar" %>
+<% end %>
+
+<div class="breed_form"></div>

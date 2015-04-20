@@ -1,0 +1,121 @@
+<div class="mouse_form">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>配对信息</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for @mouse, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+            <div class="control-group">
+            <label for="textfield" class="control-label">品系</label>
+            <div class="controls">
+              <%= f.select :strain_id, Strain.all.collect{|s| [s.name, s.id]},{},{:class=> 'select input-large'}%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">编号</label>
+            <div class="controls">
+              <%= f.text_field :code %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">传代系</label>
+            <div class="controls">
+              <%= f.text_field :generate_num%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">出生日期</label>
+            <div class="controls">
+              <%= f.text_field :birthday%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">离乳日期</label>
+            <div class="controls">
+              <%= f.text_field :weaningday%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">性别</label>
+            <div class="controls">
+              <%= f.select :gender, Mouse::SEXTYPE, {},{:class=> 'select input-large'} %>  
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">父亲编号</label>
+            <div class="controls">
+              <%= text_field_tag :father_code, nil,{:required =>""} %>  
+              <%= f.text_field :father_id %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">母亲编号</label>
+            <div class="controls">
+              <%= text_field_tag :mother_code, nil,{:required =>""} %>  
+              <%= f.hidden_field :mother_id%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">笼子位置</label>
+            <div class="controls">
+              <%= text_field_tag :basket_code, nil,{:required =>""} %>  
+              <%= f.hidden_field :basket_id%>
+            </div>
+          </div>
+
+          <div class="span12">
+            <div class="form-actions">
+              <div class="actions">
+                <%= f.submit "保存", :class => 'btn btn-primary' %>
+                <%= link_to "取消",mice_path, :class => 'btn' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#father_code").click(function(){
+      $.get('/mice/autocomplete?sex=M', function(data){
+        $( "#father_code" ).autocomplete({ source: data,
+          select: function( event, ui ) {
+          $( "#father_code" ).val( ui.item.value );
+          $("#mouse_father_id").attr("value", ui.item.id);
+          return false;
+          }
+          });  
+        });
+      });
+    $("#mother_code").click(function(){
+      $.get('/mice/autocomplete?sex=F', function(data){
+        $( "#mother_code" ).autocomplete({ source: data,
+          select: function( event, ui ) {
+          $( "#mother_code" ).val( ui.item.value );
+          $("#mouse_mother_id").attr("value", ui.item.id);
+          return false;
+          }
+          });  
+        });
+      });
+    $("#basket_code").click(function(){
+        $.get('/baskets/autocomplete', function(data){
+          $( "#basket_code" ).autocomplete({ source: data,
+            select: function( event, ui ) {
+            $( "#basket_code" ).val( ui.item.value );
+            $("#mouse_basket_id").attr("value", ui.item.id);
+            return false;
+            }
+            });  
+          });
+        });
+    $("#mouse_birthday, #mouse_weaningday" ).datepicker({format: "yyyy-mm-dd"});
+    $(".select").select2();
+    });
+</script>

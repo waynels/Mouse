@@ -1,0 +1,25 @@
+<div class="modal-body2">
+<%= form_for(@resource, as: @resource_name, url: session_path(resource_name), :html => {:remote => true, "novalidate" =>"novalidate", :class => "form-horizontal form-validate"}) do |f| %>
+<div class="control-group">
+</div>
+    <div class="control-group">
+      <label class="control-label" for="textfield">系统登录名</label>
+      <div class="email controls">
+        <%= f.text_field :username,  :value => params[:username]   %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="textfield">密码</label>
+      <div class="pw controls">
+        <%= f.password_field :password, :autocomplete => "off", :value => nil, :class => "input", "data-rule-required" => "true", :placeholder => "密码" %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <input type="submit" class="btn btn-orange" value="验证">
+    </div>
+    <%= hidden_field_tag :old_name,  params[:username]   %>
+    <input name="authenticity_token" 
+               type="hidden" 
+               value="<%= form_authenticity_token %>"/>
+<% end %>
+</div>

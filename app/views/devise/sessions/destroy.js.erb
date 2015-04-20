@@ -1,0 +1,2 @@
+$('#lock_screen').modal();
+$.ajax({url: "<%= user_session_path(username: @user.username) %>", type: "GET"});

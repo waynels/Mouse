@@ -1,0 +1,2 @@
+module MiceHelper
+end

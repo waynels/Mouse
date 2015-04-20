@@ -1,0 +1,85 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+  $(document).ready(function() {
+$(".form-validate2").validate({
+  rules: {
+    "user[username]": {
+      required: true,
+      minlength:5,
+      remote: {
+        url: "sign_up",
+        type: "get"
+      }
+      },
+    "user[email]": {
+      required: true,
+      minlength:5,
+      remote: {
+        url: "sign_up",
+        type: "get"
+      }
+      }
+    },
+  messages: {
+    "user[username]": {
+      remote: "用户名已存在"
+    },
+    "user[email]": {
+      remote: "邮箱已注册"
+    }
+  },
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});
+});
+//]]>
+</script>
+<div class="login">
+<div class="wrapper">
+<div class="login-body">
+  <h2>注册</h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html => {"novalidate" =>"novalidate", :class => "form-validate2"}) do |f| %>
+    <div class="control-group">
+      <div class="email controls">
+        <%= f.text_field :username,  :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请输入用户名"   %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="email controls">
+        <%= f.email_field :email, autofocus: true ,  :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请输入注册邮箱" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="email controls">
+        <%= f.text_field :full_name,  :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请输入姓名"   %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="pw controls">
+        <%= f.password_field :password, :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请设置初始密码" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="pw controls">
+        <%= f.password_field :password_confirmation, autocomplete: "off", :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请确认密码" %>
+      </div>
+    </div>
+    <div class="submit">
+      <input type="submit" class="btn btn-orange" value="提交注册">
+    </div>
+    <% end %>
+  <div class="forget">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>
+</div>
+</div>

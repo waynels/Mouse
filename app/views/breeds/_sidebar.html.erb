@@ -1,0 +1,12 @@
+<% if user_signed_in? %>
+  <div class="subnav">
+  <div class="subnav-title">
+    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>繁殖管理</span></a>
+  </div>
+  <ul class="subnav-menu">
+    <li class="bar1">
+    <%= link_to "繁殖记录", breeds_url%>
+    </li>
+  </ul>
+</div>
+<% end %>

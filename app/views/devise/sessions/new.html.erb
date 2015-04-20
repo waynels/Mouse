@@ -1,0 +1,25 @@
+<div class="login">
+<div class="wrapper">
+<div class="login-body">
+  <h2>系统登陆</h2>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {"novalidate" =>"novalidate", :class => "form-validate"}) do |f| %>
+    <div class="control-group">
+      <div class="email controls">
+        <%= f.text_field :username,  :class => "input-block-level", "data-rule-required" => "true", :placeholder => "用户名"   %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="pw controls">
+        <%= f.password_field :password, :autocomplete => "off", :class => "input-block-level", "data-rule-required" => "true", :placeholder => "密码" %>
+      </div>
+    </div>
+    <div class="submit">
+      <input type="submit" class="btn btn-orange" value="登陆">
+    </div>
+    <% end %>
+  <div class="forget">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>
+</div>
+</div>

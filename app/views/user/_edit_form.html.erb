@@ -1,0 +1,39 @@
+<div class="modal-body">
+  <%= form_for(@user, :url => "/user/#{@user.id}", :remote => true, :method => :put, :html => {:class => "form-validate user_form form-horizontal"}) do |f| %>
+<div class="control-group">
+  <label class="control-label" for="textfield">姓名</label>
+  <div class="controls">
+    <%= f.text_field :full_name %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label class="control-label" for="textfield">系统登录名</label>
+  <div class="controls">
+    <%= f.text_field :username, autofocus: true, :disabled => true %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label" for="textfield">Email</label>
+  <div class="controls">
+    <%= f.email_field :email, autofocus: true, :disabled => true %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label" for="textfield">密码</label>
+  <div class="controls">
+    <% if @validatable %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+  <% end %>
+  <%= f.password_field :password, autocomplete: "off", "data-rule-required" => "true", :class => "valid" %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label class="control-label" for="textfield">确认密码</label>
+  <div class="controls">
+    <%= f.password_field :password_confirmation, autocomplete: "off", "data-rule-required" => "true", "data-rule-equalto" => "#user_password" %>
+  </div>
+</div>
+<% end %>
+</div>

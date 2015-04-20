@@ -1,0 +1,20 @@
+<div class="login">
+<div class="wrapper">
+<div class="login-body">
+  <h2>重新发送激活邮件</h2>
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), :html => { :method => :post, "novalidate" =>"novalidate", :class => "form-validate"}) do |f| %>
+    <div class="control-group">
+      <div class="email controls">
+        <%= f.email_field :email, autofocus: true ,  :class => "input-block-level", "data-rule-required" => "true", :placeholder => "请输入注册邮箱" %>
+      </div>
+    </div>
+    <div class="submit">
+      <input type="submit" class="btn btn-orange" value="重新激活">
+    </div>
+    <% end %>
+  <div class="forget">
+    <%= render "devise/shared/links" %>
+  </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,41 @@
+$(".modal-body").replaceWith("<%= j render "form" %>")
+$('#myModal').modal('show');
+$(".form-validate").validate({
+  rules: {
+    "user[username]": {
+      required: true,
+      minlength:5,
+      remote: {
+        url: "<%= user_index_url %>",
+        type: "get"
+      }
+      },
+    "user[email]": {
+      required: true,
+      minlength:5,
+      remote: {
+        url: "<%= user_index_url %>",
+        type: "get"
+      }
+      }
+    },
+  messages: {
+    "user[username]": {
+      remote: "用户名已存在"
+    },
+    "user[email]": {
+      remote: "邮箱已注册"
+    }
+  },
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});

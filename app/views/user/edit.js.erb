@@ -1,0 +1,16 @@
+$(".modal-body").replaceWith("<%= j render "edit_form" %>")
+$('#myModal').modal('show');
+$('#myModalLabel').text('修改密码');
+$(".form-validate").validate({
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});
