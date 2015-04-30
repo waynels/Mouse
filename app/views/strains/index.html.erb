@@ -1,25 +1,85 @@
-<p id="notice"><%= notice %></p>
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).on("ready one:load", function() {
+    $(".save_btn").click(function(){
+      $(".user_form").submit();
+      });
+    });
+$(function () { 
+    $(".main-nav li").removeClass("active");
+    $(".nav5").addClass("active");
+    $(".subnav-menu li").removeClass("active");
+    $(".bar2").addClass("active");
+    $("#strain").DataTable({
+      "language": {
+      "sSearch": "<span>请输入关键字查找:</span> ",
+      "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+      "lengthMenu": "_MENU_  <span>条每页</span>"
 
-<h1>Listing Strains</h1>
+      },
+      "deferRnder": true,
+      "processing": true,
+      "iDisplayLength": 25,
+      "stateSave": true,
+      "aaSorting": [[0,'desc']],
+      "serverSide": true,
+      "scrollY": "500px",
+      "ajax": {
+      "url": "<%= get_data_strains_path %>",
+      "method": "post",
+      "dataType": "json"
+      }
+      });
+    $('.dataTables_filter input').attr("placeholder", "请输入...");
+    $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
+});
+</script>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="box box-color box-bordered strain_box"> 
+  <div class="box-title">
+    <h3><i class="icon-list"></i>
+      品系管理 
+    </h3>
+    <div style="float:right; padding-right:2px;">
+      <%= link_to '新增', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
+    </div>
+  </div>
+  <div class="box-content nopadding">
+    <table id="strain" class="table table-bordered dataTable-scroll-x">
+      <thead>
+        <tr>
+          <th>id</th>
+          <th>品系名</th>
+          <th>描述</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-  <tbody>
-    <% @strains.each do |strain| %>
-      <tr>
-        <td><%= link_to 'Show', strain %></td>
-        <td><%= link_to 'Edit', edit_strain_path(strain) %></td>
-        <td><%= link_to 'Destroy', strain, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% content_for :sidebar do %>
+  <%= render :partial => "mice/sidebar" %>
+<% end %>
 
-<br>
-
-<%= link_to 'New Strain', new_strain_path %>
+<div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">小鼠</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="save_btn btn btn-primary">保存</button>
+  </div>
+</div>
+<div class="strain_form"></div>
+<script>
+$(document).ready(function(){
+    $('#myModal').on('hidden', function () {
+      $('.modal-body').empty();
+    });
+    });
+</script>
+</div>

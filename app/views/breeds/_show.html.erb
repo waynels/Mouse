@@ -1,0 +1,126 @@
+<div class="breed_form">
+<table class="table table-hover table-nomargin table-bordered">
+  <thead>
+    <tr>
+      <th>性别</th>
+      <th>小鼠</th>
+      <th>出生日期</th>
+      <th>离乳日期</th>
+      <th>父亲编号</th>
+      <th>母亲编号</th>
+      <th>合笼时间</th>
+      <th>合笼时间</th>
+    </tr>
+  </thead>
+  <tr>
+    <td>父本</td>
+    <% father = @breed.father %>
+    <td><%= father.code %>[<%= father.strain.name %>]</td>
+    <td><%= father.birthday %></td>
+    <td><%= father.weaningday %></td>
+    <td><%= father.father_id ? father.father_mouse.code : "WT" %></td>
+    <td><%= father.mother_id ? father.mother_mouse.code : "WT"%></td>
+    <td rowspan=2><%= @breed.basket.code %></td>
+    <td rowspan=2><%= @breed.cage_at %></td>
+  </tr>
+  <tr>
+    <td>母本</td>
+    <% mother = @breed.mother%>
+    <td><%= mother.code %>[<%= mother.strain.name %>]</td>
+    <td><%= mother.birthday %></td>
+    <td><%= mother.weaningday %></td>
+    <td><%= mother.father_id ? mother.father_mouse.code : "WT" %></td>
+    <td><%= mother.mother_id ? mother.mother_mouse.code : "WT"%></td>
+  </tr>
+</table>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box">
+      <div class="box-title">
+        <h3>
+          <i class="icon-table"></i>
+          繁殖批次 
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to '新增', new_batch_path(breed_id: @breed.id), :remote => true, :class => 'new btn add_meet' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table class="table table-hover table-nomargin table-striped">
+          <thead>
+            <tr>
+              <th>批次id</th>
+              <th>出生位置</th>
+              <th>父亲</th>
+              <th>母亲</th>
+              <th>数量</th>
+              <th>小鼠出生时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          <%@batches.each do |batch| %>
+            <tr>
+              <td><%= batch.id %></td>
+              <td><%= batch.basket.code %></td>
+              <td><%= batch.father.code %>[<%= batch.father.strain.name %>]</td>
+              <td><%= batch.mother.code %>[<%= batch.mother.strain.name %>]</td>
+              <td><%= batch.quantity %></td>
+              <td><%= batch.childbirthday%></td>
+              <td>
+                <% if batch.mice.size == 0 %>
+                <%= link_to "死亡记录",die_record_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
+                <%= link_to "分笼",cage_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
+                <%else%>
+                <%= link_to "分笼情况",cage_info_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini show_cage_info_#{batch.id}" %>
+                <%= link_to "关闭分笼信息","#", :class => "btn btn-mini close_cage_info_#{batch.id}", :style => "display:none;" %>
+                <script>
+                  $(document).ready(function(){
+                      $(".close_cage_info_<%= batch.id %>").click(function(){
+                        $(this).hide();
+                        $("#batch_<%= batch.id  %>").empty();
+                        $(".show_cage_info_<%= batch.id %>").show(); 
+                        });
+                      });
+                </script>
+                <%end%>
+              </td>
+            </tr>
+            <tr>
+              <td colspan=7>
+                <div id="batch_<%= batch.id %>">
+                </div>
+              </td>
+            </tr>
+          <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+<%= link_to "返回", breeds_path, :class =>'btn btn-info' %>
+<br />
+<div id="myModal" class="modal hide fade"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">用户</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#myModal').on('hidden', function () {
+      $('.modal-body').empty();
+    });
+    });
+
+</script>
+</div>

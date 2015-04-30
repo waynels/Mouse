@@ -1,0 +1,52 @@
+<div id="batch_<%= @batch.id %>">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="span6">
+        <table class="table table-hover table-nomargin table-bordered">
+          <thead>
+            <tr>
+              <th style="text-decoration: none;text-align:center" colspan=2>
+                <span>
+                  雄性[<%= @male_mice.first.basket.code if @male_mice.size > 0%>][<%= @male_mice.size %>]只
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @male_mice.each do |m_mouse| %>
+            <tr>
+            <td><%= m_mouse.id %></td>
+            <td>
+              <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: m_mouse.id), remote: true ,:class => "btn btn-mini" %>
+            </td>
+          </tr>
+        <%end%>
+          </tbody>
+        </table>
+      </div>
+      <div class="span6">
+        <table class="table table-hover table-nomargin table-bordered">
+          <thead>
+            <tr>
+              <th style="text-decoration: none;text-align:center" colspan=2>
+                <span> 
+                  雌性[<%= @female_mice.first.basket.code if @female_mice.size > 0 %>][<%= @female_mice.size %>]只
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @female_mice.each do |f_mouse| %>
+            <tr>
+              <td><%= f_mouse.id %></td>
+              <td>
+                <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: f_mouse.id), remote: true ,:class => "btn btn-mini" %>
+              </td>
+            </tr>
+          <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

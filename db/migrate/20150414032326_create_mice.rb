@@ -12,8 +12,9 @@ class CreateMice < ActiveRecord::Migration
       t.integer :mother_id
       t.string :mother_code
       t.belongs_to :basket #位子
-      t.belongs_to :batche #哪一窝
+      t.belongs_to :batch #哪一窝
       t.string :identification #鉴定结果
+      t.boolean :is_survival, :default => 1 
       t.decimal :gfp, :precision => 8, :scale => 2 #荧光表达阳性率
       t.decimal :gfp_val, :precision => 8, :scale => 2  #阳性细胞平均荧光强度
 
