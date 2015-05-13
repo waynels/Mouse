@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
   resources :breeds do
+    member do
+      post "save_mice_cage"
+    end
     collection do
       post 'get_data'
+      get "cage"
+      get "cage_info"
+      get "appraisal_mouse"
+      get "die_record"
     end
   end
   resources :batches
@@ -16,7 +23,12 @@ Rails.application.routes.draw do
       get 'autocomplete'
     end
   end
-  resources :strains
+  resources :strains do
+    collection do
+      post 'get_data'
+    end
+  end
+  
   devise_for :users, controllers: {
         registrations: 'discustom/registrations',
         confirmations: 'discustom/confirmations',

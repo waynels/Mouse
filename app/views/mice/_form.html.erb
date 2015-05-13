@@ -3,7 +3,7 @@
     <div class="span12">
       <div class="box box-bordered box-color">
         <div class="box-title">
-          <h3><i class="icon-list"></i>配对信息</h3>
+          <h3><i class="icon-list"></i>小鼠信息</h3>
         </div>
         <div class="box-content nopadding">
           <%= form_for @mouse, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
@@ -46,21 +46,33 @@
           <div class="control-group">
             <label for="textfield" class="control-label">父亲编号</label>
             <div class="controls">
-              <%= text_field_tag :father_code, nil,{:required =>""} %>  
-              <%= f.text_field :father_id %>
+              <%if @mouse.id %>
+                <%= text_field_tag :father_code,  @mouse.father_code %>  
+              <%else%>
+                <%= text_field_tag :father_code %>  
+              <%end%>
+              <%= f.hidden_field :father_id %>
             </div>
           </div>
           <div class="control-group">
             <label for="textfield" class="control-label">母亲编号</label>
             <div class="controls">
-              <%= text_field_tag :mother_code, nil,{:required =>""} %>  
+              <%if @mouse.id %>
+              <%= text_field_tag :mother_code, @mouse.mother_code %>  
+              <%else%>
+              <%= text_field_tag :mother_code %>  
+              <%end%>
               <%= f.hidden_field :mother_id%>
             </div>
           </div>
           <div class="control-group">
             <label for="textfield" class="control-label">笼子位置</label>
             <div class="controls">
-              <%= text_field_tag :basket_code, nil,{:required =>""} %>  
+              <%if @mouse.id %>
+              <%= text_field_tag :basket_code, @mouse.basket.code %>  
+              <%else%>
+              <%= text_field_tag :basket_code %>  
+              <%end%>
               <%= f.hidden_field :basket_id%>
             </div>
           </div>

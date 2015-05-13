@@ -3814,10 +3814,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 .form-horizontal .control-label {
   text-align: right;
-  width: 140px;
+  width: 80px;
 }
 .form-horizontal .controls {
-  margin-left: 160px;
+  margin-left: 100px;
 }
 
 .dropdown-menu.dropdown-primary {

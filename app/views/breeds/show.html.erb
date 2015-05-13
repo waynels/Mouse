@@ -1,4 +1,41 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_breed_path(@breed) %> |
-<%= link_to 'Back', breeds_path %>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered">
+      <div class="box-title">
+        <h3>
+          <i class="icon-reorder"></i>
+          <%= @breed.father.code %>[<%= @breed.father.strain.name %>]+<%= @breed.mother.code %>[<%= @breed.mother.strain.name %>] 
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to "返回", breeds_path ,:class => 'btn btn' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <ul class="timeline">
+          <% @breed.breeds_infos.each do |info| %>
+          <li>
+          <div class="timeline-content">
+            <div class="left">
+              <div class="icon green">
+                <i class="icon-comment"></i>
+              </div>
+              <div class="date"><%= info.operation_at %></div>
+            </div>
+            <div class="activity">
+              <div class="user"><%= info.user.username %>&nbsp;<span>操作</span></div>
+              <p>
+              <%= info.remark %>
+              </p>
+            </div>
+          </div>
+          <div class="line"></div>
+          </li>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<% content_for :sidebar do %>
+  <%= render :partial => "sidebar" %>
+<% end %>

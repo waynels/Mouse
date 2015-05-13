@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416101456) do
+ActiveRecord::Schema.define(version: 20150429035558) do
 
   create_table "baskets", force: :cascade do |t|
     t.string   "code",       limit: 255
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150416101456) do
     t.date     "childbirthday"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "use_val",       limit: 4
   end
 
   create_table "breeds", force: :cascade do |t|
@@ -38,6 +39,18 @@ ActiveRecord::Schema.define(version: 20150416101456) do
     t.boolean  "is_usable",  limit: 1
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "breeds_infos", force: :cascade do |t|
+    t.integer  "breed_id",       limit: 4
+    t.integer  "batch_id",       limit: 4
+    t.string   "operation_type", limit: 255
+    t.integer  "operation_by",   limit: 4
+    t.date     "operation_at"
+    t.integer  "quantity",       limit: 4
+    t.text     "remark",         limit: 65535
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "mice", force: :cascade do |t|
@@ -52,12 +65,13 @@ ActiveRecord::Schema.define(version: 20150416101456) do
     t.integer  "mother_id",      limit: 4
     t.string   "mother_code",    limit: 255
     t.integer  "basket_id",      limit: 4
-    t.integer  "batche_id",      limit: 4
+    t.integer  "batch_id",       limit: 4
     t.string   "identification", limit: 255
     t.decimal  "gfp",                        precision: 8, scale: 2
     t.decimal  "gfp_val",                    precision: 8, scale: 2
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.boolean  "is_survival",    limit: 1,                           default: true
   end
 
   create_table "operation", force: :cascade do |t|

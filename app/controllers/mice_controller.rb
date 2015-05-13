@@ -103,6 +103,6 @@ class MiceController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mouse_params
-      params[:mouse].permit(:basket_id, :strain_id, :generate_num, :birthday, :weaningday, :gender, :code, :identification, :gfp, :gfp_val, :father_code, :mother_code)
+      params[:mouse].permit(:basket_id, :strain_id, :generate_num, :birthday, :weaningday, :gender, :code, :identification, :gfp, :gfp_val, :father_code, :mother_code, :batch_id)
     end
 end

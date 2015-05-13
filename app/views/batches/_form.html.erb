@@ -1,17 +1,33 @@
-<%= form_for(@batch) do |f| %>
-  <% if @batch.errors.any? %>
+<div class="modal-body">
+  <%= form_for @batch, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+    <% if @batch.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
+    <h2><%= pluralize(@batch.errors.count, "error") %> prohibited this batch from being saved:</h2>
 
-      <ul>
+    <ul>
       <% @batch.errors.full_messages.each do |message| %>
         <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
+    <% end %>
+    </ul>
   </div>
 <% end %>
+  <div class="control-group">
+    <label for="textfield" class="control-label">数量</label>
+    <div class="controls">
+      <%= f.text_field :quantity %>
+      <%= f.hidden_field :breed_id, :value => @breed.id %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label for="textfield" class="control-label">繁殖日期</label>
+    <div class="controls">
+      <%= f.text_field :childbirthday%>
+    </div>
+  </div>
+<% end %>
+  <script>
+$(document).ready(function(){
+    $("#batch_childbirthday" ).datepicker({format: "yyyy-mm-dd"});
+    });
+  </script>
+</div>

@@ -1,6 +1,7 @@
 <div class="breed_form">
-<script>
+  <script>
 $(document).ready(function(){
+    $(".select").select2();
     $("#father_code").click(function(){
       $.get('/mice/autocomplete?sex=M', function(data){
         $( "#father_code" ).autocomplete({ source: data,
@@ -25,79 +26,80 @@ $(document).ready(function(){
 
         });
       });
+    /*
     $("#basket_code").click(function(){
-      $.get('/baskets/autocomplete', function(data){
-        $( "#basket_code" ).autocomplete({ source: data,
-          select: function( event, ui ) {
-          $( "#basket_code" ).val( ui.item.value );
-          $("#breed_basket_id").attr("value", ui.item.id);
-          return false;
-          }
-          });  
+        $.get('/baskets/autocomplete', function(data){
+          $( "#basket_code" ).autocomplete({ source: data,
+            select: function( event, ui ) {
+            $( "#basket_code" ).val( ui.item.value );
+            $("#breed_basket_id").attr("value", ui.item.id);
+            return false;
+            }
+            });  
 
-        });
-      });
+          });
+          });
+    */
     $("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
 });
-</script>
-<div class="row-fluid">
-  <div class="span12">
-    <div class="box box-bordered box-color">
-      <div class="box-title">
-        <h3><i class="icon-list"></i>配对信息</h3>
-      </div>
-      <div class="box-content nopadding">
-        <%= form_for @breed , :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
-          <% if @breed.errors.any? %>
-          <div id="error_explanation">
-          <h2><%= pluralize(@breed.errors.count, "error") %> prohibited this breed from being saved:</h2>
+  </script>
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>配对信息</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for @breed , :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+            <% if @breed.errors.any? %>
+            <div id="error_explanation">
+            <h2><%= pluralize(@breed.errors.count, "error") %> prohibited this breed from being saved:</h2>
 
-          <ul>
-            <% @breed.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-          <% end %>
-          </ul>
-        </div>
-      <% end %>
-        <div class="control-group">
-          <label for="textfield" class="control-label">父本</label>
-          <div class="controls">
-            <%= text_field_tag :father_code, nil,{:required =>""} %>  
-            <%= f.hidden_field :father_id %>
+            <ul>
+              <% @breed.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+            </ul>
           </div>
-        </div>
-        <div class="control-group">
-          <label for="textfield" class="control-label">母本</label>
-          <div class="controls">
-            <%= text_field_tag :mother_code, nil,{:required =>""} %>  
-            <%= f.hidden_field :mother_id%>
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="textfield" class="control-label">笼子位置</label>
-          <div class="controls">
-            <%= text_field_tag :basket_code, nil,{:required =>""} %>  
-            <%= f.hidden_field :basket_id%>
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="textfield" class="control-label">合笼日期</label>
-          <div class="controls">
-            <%= f.text_field :cage_at%>
-          </div>
-        </div>
-
-        <div class="span12">
-          <div class="form-actions">
-            <div class="actions">
-              <%= f.submit "保存", :class => 'btn btn-primary' %>
-              <%= link_to "取消",breeds_path, :class => 'btn' %>
+        <% end %>
+          <div class="control-group">
+            <label for="textfield" class="control-label">父本</label>
+            <div class="controls">
+              <%= text_field_tag :father_code, nil,{:required =>""} %>  
+              <%= f.hidden_field :father_id %>
             </div>
           </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">母本</label>
+            <div class="controls">
+              <%= text_field_tag :mother_code, nil,{:required =>""} %>  
+              <%= f.hidden_field :mother_id%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">笼子位置</label>
+            <div class="controls">
+              <%= f.select :basket_id, Basket.all.collect { |p| [p.code, p.id]},{},{:class=> 'select input-large'}%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">合笼日期</label>
+            <div class="controls">
+              <%= f.text_field :cage_at%>
+            </div>
+          </div>
+
+          <div class="span12">
+            <div class="form-actions">
+              <div class="actions">
+                <%= f.submit "保存", :class => 'btn btn-primary' %>
+                <%= link_to "取消",breeds_path, :class => 'btn' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
         </div>
-      <% end %>
       </div>
     </div>
   </div>
-</div>
 </div>

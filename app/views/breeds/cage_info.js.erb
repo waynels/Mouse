@@ -1,0 +1,4 @@
+$("#batch_<%= @batch.id  %>").replaceWith("<%= j render "cage_info" %>");
+
+$(".close_cage_info_<%= @batch.id %>").show();
+$(".show_cage_info_<%= @batch.id %>").hide();
