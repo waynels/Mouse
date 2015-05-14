@@ -11,7 +11,7 @@ class StrainsController < ApplicationController
   def get_data
     key = params[:search][:value] if params[:search]
     column = ["strains.id", "strains.name", "strains.description", ["strains.created_at"]]
-    data = get_datatable_data(column, "Strain")
+    data = get_datatable_data(column, "Strain",nil)
     arr = []
     data[0].each do |item|
       op_str = ""

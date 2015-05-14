@@ -1,0 +1,76 @@
+<div class="modal-body">
+  <div class= "form-validate form-horizontal form-column form-striped">
+    <div class="span12 row-fluid">
+      <div class="span6">
+        <div class="control-group">
+          <label for="textfield" class="control-label">品系</label>
+          <div class="controls">
+            <%= @mouse.strain.name %>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">编号</label>
+          <div class="controls">
+            <%= @mouse.code %>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">出生日期</label>
+          <div class="controls">
+            <%= @mouse.birthday%>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">离乳日期</label>
+          <div class="controls">
+            <%= @mouse.weaningday%>
+          </div>
+        </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">阳性细胞平均荧光强度</label>
+      <div class="controls">
+        <%= @mouse.gfp_val%>
+      </div>
+    </div>
+      </div>
+      <div class="span6">
+        <div class="control-group">
+          <label for="textfield" class="control-label">笼子位置</label>
+          <div class="controls">
+            <%= @mouse.basket.code %>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">父亲编号</label>
+          <div class="controls">
+            <%= @mouse.father_code ? @mouse.father_code : @mouse.father_mouse.code %>  
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">母亲编号</label>
+          <div class="controls">
+            <%= @mouse.mother_code ? @mouse.mother_code : @mouse.mother_mouse.code %>  
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">鉴定结果</label>
+          <div class="controls">
+            <%= @mouse.identification%>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">荧光表达阳性率</label>
+          <div class="controls">
+            <%= @mouse.gfp%> %
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="span12 control-group">
+      <label for="textfield" class="control-label">性别</label>
+      <div class="controls">
+        <%= @mouse.gender %>  
+      </div>
+    </div>
+  </div>
+</div>

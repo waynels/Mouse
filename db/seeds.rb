@@ -101,16 +101,12 @@ mice.each do |mouse|
     father = Mouse.where(code: mouse.father_code).first
     if father
       mouse.father_id = father.id
-    else
-      mouse.father_id = Mouse.where(:strain_id => 8, :gender => "M").first.id
     end
   end
   if mouse.mother_code
     mother = Mouse.where(code: mouse.mother_code).first
     if mother
       mouse.mother_id = mother.id
-    else
-      mouse.mother_id = Mouse.where(:strain_id => 8, :gender => "F").first.id
     end
   end
   mouse.save

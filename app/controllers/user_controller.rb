@@ -32,7 +32,7 @@ class UserController < ApplicationController
   def get_data
     key = params[:search][:value] if params[:search]
     column = ["users.username", "users.email", ["users.created_at"]]
-    data = get_datatable_data(column, "User")
+    data = get_datatable_data(column, "User",nil)
     arr = []
     data[0].each do |item|
       op_str = ""

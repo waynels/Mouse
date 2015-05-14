@@ -34,10 +34,16 @@ $(function () {
 });
 </script>
 
+<div style="margin-left: 10px; margin-top:20px">
+  <%= link_to "所有品系", mice_url, :remote => true, :class => "btn item_node" %>
+  <% Strain.all.each do |strain| %>
+    <%= link_to strain.name, mice_url(strain_id: strain.id), :remote => true, :class => "btn item_node" %>
+<% end %>
+</div>
 <div class="box box-color box-bordered mouse_box"> 
   <div class="box-title">
     <h3><i class="icon-list"></i>
-      小鼠信息 
+      <span class="mice_strain">小鼠信息</span>
     </h3>
     <div style="float:right; padding-right:2px;">
       <%= link_to '新增', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
@@ -49,7 +55,6 @@ $(function () {
         <tr>
           <th>小鼠编号</th>
           <th>小鼠品系</th>
-          <th>小鼠传代系</th>
           <th>出生日期</th>
           <th>离乳日期</th>
           <th>性别</th>
@@ -59,6 +64,7 @@ $(function () {
           <th>鉴定结果</th>
           <th>荧光表达阳性率</th>
           <th>阳性细胞平均荧光强度</th>
+          <th>几代小鼠</th>
           <th>操作</th>
         </tr>
       </thead>

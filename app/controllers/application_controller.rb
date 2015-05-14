@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     conditions << "#{col_name}>='#{start_date}'" if start_date and !start_date.empty?
     conditions << "#{col_name}<='#{end_date}'" if end_date and !end_date.empty?
   end
-  def get_datatable_data(column, model)
+  def get_datatable_data(column, model, condition)
     if model.class == String
       model = model
     else
@@ -64,8 +64,11 @@ class ApplicationController < ActionController::Base
       dir = "asc"
     end
     order = column[order_column].class == Array ? column[order_column][0] : column[order_column]
-    
-    total = model.constantize.all.size
+    if condition 
+      total = model.constantize.where(condition).size
+    else
+      total = model.constantize.all.size
+    end
     search_conditions = []
     column.each do |c|
       if c.class == Array
@@ -79,8 +82,8 @@ class ApplicationController < ActionController::Base
       filter_total = model.constantize.joins(model2).where(condition_str).size
       data = model.constantize.joins(model2).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i)
     else
-      filter_total = model.constantize.where(condition_str).size
-      data = model.constantize.where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i)
+      filter_total = model.constantize.where(condition_str).where(condition).size
+      data = model.constantize.where(condition_str).where(condition).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i)
     end
     return data, total, filter_total
   end

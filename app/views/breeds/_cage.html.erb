@@ -1,65 +1,91 @@
 <div class="modal-body">
   <%= form_for @breed, :url => save_mice_cage_breed_path(@breed),:method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
-    <div class="control-group">
-    <label for="textfield" class="control-label">品系</label>
-    <div class="controls">
-      <% strain = Strain.all %>
-      <%= select_tag :strain_id, options_from_collection_for_select(strain, :id, :name ),{:class=> 'select input-large'}%>
-      <%= hidden_field_tag :breed_id, @breed.id%>
-      <%= hidden_field_tag :batch_id, @batch.id%>
+    <div class="span12">
+        <div class="control-group">
+          <label for="textfield" class="control-label">分笼日期</label>
+          <div class="controls">
+            <%= text_field_tag :weaningday%>
+          </div>
+        </div>
+      <div class="span6">
+        <div class="control-group">
+          <label for="textfield" class="control-label">品系</label>
+          <div class="controls">
+            <% strain = Strain.all %>
+            <%= select_tag :strain_id, options_from_collection_for_select(strain, :id, :name ),{:class=> 'select input-large'}%>
+            <%= hidden_field_tag :breed_id, @breed.id%>
+            <%= hidden_field_tag :batch_id, @batch.id%>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">雄性</label>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">数量：</label>
+          <div class="controls">
+            <%= text_field_tag :male_quantity %>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">分笼位置：</label>
+          <div class="controls">
+            <%= select_tag :male_basket_id, options_from_collection_for_select(Basket.all, :id, :code),{:class=> 'select input-large'}%>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="control-group">
+          <label for="textfield" class="control-label">可用数量：</label>
+          <div class="controls">
+            <%= @batch.use_val ? @batch.use_val : 0 %> 只
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">雌性</label>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">数量：</label>
+          <div class="controls">
+            <%= text_field_tag :female_quantity, 0, :readonly => true%>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="textfield" class="control-label">分笼位置：</label>
+          <div class="controls">
+            <%= select_tag :female_basket_id, options_from_collection_for_select(Basket.all, :id, :code),{:class=> 'select input-large'}%>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="span12">
-    <div class="span6">
-      <div class="control-group">
-        <label for="textfield" class="control-label">雄性</label>
-      </div>
-      <div class="control-group">
-        <label for="textfield" class="control-label">数量：</label>
-        <div class="controls">
-          <%= text_field_tag :male_quantity %>
-        </div>
-      </div>
-      <div class="control-group">
-        <label for="textfield" class="control-label">分笼位置：</label>
-        <div class="controls">
-          <%= select_tag :male_basket_id, options_from_collection_for_select(Basket.all, :id, :code),{:class=> 'select input-large'}%>
-        </div>
-      </div>
-    </div>
-    <div class="span6">
-      <div class="control-group">
-        <label for="textfield" class="control-label">雌性</label>
-      </div>
-      <div class="control-group">
-        <label for="textfield" class="control-label">数量：</label>
-        <div class="controls">
-          <%= text_field_tag :female_quantity%>
-        </div>
-      </div>
-      <div class="control-group">
-        <label for="textfield" class="control-label">分笼位置：</label>
-        <div class="controls">
-          <%= select_tag :female_basket_id, options_from_collection_for_select(Basket.all, :id, :code),{:class=> 'select input-large'}%>
-        </div>
-      </div>
-    </div>
-  </div>
 <% end %>
   <script>
-$(document).ready(function(){
-    $(".select").select2();
-    $("#basket_code").click(function(){
-      $.get('/baskets/autocomplete', function(data){
-        $( "#basket_code" ).autocomplete({ source: data,
-          select: function( event, ui ) {
-          $( "#basket_code" ).val( ui.item.value );
-          $("#basket_id").attr("value", ui.item.id);
-          return false;
+    $(document).ready(function(){
+        $(".select").select2();
+        $("#weaningday" ).datepicker({format: "yyyy-mm-dd"});
+        $("#basket_code").click(function(){
+          $.get('/baskets/autocomplete', function(data){
+            $( "#basket_code" ).autocomplete({ source: data,
+              select: function( event, ui ) {
+              $( "#basket_code" ).val( ui.item.value );
+              $("#basket_id").attr("value", ui.item.id);
+              return false;
+              }
+              });  
+            });
+          });
+        $("#male_quantity").keyup(function(){
+          var m_qu = $(this).val();
+          var f_qu = $("female_quantity").val();
+          if(m_qu > <%= @batch.use_val %>){
+          alert("您输入的数量超过了可分笼小鼠的数量,请核实后重输");
+          $(this).val("");
+          $("#female_quantity").attr("value",0);//填充内容 
+          }else
+          {
+          qu = <%= @batch.use_val %> - m_qu
+          $("#female_quantity").attr("value",qu);//填充内容 
           }
-          });  
-        });
-      });
+          });
     });
   </script>
 </div>

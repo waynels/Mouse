@@ -2,12 +2,17 @@ Rails.application.routes.draw do
   resources :breeds do
     member do
       post "save_mice_cage"
+      post "save_die_record"
+      post "save_appraisal_mouse"
+      get "disable"
     end
     collection do
       post 'get_data'
       get "cage"
       get "cage_info"
       get "appraisal_mouse"
+      get "show_mouse"
+      get "edit_mouse"
       get "die_record"
     end
   end
@@ -21,6 +26,10 @@ Rails.application.routes.draw do
     collection do
       post 'get_data'
       get 'autocomplete'
+    end
+    member do
+      get "family_tree"
+      get "get_family_tree"
     end
   end
   resources :strains do

@@ -13,3 +13,25 @@
  *= require_tree .
  *= require_self
  */
+
+#left .subnav .subnav-title .toggle-subnav2 {
+    color: #444444;
+    display: block;
+    overflow: hidden;
+    padding: 1px 6px;
+    position: relative;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item_node {
+    background: -moz-linear-gradient(center top , #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0 5px 5px 0;
+    padding: 4px 10px;
+}
