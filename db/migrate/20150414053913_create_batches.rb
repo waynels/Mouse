@@ -9,15 +9,5 @@ class CreateBatches < ActiveRecord::Migration
       t.date :childbirthday
       t.timestamps null: false
     end
-    create_table :operation do |t|
-      t.belongs_to :strain
-      t.string :operate_type
-      t.integer :old_basket
-      t.integer :new_basket
-      t.integer :operate_by
-      t.integer :operate_at
-      t.text :remark
-      t.timestamps null: false
-    end
   end
 end

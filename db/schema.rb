@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429035558) do
+ActiveRecord::Schema.define(version: 20150514080409) do
 
   create_table "baskets", force: :cascade do |t|
     t.string   "code",       limit: 255
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150429035558) do
     t.text     "remark",         limit: 65535
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.text     "die_reason",     limit: 65535
   end
 
   create_table "mice", force: :cascade do |t|
@@ -74,8 +75,9 @@ ActiveRecord::Schema.define(version: 20150429035558) do
     t.datetime "updated_at",                                                        null: false
   end
 
-  create_table "operation", force: :cascade do |t|
+  create_table "operations", force: :cascade do |t|
     t.integer  "strain_id",    limit: 4
+    t.integer  "mouse_id",     limit: 4
     t.string   "operate_type", limit: 255
     t.integer  "old_basket",   limit: 4
     t.integer  "new_basket",   limit: 4

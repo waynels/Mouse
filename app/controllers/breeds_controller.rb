@@ -105,6 +105,7 @@ class BreedsController < ApplicationController
    female_quantity.times do |i|
      mouse = Mouse.create(basket_id: female_basket_id,strain_id: strain_id, birthday: @batch.childbirthday, weaningday: weaningday, gender: "F", father_id: @breed.father_id, mother_id: @breed.mother_id, batch_id: batch_id)
    end
+    @breed_info = BreedsInfo.create(breed_id: @breed.id, operation_type: "分笼", operation_by: current_user.id, operation_at: @breed.cage_at,batch_id: @batch.id, remark: "#{@breed.father.code}[#{@breed.father.strain.name}]和#{@breed.mother.code}的小鼠在#{weaningday}分笼")
   end
 
   def die_record
@@ -142,6 +143,18 @@ class BreedsController < ApplicationController
   def create
     @breed = Breed.new(breed_params)
     @breed.save
+    unless @breed.basket_id == @breed.father.basket_id
+      @mouse = @breed.father
+      @operation = Operation.create(strain_id: @mouse.strain_id, mouse_id: @mouse.id, operation_type: "移动位置", old_basket: @mouse.basket_id, new_basket: @breed.basket_id, operation_by: current_user.id, operation_at: @breed.cage_at, remark: "编号为#{@mouse.code}的老鼠在#{@breed.cage_at}因为合笼位置从#{@music.basket_id}移动的#{@breed.basket_id}")
+      @mouse.basket_id = @breed.basket_id
+      @mouse.save
+    end
+    unless @breed.basket_id == @breed.mother.basket_id
+      @mouse = @breed.mother
+      @operation = Operation.create(strain_id: @mouse.strain_id, mouse_id: @mouse.id, operation_type: "移动位置", old_basket: @mouse.basket_id, new_basket: @breed.basket_id, operation_by: current_user.id, operation_at: @breed.cage_at, remark: "编号为#{@mouse.code}的老鼠在#{@breed.cage_at}因为合笼位置从#{@music.basket_id}移动的#{@breed.basket_id}")
+      @mouse.basket_id = @breed.basket_id
+      @mouse.save
+    end
     @breed_info = BreedsInfo.create(breed_id: @breed.id, operation_type: "合笼", operation_by: current_user.id, operation_at: @breed.cage_at, remark: "#{@breed.father.code}[#{@breed.father.strain.name}]和#{@breed.mother.code}[#{@breed.mother.strain.name}]的小鼠在#{@breed.basket.code}合笼")
     respond_to do |format|
       format.js
@@ -193,7 +206,10 @@ class BreedsController < ApplicationController
       params[:breed].permit(:father_id, :mother_id, :basket_id, :cage_at)
     end
     def breed_info_params
-      params[:breed_info].permit(:breed_id, :batch_id, :operation_type, :operation_by, :operation_at, :quantity, :remark, :die_reason)
+      params[:breed_info].permit(:breed_id, :batch_id,  :operation_type, :operation_by, :operation_at, :quantity, :remark, :die_reason)
+    end
+    def operation_params
+      params[:operation].permit(:strain_id, :operation_by, :mouse_id,:operation_type, :operation_at, :old_basket, :new_basket, :remark)
     end
     def mouse_params
       params[:mouse].permit(:basket_id, :strain_id, :generate_num, :birthday, :weaningday, :gender, :code, :identification, :gfp, :gfp_val, :father_code, :mother_code, :batch_id)
