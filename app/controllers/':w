@@ -50,11 +50,7 @@ class MiceController < ApplicationController
   def get_family_tree 
     user = User.find(current_user.id)
     @mouse = Mouse.find(params[:id])
-    if @mouse.gender == "M"
-    data = {"name" => @mouse.code ? "#{@mouse.code}♂" : "未编号", "children" => get_tree(@mouse, user)}
-    else
-    data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
-    end
+    data = {"name" => @mouse.code ? @mouse.code : "未编号", "children" => get_tree(@mouse, user)}
     render :json => data
     
   end
