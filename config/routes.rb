@@ -62,7 +62,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'user#index'
+  #root 'user#index'
+  root 'baskets#index'
   get "welcome/lock_screen"
   post "welcome/unlock"
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,4 +1,5 @@
 <% if user_signed_in? %>
+  <li ><%= link_to "小鼠笼子", baskets_url %></li>
   <% if current_user.has_role?(:admin) %>
   <li ><%= link_to "系统设置", user_index_url %></li>
   <% end %>
