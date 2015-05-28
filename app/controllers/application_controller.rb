@@ -9,14 +9,14 @@ class ApplicationController < ActionController::Base
   end
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
- # def check_token  
- #   if session[:__token__] == params[:__token__]  
- #     session[:__token__] = nil  
- #     session.update  
- #     return true  
- #   end  
- #   false  
- # end  
+  # def check_token  
+  #   if session[:__token__] == params[:__token__]  
+  #     session[:__token__] = nil  
+  #     session.update  
+  #     return true  
+  #   end  
+  #   false  
+  # end  
   def to_time(time)
     unless time==nil
       to_time=time.strftime("%Y-%m-%d %H:%M:%S")
@@ -86,6 +86,86 @@ class ApplicationController < ActionController::Base
       data = model.constantize.where(condition_str).where(condition).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i)
     end
     return data, total, filter_total
+  end
+  def exchange_mouses(basket, mouse, m_old_basket)
+    if basket.use_type == "B"
+      if mouse.gender == "M"
+        if basket.mice.where(gender: "M").size > 0
+          old_m_m = basket.mice.where(gender: "M").first
+          old_m_m.basket_id = mouse.basket_id
+          old_m_m.save
+          #取消当前公老鼠的配对的关系
+          this_old_breeds = Breed.where(father_id: old_m_m.id,basket_id: basket.id)
+          this_old_breeds.each do |e|
+            e.is_usable = false
+            e.save
+          end
+          #取消进来老鼠原位置笼子老鼠之间的关系
+          that_old_breeds = Breed.where(father_id: mouse.id, basket_id: m_old_basket.id)
+          that_old_breeds.each do |t|
+            t.is_usable = false
+            t.save
+          end
+          #若原笼子为繁殖笼子则创建新的配对信息
+          if m_old_basket
+            if m_old_basket.use_type == "B"
+              if m_old_basket.mice.where(gender: "F").size > 0
+                m_old_basket.mice.where(gender: "F").each do |f_m|
+                  breed = Breed.create(basket_id: m_old_basket.id,father_id: old_m_m.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+                end
+              end
+            end
+          end
+          #创建新小鼠与该笼子中母鼠的配对关系
+          basket.mice.where(gender: "F").each do |f_m|
+            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+          end
+        else
+          basket.mice.where(gender: "F").each do |f_m|
+            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+          end
+          #进来老鼠原位置笼子老鼠之间的配对关系打断
+          that_old_breeds = Breed.where(father_id: mouse.id, basket_id: m_old_basket.id)
+          that_old_breeds.each do |t|
+            t.is_usable = false
+            t.save
+          end
+        end
+      else
+        m_m = basket.mice.where(gender: "M").first
+        if m_m
+          breed = Breed.create(basket_id: basket.id,father_id: m_m.id, mother_id: mouse.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+        end
+        #进来老鼠原位置笼子公老鼠的配对关系打断
+        old_breeds = Breed.where(mother_id: mouse.id, basket_id: m_old_basket.id)
+        old_breeds.each do |o|
+          o.is_usable = false
+          o.save
+        end
+      end
+      mouse.basket_id = basket.id
+    else
+      mouse.basket_id = basket.id
+      if m_old_basket
+        #打断原有繁殖关系
+        if m_old_basket.use_type == "B"
+          if mouse.gender == "M"
+            old_breeds = Breed.where(father_id: mouse.id, basket_id: m_old_basket.id)
+            old_breeds.each do |o|
+              o.is_usable = false
+              o.save
+            end
+          else
+            old_breeds = Breed.where(mother_id: mouse.id, basket_id: m_old_basket.id)
+            old_breeds.each do |o|
+              o.is_usable = false
+              o.save
+            end
+          end
+        end
+      end
+    end
+    mouse.save
   end
   protected
 

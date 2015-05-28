@@ -1,17 +1,19 @@
-<%= form_for(@basket) do |f| %>
-  <% if @basket.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@basket.errors.count, "error") %> prohibited this basket from being saved:</h2>
+<div class="modal-body">
+  <script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
 
-      <ul>
-      <% @basket.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  $(document).ready(function(){
+      $(".select").select2();
+      });
+//]]>
+  </script>
+  <%= form_for @basket, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+    <div class="control-group">
+    <label for="textfield" class="control-label">笼子类型</label>
+    <div class="controls">
+      <%= f.select :use_type, Basket::BASKETTYPE, {},{:class=> 'select input-large'} %>  
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
   </div>
+
 <% end %>
+</div>

@@ -6,9 +6,9 @@ class BasketsController < ApplicationController
   # GET /baskets.json
   def index
     if params[:box_num]
-      @baskets = Basket.limit(100).offset(params[:box_num].to_i * 100)
+    @baskets = Basket.limit(100).offset(params[:box_num].to_i * 100)
     else
-      @baskets = Basket.all
+    @baskets = Basket.all
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -17,23 +17,12 @@ class BasketsController < ApplicationController
   end
 
   def add_mouse
-    @basket = Basket.find(params[:id])
+      @basket = Basket.find(params[:id])
   end
   def remove_mouse
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
-
-  end
-
-  def create_littler_mice 
-    @breed = Breed.find(params[:breed_id])
-    @basket = Basket.find(params[:id])
-    strain_id = params[:strain_id].to_i
-    quantity = params[:quantity].to_i
-    @batch = Batch.create(father_id: @breed.father_id, mother_id: @breed.mother_id, breed_id: @breed.id,quantity: quantity, childbirthday: params[:childbirthday],basket_id: @basket)
-    quantity.times do |i|
-     mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id)
-    end
+    
   end
 
   def change_basket 
@@ -42,7 +31,7 @@ class BasketsController < ApplicationController
     @mouse.basket_id = params[:mouse][:basket_id]
     @mouse.save
     @mouses=@basket.mice
-
+    
   end
 
   def get_other_basket 
@@ -63,9 +52,11 @@ class BasketsController < ApplicationController
 
   def breed_mouse 
     @basket = Basket.find(params[:id])
-    @f_m = Mouse.find(params[:mouse_id])
-    @m_m = @basket.mice.where(gender: "M").first
-    @breed = Breed.where(basket_id: @basket.id, mother_id: @f_m.id, father_id: @m_m.id, is_usable: true).first
+    f_m = Mouse.find(params[:mouse_id])
+    m_m = @basket.mice.where(gender: "M").first
+    
+    
+    
   end
 
   def autocomplete 
@@ -114,9 +105,11 @@ class BasketsController < ApplicationController
   def update
     respond_to do |format|
       if @basket.update(basket_params)
-        box_no = @basket.id / 100
-        @baskets = Basket.limit(100).offset(box_no * 100)
-        format.js
+        format.html { redirect_to @basket, notice: 'Basket was successfully updated.' }
+        format.json { render :show, status: :ok, location: @basket }
+      else
+        format.html { render :edit }
+        format.json { render json: @basket.errors, status: :unprocessable_entity }
       end
     end
   end

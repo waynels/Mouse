@@ -1,0 +1,105 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+//]]>
+$(function() {
+    $( ".division_mouse" ).draggable({ revert: "invalid" });
+    $( "#another_basket" ).droppable({
+accept: ".division_mouse",
+drop: function( event, ui ) {
+var mId = ui.draggable.attr("id");
+var bId = $("#another_basket_id").val()
+$( this ).addClass( "ui-state-highlight" )
+$.ajax({url: "/mice/remove_mouse?id="+mId+"&basket_id="+bId+"&old_basket=<%= @basket.id%>",type: "GET",async:false})
+}
+});
+    });
+</script>
+<style>
+li{
+  padding-bottom: 3px
+}
+</style>
+<div class="box_div" id="one_basket">
+  <div style="text-align: center"><%= @basket.code %>[<%= @basket.use_type %>]</div>
+  <%= hidden_field_tag :one_basket_id, @basket.id %>
+  <div class="inner_div">
+    <div class="pull-right">
+      <ul class="unstyled">
+        <% if @basket.mice.size == 0  %>
+          <li>
+        <%= link_to "笼子类型", edit_basket_path(@basket) ,:remote => true,:class => 'btn btn-small ' %>
+        </li>
+      <%end%>
+        <li>
+        <%= link_to "新添小鼠", add_mouse_basket_path(@basket) ,:remote => true,:class => 'btn btn-small ' %>
+        </li>
+        <li>
+        <%= link_to "选新笼", get_other_basket_basket_path(@basket) ,:remote => true,:class => 'btn btn-small ' %>
+        </li>
+      </ul>
+    </div>
+    <% @basket.mice.each do |m| %>
+      <% if m.gender %>
+      <% if m.gender == "M" %>
+      <div class="division_mouse" id="mouse_<%= m.id %>" style="width: 200px;">
+      <span><i class="glyphicon-move"></i></span>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn dropdown-toggle"><i class="glyphicon-male"></i><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">杀死</a></li>
+        </ul>
+      </div>
+    </div>
+  <%else%>
+      <div class="division_mouse" id="mouse_<%= m.id %>" style="width: 200px;">
+      <span><i class="glyphicon-move"></i></span>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn dropdown-toggle"><i class="glyphicon-female"></i><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <%if @basket.use_type == "B" %>
+            <% if query_breed_is_usable(@basket,m) %>
+            <li>
+            <%= link_to "分娩", breed_mouse_basket_path(@basket, mouse_id: m.id) ,:remote => true%>
+            </li>
+            <%end%>
+          <%end%>
+          <li><a href="#">实验使用</a></li>
+          <li><a href="#">杀死</a></li>
+        </ul>
+      </div>
+    </div>
+  <%end%>
+  <%else%>
+      <div class="division_mouse" id="mouse_<%= m.id %>" style="width: 200px;">
+      <span><i class="glyphicon-move"></i></span>
+      <div class="btn-group">
+        <button data-toggle="dropdown" class="btn dropdown-toggle"><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">移走</a></li>
+          <li><a href="#">鉴定</a></li>
+          <li><a href="#">死亡</a></li>
+        </ul>
+      </div>
+    </div>
+  <%end%>
+  <%end%>
+  </div>
+</div>
+<div id="myModal" class="modal hide fade"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">新建配对</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+  </div>
+</div>
+</br>
+<hr/>
+<div class="new_basket" style="display:none;">
+  <div class="box_div" id="another_basket">
+  </div>
+</div>

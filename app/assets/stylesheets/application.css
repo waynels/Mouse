@@ -39,3 +39,36 @@
 .line-li {
     border-bottom: 2px dotted #dddddd;
 }
+.division {
+    border: 2px solid #dddddd;
+    width: 70px;
+    height: 30px;
+    text-align:center;
+    overflow:hidden;
+    line-height:30px;
+    margin: 5px 5px 0 0;
+    /*padding: 4px 10px;*/
+}
+.box_div {
+    border: 1px solid #dddddd;
+    min-height: 300px;
+}
+.inner_div{
+    margin: 5px 5px 5px 5px;
+}
+.division_mouse2 {
+  padding-top: 3px;
+}
+
+.M_box{
+  background:#66CCFF;
+}
+.S_box{
+  background:#00CCFF;
+}
+.B_box{
+  background:#FFCCFF;
+}
+.E_box{
+  background:#9999FF;
+}

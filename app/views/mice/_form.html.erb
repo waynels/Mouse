@@ -68,12 +68,7 @@
           <div class="control-group">
             <label for="textfield" class="control-label">笼子位置</label>
             <div class="controls">
-              <%if @mouse.id %>
-              <%= text_field_tag :basket_code, @mouse.basket.code %>  
-              <%else%>
-              <%= text_field_tag :basket_code %>  
-              <%end%>
-              <%= f.hidden_field :basket_id%>
+              <%= f.select :basket_id, Basket.all.collect { |p| [p.code, p.id]},{},{:class=> 'select input-large'}%>
             </div>
           </div>
 
@@ -116,17 +111,6 @@ $(document).ready(function(){
           });  
         });
       });
-    $("#basket_code").click(function(){
-        $.get('/baskets/autocomplete', function(data){
-          $( "#basket_code" ).autocomplete({ source: data,
-            select: function( event, ui ) {
-            $( "#basket_code" ).val( ui.item.value );
-            $("#mouse_basket_id").attr("value", ui.item.id);
-            return false;
-            }
-            });  
-          });
-        });
     $("#mouse_birthday, #mouse_weaningday" ).datepicker({format: "yyyy-mm-dd"});
     $(".select").select2();
     });

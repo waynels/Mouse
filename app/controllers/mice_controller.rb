@@ -66,6 +66,38 @@ class MiceController < ApplicationController
       format.json {render :json=>ar}
     end
   end
+
+  def remove_mouse  
+    id = params[:id].split("_")[1]
+    @mouse = Mouse.find(id)
+    @basket = Basket.find(params[:old_basket])
+    @another_basket = Basket.find(params[:basket_id])
+    exchange_mouses(@another_basket, @mouse, @basket)
+    @mouse.basket_id = params[:basket_id]
+    @mouse.save
+    box_no = @basket.id / 100
+    @baskets = Basket.limit(100).offset(box_no * 100)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+  def remove_mouse2  
+    id = params[:id].split("_")[1]
+    @mouse = Mouse.find(id)
+    @another_basket= Basket.find(params[:old_basket])
+    @basket = Basket.find(params[:basket_id])
+    exchange_mouses(@basket, @mouse, @another_basket)
+    @mouse.basket_id = params[:basket_id]
+    @mouse.save
+    box_no = @basket.id / 100
+    @baskets = Basket.limit(100).offset(box_no * 100)
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
   # GET /mice/1
   # GET /mice/1.json
   def show

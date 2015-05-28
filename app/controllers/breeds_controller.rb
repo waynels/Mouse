@@ -131,6 +131,7 @@ class BreedsController < ApplicationController
 
   # GET /breeds/new
   def new
+    @basket = Basket.find(params[:basket_id])
     @breed = Breed.new
   end
 

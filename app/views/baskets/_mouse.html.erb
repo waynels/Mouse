@@ -1,0 +1,18 @@
+<div class="modal-body">
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+  
+$(document).ready(function(){
+    $(".select").select2();
+    });
+//]]>
+</script>
+  <%= form_for @basket,:url => save_mouse_basket_path(id: @basket.id),:method => :post,:remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+  <div class="control-group">
+    <label for="textfield" class="control-label">小鼠</label>
+    <div class="controls">
+        <%= select_tag :mouse_id, options_from_collection_for_select(Mouse.where("basket_id <> #{@basket.id}"), :id, :mouse_show_name),{:class=> 'select input-large'}%>
+    </div>
+  </div>
+<% end %>
+</div>

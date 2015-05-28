@@ -1,0 +1,15 @@
+<div class="span9">
+<% @baskets.each do |basket| %>
+  <a href="/baskets/<%= basket.id%>" data-remote=true> 
+    <div class="division <%= basket.use_type %>_box" style="float:left;"><%= basket.code%>[<%= basket.mice.size %>]只 </div>
+</a>
+<% if (basket.id.to_i%10)==0 %>
+  <br />
+<div style="clear:both"></div>
+    <%end%>
+<%end%>
+</div>
+<div class="span3">
+  <div class="basket_show" >
+  </div>
+</div>

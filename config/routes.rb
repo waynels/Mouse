@@ -18,14 +18,27 @@ Rails.application.routes.draw do
   end
   resources :batches
   resources :baskets do 
+    member do
+      get "add_mouse"
+      post "save_mouse"
+      post "create_littler_mice"
+      get "remove_mouse"
+      get "breed_mouse"
+      post "change_basket"
+      get "get_other_basket"
+      post "find_new_basket"
+    end
     collection do
       get 'autocomplete'
+
     end
   end
   resources :mice do
     collection do
       post 'get_data'
       get 'autocomplete'
+      get "remove_mouse"
+      get "remove_mouse2"
     end
     member do
       get "family_tree"
@@ -33,6 +46,9 @@ Rails.application.routes.draw do
     end
   end
   resources :strains do
+    member do
+      get "mice_show"
+    end
     collection do
       post 'get_data'
     end

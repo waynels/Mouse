@@ -5,6 +5,8 @@ class Mouse < ActiveRecord::Base
   belongs_to :father_mouse, :foreign_key => "father_id", :class_name => "Mouse"
   belongs_to :mother_mouse, :foreign_key => "mother_id", :class_name => "Mouse"
   SEXTYPE = {"雄性" => "M", "雌性" => "F"}
-  
-  
+
+  def mouse_show_name
+     "#{self.gender}#{self.code}[#{self.strain.name}]"
+  end
 end

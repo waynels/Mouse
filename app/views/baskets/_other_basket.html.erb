@@ -1,0 +1,18 @@
+<div class="modal-body">
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+  
+$(document).ready(function(){
+    $(".select").select2();
+    });
+//]]>
+</script>
+  <%= form_for @basket,:url => find_new_basket_basket_path(id: @basket.id),:method => :post,:remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+  <div class="control-group">
+    <label for="textfield" class="control-label">新的位置</label>
+    <div class="controls">
+        <%= select_tag :new_basket_id, options_from_collection_for_select(Basket.where("id <> #{@basket.id}"), :id, :count_mice_in_basket ),{:class=> 'select input-large'}%>
+    </div>
+  </div>
+<% end %>
+</div>

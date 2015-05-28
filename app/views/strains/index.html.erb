@@ -4,6 +4,11 @@ $(document).on("ready one:load", function() {
       $(".user_form").submit();
       });
     });
+$(document).ready(function(){
+    $('#myModal').on('hidden', function () {
+      $('.modal-body').empty();
+    });
+    });
 $(function () { 
     $(".main-nav li").removeClass("active");
     $(".nav5").addClass("active");
@@ -50,6 +55,7 @@ $(function () {
           <th>id</th>
           <th>品系名</th>
           <th>描述</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +63,8 @@ $(function () {
     </table>
   </div>
 </div>
+<div class="mouse_table"></div>
+<div class="strain_form"></div>
 
 <% content_for :sidebar do %>
   <%= render :partial => "mice/sidebar" %>
@@ -74,12 +82,4 @@ $(function () {
     <button class="save_btn btn btn-primary">保存</button>
   </div>
 </div>
-<div class="strain_form"></div>
-<script>
-$(document).ready(function(){
-    $('#myModal').on('hidden', function () {
-      $('.modal-body').empty();
-    });
-    });
-</script>
 </div>

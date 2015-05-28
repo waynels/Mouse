@@ -20,6 +20,7 @@ class StrainsController < ApplicationController
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_strain_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a href='#{mice_show_strain_path(item)}' data-remote=true class='btn btn-mini'>小鼠详细</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{strain_path(item)}'>删除</a>"
       end
       arr << [item.id, item.name, item.description, op_str]
@@ -31,6 +32,9 @@ class StrainsController < ApplicationController
     end
   end
 
+  def mice_show 
+    
+  end
   # GET /strains/1
   # GET /strains/1.json
   def show
