@@ -1,4 +1,5 @@
-<div style="text-align: center" id="another_basket_code"><%= @another_basket.code %></div>
+<div class="box_div <%= @another_basket.use_type %>_box " id="another_basket">
+<div style="text-align: center" id="another_basket_code"><%= @another_basket.code %>[<%= @another_basket.basket_type_label%>]</div>
 <%= hidden_field_tag :another_basket_id, @another_basket.id %>
 <% @another_basket.mice.each do |m| %>
   <% if m.gender %>
@@ -36,3 +37,4 @@
       });
   });
 </script>
+</div>

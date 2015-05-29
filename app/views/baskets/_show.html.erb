@@ -19,8 +19,8 @@ li{
   padding-bottom: 3px
 }
 </style>
-<div class="box_div" id="one_basket">
-  <div style="text-align: center"><%= @basket.code %>[<%= @basket.use_type %>]</div>
+<div class="box_div <%= @basket.use_type %>_box" id="one_basket">
+  <div style="text-align: center"><%= @basket.code %>[<%= @basket.basket_type_label %>]</div>
   <%= hidden_field_tag :one_basket_id, @basket.id %>
   <div class="inner_div">
     <div class="pull-right">
