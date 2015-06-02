@@ -72,3 +72,296 @@
 .E_box{
   background:#9999FF;
 }
+
+.footer a { color: #FFFFFF}
+input.file_field { width: 378px;}
+.item .ui-selected { background:url(../assets/item_hover.png) left no-repeat;}
+.item li:hover a,.item li.ui-selected a { color:#e38903;}
+
+.clear_both{
+  clear:both;
+}
+.left_list {z-index: 100; position:relative; padding:10px;}
+.left_list li:last-child { margin-bottom:0;}
+.left_list li a { font-size:12px; font-weight:bold; display:block; }
+.left_list li:hover a,.item li.seled a { color:#e38903;}
+
+.ui-multiselect {padding:2px 0 2px 4px; text-align:left;}
+.ui-multiselect span.ui-icon { float:right }
+.ui-multiselect-single .ui-multiselect-checkboxes input { position:absolute !important; top: auto !important; left:-9999px; }
+.ui-multiselect-single .ui-multiselect-checkboxes label { padding:5px !important }
+
+.ui-multiselect-header { margin-bottom:3px; padding:3px 0 3px 4px }
+.ui-multiselect-header ul { font-size:0.9em }
+.ui-multiselect-header ul li { float:left; padding:0 10px 0 0 }
+.ui-multiselect-header a { text-decoration:none }
+.ui-multiselect-header a:hover { text-decoration:underline }
+.ui-multiselect-header span.ui-icon { float:left }
+.ui-multiselect-header li.ui-multiselect-close { float:right; text-align:right; padding-right:0 }
+
+.ui-multiselect-menu { display:none; padding:3px; position:absolute; z-index:10003 }
+.ui-multiselect-checkboxes { position:relative /* fixes bug in IE6/7 */; overflow-y:scroll }
+.ui-multiselect-checkboxes label { cursor:default; display:block; border:1px solid transparent; padding:3px 1px }
+.ui-multiselect-checkboxes label input { position:relative; top:1px }
+.ui-multiselect-checkboxes li { clear:both; font-size:0.9em; padding-right:3px }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label { text-align:center; font-weight:bold; border-bottom:1px solid }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a { display:block; padding:3px; margin:1px 0; text-decoration:none }
+
+/* remove label borders in IE6 because IE6 does not support transparency */
+* html .ui-multiselect-checkboxes label { border:none }
+ul.child_ul {margin-left: 60px;}
+#cells_age_map li {margin-left:20px;}
+.text_d {border:1px solid #aaaaaa; height:24px; line-height:24px;}
+.text_d:hover { border:1px solid #e38903; color:#e38903; }
+/***** Links *****/
+.link_file a{color: blue; text-decoration: none; font-size:12px; }
+.link_file a:hover, a:active{ color: #c61a1a; text-decoration: underline;}
+.link_file a img{ border: 0; }
+.link_file a.issue.closed, a.issue.closed:link, a.issue.closed:visited { text-decoration: line-through; }
+/***** Links *****/
+th a{color: blue; text-decoration: none; font-size:12px; }
+th a:hover, a:active{ color: #c61a1a; text-decoration: underline;}
+th a img{ border: 0; }
+th a.issue.closed, a.issue.closed:link, a.issue.closed:visited { text-decoration: line-through; }
+table.list { border: 1px solid #e4e4e4;  border-collapse: collapse; width: 100%; margin-bottom: 4px; }
+tr { border: 1px solid #e4e4e4; }
+th { text-align:left; }
+
+#divinputfile{
+        background:url(../assets/upload_file.png) no-repeat 100% 1px;
+        height:28px;
+        width:385px;
+        margin-left:150px;
+        margin-top:-8px;
+        margin-bottom:10px;
+}
+#divinputfile #filepc{
+        opacity: 0.0;
+        -moz-opacity: 0.0;
+        filter: alpha(opacity=00);
+        font-size:18px;
+}
+#fakeinputfile{
+        margin-top:-16px;
+}
+
+#fakeinputfile .fakefilepc{
+        margin-left:-25px;
+        width:375px;
+        height:22px;
+        font-size:18px;
+        font-family:Arial;
+}
+.holder {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border-radius: 15px 15px 15px 15px;
+    float: left;
+    margin-left: 22px;
+    margin-top: 500px;
+    padding: 10px;
+    position: fixed;
+    z-index: 99999;
+    
+}
+ul.social, ul.network {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+ul.social {
+    position: relative;
+    z-index: 100;
+}
+ul.social li {
+    float: left;
+}
+ul.social li a {
+    display: block;
+    height: 64px;
+    padding: 1px;
+    width: 64px;
+}
+ul.social li a img {
+    -moz-transition: all 1s ease-in-out 0s;
+    border: 0 none;
+    display: block;
+}
+ul.network {
+    -moz-transition: all 1s ease-in-out 0s;
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: 10px solid #DDDDDD;
+    border-radius: 15px 15px 15px 15px;
+    height: 66px;
+    left: -10px;
+    position: absolute;
+    top: -10px;
+    width: 66px;
+    z-index: -1;
+}
+ul.network li a {
+    -moz-transition: all 1s ease-in-out 0s;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+ul.network li a.p1 {
+    left: 0;
+}
+ul.network li a.p2 {
+    left: 0;
+}
+ul.network li a.p3 {
+    left: 0;
+}
+ul.network li a.p4 {
+    left: 0;
+}
+ul.network li a.p5 {
+    left: 0;
+}
+ul.network li a.p6 {
+    left: 0;
+}
+ul.network li a.p7 {
+    left: 0;
+}
+ul.network li a.p8 {
+    left: 0;
+}
+ul.network li a.p9 {
+    left: 0;
+}
+ul.network li a.p10 {
+    left: 0;
+}
+ul.network li a.p1 img {
+    padding: 18px;
+    width: 28px;
+}
+ul.network li a.p2 img {
+    padding: 16px;
+    width: 32px;
+}
+ul.network li a.p3 img {
+    padding: 14px;
+    width: 36px;
+}
+ul.network li a.p4 img {
+    padding: 12px;
+    width: 40px;
+}
+ul.network li a.p5 img {
+    padding: 10px;
+    width: 44px;
+}
+ul.network li a.p6 img {
+    padding: 8px;
+    width: 48px;
+}
+ul.network li a.p7 img {
+    padding: 6px;
+    width: 52px;
+}
+ul.network li a.p8 img {
+    padding: 4px;
+    width: 56px;
+}
+ul.network li a.p9 img {
+    padding: 2px;
+    width: 60px;
+}
+ul.network li a.p10 img {
+    padding: 0;
+    width: 64px;
+}
+ul.social li:hover ul.network {
+    left: 56px;
+    width: 450px;
+}
+ul.social li:hover ul.network li a.p1 {
+    left: 90%;
+}
+ul.social li:hover ul.network li a.p2 {
+    left: 80%;
+}
+ul.social li:hover ul.network li a.p3 {
+    left: 70%;
+}
+ul.social li:hover ul.network li a.p4 {
+    left: 60%;
+}
+ul.social li:hover ul.network li a.p5 {
+    left: 81%;
+}
+ul.social li:hover ul.network li a.p6 {
+    left: 65%;
+}
+ul.social li:hover ul.network li a.p7 {
+    left: 49%;
+}
+ul.social li:hover ul.network li a.p8 {
+    left: 33%;
+}
+ul.social li:hover ul.network li a.p9 {
+    left: 17%;
+}
+ul.social li:hover ul.network li a.p10 {
+    left: 1%;
+}
+ul.social li:hover ul.network li a img {
+    padding: 0;
+    width: 64px;
+}
+ul.social li.close {
+    -moz-transition: opacity 1s ease-in-out 1s;
+    background: url("/assets/icons/close.png") repeat scroll 0 0 transparent;
+    height: 50px;
+    left: -9999px;
+    opacity: 0;
+    position: absolute;
+    top: -20px;
+    width: 50px;
+}
+.clear {
+    clear: both;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.overlay{
+  background-cursorolor:#EEE;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size:10px; 
+  font-family:sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.templink {
+  fill: none;
+  stroke: red;
+  stroke-width: 3px;
+}
+
+.ghostCircle.show{
+  display:block;
+}
+
+.ghostCircle, .activeDrag .ghostCircle{
+  display: none;
+}
+

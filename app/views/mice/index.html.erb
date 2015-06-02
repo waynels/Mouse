@@ -34,43 +34,47 @@ $(function () {
 });
 </script>
 
-<div style="margin-left: 10px; margin-top:20px">
-  <%= link_to "所有品系", mice_url, :remote => true, :class => "btn item_node" %>
-  <% Strain.all.each do |strain| %>
-    <%= link_to strain.name, mice_url(strain_id: strain.id), :remote => true, :class => "btn item_node" %>
-<% end %>
-</div>
-<div class="box box-color box-bordered mouse_box"> 
-  <div class="box-title">
-    <h3><i class="icon-list"></i>
-      <span class="mice_strain">小鼠信息</span>
-    </h3>
-    <div style="float:right; padding-right:2px;">
-      <%= link_to '新增', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+<div class="row-fluid">
+  <div class="span12">
+    <div style="margin-left: 10px; margin-top:20px">
+      <%= link_to "所有品系", mice_url, :remote => true, :class => "btn item_node" %>
+      <% Strain.all.each do |strain| %>
+        <%= link_to strain.name, mice_url(strain_id: strain.id), :remote => true, :class => "btn item_node" %>
+    <% end %>
     </div>
-  </div>
-  <div class="box-content nopadding">
-    <table id="mice" class="table table-bordered dataTable-scroll-x">
-      <thead>
-        <tr>
-          <th>小鼠编号</th>
-          <th>小鼠品系</th>
-          <th>出生日期</th>
-          <th>离乳日期</th>
-          <th>性别</th>
-          <th>父亲编号</th>
-          <th>母亲编号</th>
-          <th>位置</th>
-          <th>鉴定结果</th>
-          <th>荧光表达阳性率</th>
-          <th>阳性细胞平均荧光强度</th>
-          <th>几代小鼠</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    <div class="box box-color box-bordered mouse_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+          <span class="mice_strain">小鼠信息</span>
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to '新增', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table id="mice" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>小鼠编号</th>
+              <th>小鼠品系</th>
+              <th>出生日期</th>
+              <th>离乳日期</th>
+              <th>性别</th>
+              <th>父亲编号</th>
+              <th>母亲编号</th>
+              <th>位置</th>
+              <th>鉴定结果</th>
+              <th>荧光表达阳性率</th>
+              <th>阳性细胞平均荧光强度</th>
+              <th>几代小鼠</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

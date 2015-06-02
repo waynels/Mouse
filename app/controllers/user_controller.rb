@@ -73,7 +73,7 @@ class UserController < ApplicationController
     @user.confirmed_at = DateTime.now()
     @user.confirmation_sent_at = DateTime.now()
     @user.save
-    @user.add_role :seller
+    @user.add_role :Scientist
   end
 
   def update

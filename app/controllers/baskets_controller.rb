@@ -1,6 +1,5 @@
 class BasketsController < ApplicationController
   before_action :set_basket, only: [:show, :edit, :update, :destroy]
-  layout "nobar"
 
   # GET /baskets
   # GET /baskets.json

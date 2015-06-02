@@ -7248,15 +7248,15 @@ body.error .wrapper .input-append .btn:hover {
 }
 
 .login {
-  background: #368ee0;
+/*  background: #368ee0;*/
 }
 .login .wrapper {
   width: 400px;
   height: 500px;
-  margin: -200px -200px;
+/*  margin: -200px -200px; */
   position: absolute;
-  left: 50%;
-  top: 40%;
+  left: 40%;
+  top: 30%;
 }
 .login .wrapper h1 > a {
   color: #fff;
@@ -7274,6 +7274,7 @@ body.error .wrapper .input-append .btn:hover {
 .login .wrapper .login-body {
   margin-top: 20px;
   background: #368ee0;
+  border-radius: 5px;
 }
 .login .wrapper .login-body form {
   padding: 0 30px;
@@ -7298,6 +7299,7 @@ body.error .wrapper .input-append .btn:hover {
   clear: both;
 }
 .login .wrapper .login-body .submit input {
+  clear: both;
   float: right;
 }
 .login .wrapper .login-body .submit .remember {
