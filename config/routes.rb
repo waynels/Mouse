@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :frameworks
   resources :breeds do
     member do
       post "save_mice_cage"

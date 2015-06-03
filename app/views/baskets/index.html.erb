@@ -1,9 +1,12 @@
-<% 5.times do |i| %>
-  <a href="/baskets?box_num=<%= i%>" data-remote=true > 
-  <div class="division" style="float:left;background:#CCFFFF;">架子<%= i + 1 %> </div>
-</a>
-<%end%>
-<div style="clear:both"></div>
-<br />
-<div class="baskets_box">
+<div id="stores_area">
+<ul class="pot_list">
+  <% @frameworks.each do |f_w| %>
+    <li class="pot"><a class="potname" data-remote=true href="<%= framework_path(f_w) %>"><%= f_w.code %></a></li>
+  <% end %>
+</ul>
 </div>
+<div class="basket_show" style="padding-bottom:15px; border: 1px solid #bfbfbf;padding: 1px; display:none;"></div>
+<div id="basket_cage_list"></div>
+<% content_for :sidebar do %>
+    <%= render :partial => 'todo_list' %>
+<% end %>
