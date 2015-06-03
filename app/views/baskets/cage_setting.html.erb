@@ -1,0 +1,21 @@
+<div id="stores_area">
+  <%= render :partial => "f_w_list" %>
+</div>
+<% content_for :sidebar do %>
+    <%= render :partial => 'setting' %>
+<% end %>
+
+<div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="btn btn-primary"  onclick="javascript: $('form:first').submit();" id="save" >保存</button>
+  </div>
+</div>
+<div id="basket_cage_list">
+</div>

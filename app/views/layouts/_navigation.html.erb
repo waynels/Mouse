@@ -1,11 +1,7 @@
 <span class="sys_logo"></span>
 <% if current_user %>
-<% if current_user.has_role?(:admin) %>
-  <li class="user_set"><%= link_to "用户管理", user_index_path, :class=> "nav_file_set" %></li>
-<%end%>
-  <li class="store_set"><a href="/baskets" class="nav_plasmid_set">笼子</a></li>
-<li class="cell_samples"><a href="/mice" class="nav_cell_set">小鼠信息</a></li>
-<li class="cell_store"><a href="/breeds" class="nav_save">繁殖信息</a></li>
-<li class="store_type_set"><a href="<%= user_index_path%>" class="nav_file_set">系统设置</a></li>
-<!--<li class="search"><a href="/cells/cell_items" class="nav_search">查询</a></li> -->      
+  <li class="store_set"><a href="/baskets/cage_setting" class="nav_plasmid_set">库设置</a></li>
+  <li class="cell_samples"><a href="/mice" class="nav_cell_set">小鼠信息</a></li>
+  <li class="cell_store"><a href="/baskets" class="nav_save">笼子信息</a></li>
+  <li class="store_type_set"><a href="<%= user_index_path%>" class="nav_file_set">系统设置</a></li>
 <%end%>

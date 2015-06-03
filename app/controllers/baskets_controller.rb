@@ -14,6 +14,36 @@ class BasketsController < ApplicationController
       format.js 
     end
   end
+  
+  def cage_setting
+    @frameworks = Framework.all
+  end
+
+  def show_basket 
+    @framework = Framework.find(params[:f_w])
+  end
+
+  def set_cage_type 
+      @basket = Basket.find(params[:id])
+  end
+
+  def new_framework
+    @framework = Framework.create(code: "mouse#{params[:f_w_type]}")
+    if params[:f_w_type] == "10*10"
+      10.times do |i|
+        10.times do |j|
+          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+        end
+      end
+    elsif params[:f_w_type] == "5*5"
+      10.times do |i|
+        10.times do |j|
+          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+        end
+      end
+    end
+    @frameworks = Framework.all
+  end
 
   def add_mouse
     @basket = Basket.find(params[:id])
@@ -113,8 +143,7 @@ class BasketsController < ApplicationController
   def update
     respond_to do |format|
       if @basket.update(basket_params)
-        box_no = @basket.id / 100
-        @baskets = Basket.limit(100).offset(box_no * 100)
+        @framework = @basket.framework
         format.js
       end
     end
@@ -138,6 +167,6 @@ class BasketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def basket_params
-      params[:basket].permit(:code, :use_type)
+      params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
     end
 end

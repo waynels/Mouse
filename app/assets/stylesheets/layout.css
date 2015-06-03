@@ -125,7 +125,7 @@ b.seled a { color:#e38903;}
 .down_load a { position:absolute; right:10px; top:0;display:block; color:#094267; font-weight:bold; font-size:12px;background:url(../assets/down_load.png) left no-repeat; width:84px; height:27px; line-height:27px; text-indent:25px;padding-right:80px;}
 .pot_list { overflow:hidden; margin:10px;}
 .pot { position:relative; float:left; margin-right:25px; width:122px; height:185px; margin-bottom:10px; background:url(../assets/pot.png) no-repeat;}
-.potname { text-align:center; display:block;color:#fff;font-weight:bold; overflow:hidden;font-size:14px; padding:59px 0 69px; height:25px; line-height:25px; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
+.potname { text-align:center; display:block;color:#fff;font-weight:bold; overflow:hidden;font-size:14px; padding: 47px 0 69px; height:25px; line-height:25px; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
 .pot:hover,.pot.seled { background:url(../assets/pot_hover.png) no-repeat;}
 .pot_set { display:none; margin:0 auto; padding-top:2px; line-height:30px;  height:30px; width:104px; text-align:center; background:url(../assets/pot_setbg.png) no-repeat;}
 .pot:hover .pot_set { display:block;}
@@ -162,7 +162,7 @@ b.seled a { color:#e38903;}
 .gridcontent table td .tddiv div { text-align:center; min-height:28px; line-height:28px;  overflow:hidden; word-warp:break-word; }
 .gridcontent table td .tddiv.empty :hover { border:1px solid #e38903; }
 .gridcontent table td .tddiv.active { border:1px solid red;}
-.gridcontent table td .tddiv div a  { display:block; height:24px; padding:2px; color:#fff; font-weight:bold; line-height:24px; background:#fff; overflow:hidden;white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
+.gridcontent table td .tddiv div a  { display:block; height:24px; padding:2px; font-weight:bold; line-height:24px; background:#fff; overflow:hidden;white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
 .gridcontent table td .tddiv div a.f { background:url(../assets/grid_cell.jpg) repeat;}
 
 .gridcontent table td .gridtips { z-index:100; margin:0; display:none; position:absolute; top:30px; overflow:hidden; background:#fff; border:1px solid #e38903; width:142px; height:43px; padding:3px;}

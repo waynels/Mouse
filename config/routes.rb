@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :batches
   resources :baskets do 
     member do
+      get "set_cage_type"
+      post "save_cage_type"
       get "add_mouse"
       post "save_mouse"
       post "create_littler_mice"
@@ -29,6 +31,9 @@ Rails.application.routes.draw do
       post "find_new_basket"
     end
     collection do
+      get "cage_setting"
+      get "show_basket"
+      get "new_framework"
       get 'autocomplete'
 
     end
@@ -51,6 +56,7 @@ Rails.application.routes.draw do
     end
     collection do
       post 'get_data'
+      get "genes_list"
     end
   end
   

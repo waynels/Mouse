@@ -8,6 +8,10 @@ class StrainsController < ApplicationController
     @strains = Strain.all
   end
 
+  def genes_list 
+    @genes = Gene.all 
+  end
+
   def get_data
     key = params[:search][:value] if params[:search]
     column = ["strains.id", "strains.name", "strains.description", ["strains.created_at"]]

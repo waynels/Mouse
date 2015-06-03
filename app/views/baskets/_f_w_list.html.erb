@@ -1,0 +1,6 @@
+<ul class="pot_list">
+  <% @frameworks.each do |f_w| %>
+    <li class="pot"><a class="potname" data-remote=true href="<%= show_basket_baskets_path(f_w: f_w.id) %>"><%= f_w.code %></a>
+  </li>
+<% end %>
+</ul>

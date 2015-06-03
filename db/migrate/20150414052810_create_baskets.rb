@@ -3,6 +3,8 @@ class CreateBaskets < ActiveRecord::Migration
     create_table :baskets do |t|
       t.string :code
       t.string :cage_type
+      t.belongs_to :framework
+      t.integer :onwer_id
 
       t.timestamps null: false
     end
