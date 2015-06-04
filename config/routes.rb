@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       post 'get_data'
     end
   end
+  resources :frameworks
   resources :breeds do
     member do
       post "save_mice_cage"

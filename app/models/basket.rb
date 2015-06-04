@@ -5,7 +5,7 @@ class Basket < ActiveRecord::Base
   has_many :mice, :foreign_key =>"basket_id", :class_name => "Mouse"
   BASKETTYPE = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Experiment" => "E"}
   def basket_type_label
-    Basket::BASKETTYPE.invert[self.use_type]
+    Basket::BASKETTYPE.invert[self.cage_type]
   end
   def count_mice_in_basket 
      "#{self.code}[#{self.basket_type_label}][#{self.mice.size}]只"

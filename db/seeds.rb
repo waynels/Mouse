@@ -95,20 +95,23 @@
 #end
 #
 
-mice = Mouse.all
-mice.each do |mouse|
-  if mouse.father_code
-    father = Mouse.where(code: mouse.father_code).first
-    if father
-      mouse.father_id = father.id
-    end
-  end
-  if mouse.mother_code
-    mother = Mouse.where(code: mouse.mother_code).first
-    if mother
-      mouse.mother_id = mother.id
-    end
-  end
-  mouse.save
-  p "#{mouse.id}--#{mouse.father_id}--#{mouse.mother_id}"
-end
+# mice = Mouse.all
+# mice.each do |mouse|
+#   if mouse.father_code
+#     father = Mouse.where(code: mouse.father_code).first
+#     if father
+#       mouse.father_id = father.id
+#     end
+#   end
+#   if mouse.mother_code
+#     mother = Mouse.where(code: mouse.mother_code).first
+#     if mother
+#       mouse.mother_id = mother.id
+#     end
+#   end
+#   mouse.save
+#   p "#{mouse.id}--#{mouse.father_id}--#{mouse.mother_id}"
+# end
+ user = User.create(full_name: 'PI', username: 'admin', email: 'admin@email.com', password: '12345678')
+ #user = User.first
+ user.add_role :PI

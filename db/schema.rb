@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20150601090524) do
     t.string   "code",         limit: 255
     t.string   "cage_type",    limit: 255
     t.integer  "framework_id", limit: 4
+    t.integer  "onwer_id",     limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
@@ -65,6 +66,8 @@ ActiveRecord::Schema.define(version: 20150601090524) do
 
   create_table "frameworks", force: :cascade do |t|
     t.string   "code",       limit: 255
+    t.integer  "axis_y",     limit: 4
+    t.integer  "axis_x",     limit: 4
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -100,6 +103,8 @@ ActiveRecord::Schema.define(version: 20150601090524) do
     t.string   "coat_color",  limit: 255
     t.date     "dead_date"
     t.date     "dead"
+    t.integer  "onwer_id",    limit: 4
+    t.integer  "created_by",  limit: 4
     t.string   "is_dead",     limit: 255,   default: "0"
     t.text     "description", limit: 65535
     t.datetime "created_at",                              null: false

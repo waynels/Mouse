@@ -4,11 +4,7 @@ class BasketsController < ApplicationController
   # GET /baskets
   # GET /baskets.json
   def index
-    if params[:box_num]
-      @baskets = Basket.limit(100).offset(params[:box_num].to_i * 100)
-    else
-      @baskets = Basket.all
-    end
+    @frameworks = Framework.all
     respond_to do |format|
       format.html # index.html.erb
       format.js 
@@ -32,13 +28,13 @@ class BasketsController < ApplicationController
     if params[:f_w_type] == "10*10"
       10.times do |i|
         10.times do |j|
-          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id, axis_x: 10, axis_y: 10)
         end
       end
     elsif params[:f_w_type] == "5*5"
       10.times do |i|
         10.times do |j|
-          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id, axis_x: 5, axis_y: 5)
         end
       end
     end
