@@ -1,0 +1,68 @@
+<div class="gene_form">
+  <div class="row-fluid">
+    <div class="span12">
+
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>基因</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for @gene, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+            <div class="control-group">
+              <label for="textfield" class="control-label">基因全称</label>
+              <div class="controls">
+                <%= f.text_field :name%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">基因通用名</label>
+              <div class="controls">
+                <%= f.text_field :short_name%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">ACCESS_ID</label>
+              <div class="controls">
+                <%= f.text_field :access_id%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">位置</label>
+              <div class="controls">
+                <%= f.text_field :location%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">ALELE</label>
+              <div class="controls">
+                <div class="span12">
+                  <%= text_field_tag :allele_tags, @gene.alleles ? @gene.alleles.map{|al| al.name}.join(",") : nil, :class => "tagsinput" %> 
+                </div>
+              </div>
+            </div>
+            <div class="span12">
+              <div class="form-actions">
+                <div class="actions">
+                  <%= f.submit "保存", :class => 'btn btn-primary' %>
+                  <%= link_to "取消","#", :class => 'btn btn_cancel' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript" language="javascript" charset="utf-8">
+      //<![CDATA[
+      $(document).ready(function(){
+                      $(".btn_cancel").click(function(){
+                        $(".gene_box").show(); 
+                        $(".gene_form").empty()
+                        });
+                      });
+      //]]>
+      </script>
+    </div>
+  </div>
+</div>
+

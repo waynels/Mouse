@@ -1,17 +1,117 @@
-<div class="modal-body">
-  <%= form_for(@strain, :remote => true, :method => :post, :html => {:class => 'form-validate form-horizontal form-column form-striped'}) do |f| %>
+<div class="gene_form">
+  <div class="row-fluid">
+    <div class="span12">
 
-<div class="control-group">
-  <label class="control-label" for="textfield">编号</label>
-  <div class="controls">
-    <%= f.text_field :name%>
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>品系</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for(@strain, :remote => true, :method => :post, :html => {:class => 'form-validate form-horizontal form-column form-striped'}) do |f| %>
+            <div class="control-group">
+            <label for="textfield" class="control-label">品系全称</label>
+            <div class="controls">
+              <%= f.text_field :former_name%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">基因通用名</label>
+            <div class="controls">
+              <%= f.text_field :common_name%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">状态</label>
+            <div class="controls">
+              <%= f.text_field :status%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">毛色</label>
+            <div class="span12">
+              <div class="controls">
+                <%= f.text_field :coat_color, :class => "tagsinput"%>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">离乳天数</label>
+            <div class="controls">
+              <%= f.text_field :wean_age%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">雌鼠成熟天数</label>
+            <div class="controls">
+              <%= f.text_field :female_mature_age%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">雄鼠成熟天数</label>
+            <div class="controls">
+              <%= f.text_field :male_mature_age%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">繁殖体系</label>
+            <div class="controls">
+              <%= f.text_field :mating_system%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">繁殖条件</label>
+            <div class="controls">
+              <%= f.text_field :breeding_consideration%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">来源</label>
+            <div class="controls">
+              <%= f.text_field :source%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">起源</label>
+            <div class="controls">
+              <%= f.text_field :origin%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">参考网站</label>
+            <div class="controls">
+              <%= f.text_field :description%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">起源</label>
+            <div class="controls">
+              <%= f.text_field :origin%>
+            </div>
+          </div>
+
+          <div class="span12">
+            <div class="form-actions">
+              <div class="actions">
+                <%= f.submit "保存", :class => 'btn btn-primary' %>
+                <%= link_to "取消","#", :class => 'btn btn_cancel' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+    $(document).ready(function(){
+        $(".btn_cancel").click(function(){
+          $(".gene_box").show(); 
+          $(".gene_form").empty()
+          });
+        });
+//]]>
+    </script>
   </div>
 </div>
-<div class="control-group">
-  <label class="control-label" for="textfield">描述</label>
-  <div class="controls">
-    <%= f.text_area :description%>
-  </div>
 </div>
-<% end %>
-</div>
+

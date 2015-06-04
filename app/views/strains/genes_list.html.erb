@@ -1,37 +1,58 @@
 <div class="row-fluid">
   <div class="span12">
-    <div class="box box-color box-bordered mouse_box"> 
+    <div class="box box-color box-bordered gene_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
           <span class="mice_strain">基因信息</span>
         </h3>
         <div style="float:right; padding-right:2px;">
-          <%= link_to '新增', new_mouse_path , :remote => true, :class => 'btn' %>
+          <%= link_to '新增', new_genes_tag_strains_path, :remote => true, :class => 'btn' %>
         </div>
       </div>
       <div class="box-content nopadding">
         <table class="table table-bordered dataTable1 dataTable-scroll-x">
           <thead>
             <tr>
-              <th>小鼠编号</th>
-              <th>小鼠品系</th>
-              <th>出生日期</th>
+              <th>基因全名</th>
+              <th>通用名</th>
+              <th>Acces_ID</th>
+              <th>位置</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody>
           <% @genes.each do |gene| %>
             <tr>
-              <td><%= gene.name %></td>
-              <td><%= gene.short_name %></td>
-              <td><%= gene.access_id %></td>
-              <td><%= gene.location %></td>
-            </tr>
-          <%end%>
+            <td><%= gene.name %></td>
+            <td><%= gene.short_name %></td>
+            <td><%= gene.access_id %></td>
+            <td><%= gene.location %></td>
+            <td>
+              &nbsp; 
+            </td>
+          </tr>
+        <%end%>
           </tbody>
         </table>
       </div>
     </div>
+    <br />
+    <div class="gene_form"></div>
+
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">小鼠</h3>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="save_btn btn btn-primary">保存</button>
+      </div>
+    </div>
+
+
   </div>
 </div>
 
@@ -39,15 +60,3 @@
   <%= render :partial => "mice/sidebar" %>
 <% end %>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">小鼠</h3>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="save_btn btn btn-primary">保存</button>
-  </div>
-</div>

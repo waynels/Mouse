@@ -187,7 +187,6 @@ b.seled a { color:#e38903;}
 /*style*/
 textarea { font-family: Arial, Helvetica, sans-serif; border:1px solid #c4cacd; min-width:600px; }
 label { overflow:hidden; display:block; padding-bottom:10px; vertical-align:middle;}
-input { color:#434343; height:20px; border:1px solid #aaa;  font-family: Arial, Helvetica, sans-serif;  }
 select { vertical-align:middle; border:1px solid #aaa; height:24px; background:#fff;  }
 select:hover { color:#fc9700;}
 

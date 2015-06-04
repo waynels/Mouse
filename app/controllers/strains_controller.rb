@@ -12,9 +12,13 @@ class StrainsController < ApplicationController
     @genes = Gene.all 
   end
 
+  def new_genes_tag
+    @gene = Gene.new
+  end
+
   def get_data
     key = params[:search][:value] if params[:search]
-    column = ["strains.id", "strains.name", "strains.description", ["strains.created_at"]]
+    column = ["strains.former_name", "strains.common_name", "strains.status","strains.mating_system","strains.source","strains.origin", ["strains.created_at"]]
     data = get_datatable_data(column, "Strain",nil)
     arr = []
     data[0].each do |item|
@@ -24,10 +28,9 @@ class StrainsController < ApplicationController
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_strain_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
-        op_str = op_str + " <a href='#{mice_show_strain_path(item)}' data-remote=true class='btn btn-mini'>小鼠详细</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{strain_path(item)}'>删除</a>"
       end
-      arr << [item.id, item.name, item.description, op_str]
+      arr << [item.former_name, item.common_name, item.status, item.mating_system, item.source, item.origin, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
@@ -100,6 +103,6 @@ class StrainsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def strain_params
-      params[:strain].permit(:name, :description)
+      params[:strain].permit(:former_name, :common_name, :protocol, :status, :coat_color, :wean_age, :female_mature_age,:male_mature_age, :mating_system, :breeding_consideration, :source, :origin, :ref_website, :description)
     end
 end
