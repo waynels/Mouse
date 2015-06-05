@@ -1,0 +1,11 @@
+<div class="mouse_allele">
+  <% @strain.genes.each do |gene| %>
+    <div class="control-group">
+      <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
+      <div class="controls">
+        <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name),{:class=> 'select2 input-large'}%>
+      </div>
+    </div>
+  <%end%>
+  <div class="control-group"></div>
+</div>

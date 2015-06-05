@@ -11,11 +11,11 @@
         <% for y in 1...(@framework.axis_y+1) %>
           <td class="yline" width="100"><%= y %></td>
         <% for x in 65...(@framework.axis_x+65) %>
-          <% box_position = "#{@framework.id}-#{y}#{x.chr}" %><% basket = Basket.find_by_code(box_position) %>
+          <% box_position = "#{y}#{x.chr}" %><% basket = @framework.basket.find_by_code(box_position) %>
           <td width="<%= 90/(@framework.axis_y) %>%">
             <div data-original-title="操作" data-content="" rel="popover" id="" class="tddiv  has_cell  ui-droppable">
               <div class="f_box_grid be_filled">
-                <a data-remote=true href="<%= edit_basket_path(basket) %>"><%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= basket.code %></a>
+                  <a data-remote=true href="<%= edit_basket_path(basket) %>"><%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= Framework.all.index(@framework)+1 %>-<%= basket.code %></a>
               </div>
             </div>
           </td>

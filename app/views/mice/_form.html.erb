@@ -10,65 +10,72 @@
             <div class="control-group">
             <label for="textfield" class="control-label">品系</label>
             <div class="controls">
-              <%= f.select :strain_id, Strain.all.collect{|s| [s.name, s.id]},{},{:class=> 'select input-large'}%>
+              <%= f.select :strain_id, Strain.all.collect{|s| [s.common_name, s.id]},{},{:class=> 'select input-large'}%>
             </div>
           </div>
+          <div class="mouse_allele">
+          <% @mouse.mouse_genes.each do |gene| %>
+            <div class="control-group">
+              <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
+              <div class="controls">
+                <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name, @mouse.alleles.find_by_gene_id(gene.id).id),{:class=> 'select input-large'}%>
+              </div>
+            </div>
+          <%end%>
+          <div class="control-group"></div>
+          </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">编号</label>
+            <label for="textfield" class="control-label">Code</label>
             <div class="controls">
               <%= f.text_field :code %>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">传代系</label>
+            <label for="textfield" class="control-label">Coat Color</label>
             <div class="controls">
-              <%= f.text_field :generate_num%>
+              <%= f.text_field :coat_color, :class => "tagsinput"%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">出生日期</label>
+            <label for="textfield" class="control-label">Generation</label>
+            <div class="controls">
+              <%= f.text_field :generation%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">Birthday</label>
             <div class="controls">
               <%= f.text_field :birthday%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">离乳日期</label>
+            <label for="textfield" class="control-label">Wean Date</label>
             <div class="controls">
-              <%= f.text_field :weaningday%>
+              <%= f.text_field :wean_date%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">性别</label>
+            <label for="textfield" class="control-label">Sex</label>
             <div class="controls">
-              <%= f.select :gender, Mouse::SEXTYPE, {},{:class=> 'select input-large'} %>  
+              <%= f.select :sex, Mouse::SEXTYPE, {},{:class=> 'select input-large'} %>  
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">父亲编号</label>
+            <label for="textfield" class="control-label">Father Code</label>
             <div class="controls">
-              <%if @mouse.id %>
-                <%= text_field_tag :father_code,  @mouse.father_code %>  
-              <%else%>
-                <%= text_field_tag :father_code %>  
-              <%end%>
-              <%= f.hidden_field :father_id %>
+              <%= f.select :father_id, Mouse.where(sex: "M").collect { |p| [p.code, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">母亲编号</label>
+            <label for="textfield" class="control-label">Mother Code</label>
             <div class="controls">
-              <%if @mouse.id %>
-              <%= text_field_tag :mother_code, @mouse.mother_code %>  
-              <%else%>
-              <%= text_field_tag :mother_code %>  
-              <%end%>
-              <%= f.hidden_field :mother_id%>
+              <%= f.select :mother_id, Mouse.where(sex: "F").collect { |p| [p.code, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">笼子位置</label>
+            <label for="textfield" class="control-label">Basket Code</label>
             <div class="controls">
-              <%= f.select :basket_id, Basket.all.collect { |p| [p.code, p.id]},{},{:class=> 'select input-large'}%>
+              <%= f.select :basket_id, current_user.baskets.collect { |p| ["#{Framework.all.index(p.framework)+1}-#{p.code}", p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>
           </div>
 
@@ -76,7 +83,7 @@
             <div class="form-actions">
               <div class="actions">
                 <%= f.submit "保存", :class => 'btn btn-primary' %>
-                <%= link_to "取消",mice_path, :class => 'btn' %>
+                  <%= link_to "取消","#", :class => 'btn btn_cancel' %>
               </div>
             </div>
           </div>
@@ -87,31 +94,3 @@
   </div>
 </div>
 
-<script>
-$(document).ready(function(){
-    $("#father_code").click(function(){
-      $.get('/mice/autocomplete?sex=M', function(data){
-        $( "#father_code" ).autocomplete({ source: data,
-          select: function( event, ui ) {
-          $( "#father_code" ).val( ui.item.value );
-          $("#mouse_father_id").attr("value", ui.item.id);
-          return false;
-          }
-          });  
-        });
-      });
-    $("#mother_code").click(function(){
-      $.get('/mice/autocomplete?sex=F', function(data){
-        $( "#mother_code" ).autocomplete({ source: data,
-          select: function( event, ui ) {
-          $( "#mother_code" ).val( ui.item.value );
-          $("#mouse_mother_id").attr("value", ui.item.id);
-          return false;
-          }
-          });  
-        });
-      });
-    $("#mouse_birthday, #mouse_weaningday" ).datepicker({format: "yyyy-mm-dd"});
-    $(".select").select2();
-    });
-</script>

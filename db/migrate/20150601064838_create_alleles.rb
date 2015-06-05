@@ -8,7 +8,7 @@ class CreateAlleles < ActiveRecord::Migration
     end
      create_table(:mice_alleles, :id => false) do |t|
       t.references :mouse
-      t.references :alele
+      t.references :allele
     end
   end
 end

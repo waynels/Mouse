@@ -13,34 +13,30 @@ class MiceController < ApplicationController
 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "mice.code","mice.strain_id","mice.generate_num","mice.birthday","mice.weaningday", "mice.gender","mice.father_code","mice.mother_code", "mice.basket_id","mice.identification", "mice.gfp", "mice.gfp_val", ["mice.created_at"]]
-    if params[:strain_id]
-      data = get_datatable_data(column, "Mouse", "strain_id=#{params[:strain_id]}")
-    else
-      data = get_datatable_data(column, "Mouse", nil)
-    end
+    column = [ "mice.code","mice.strain_id","mice.birthday","mice.wean_date", "mice.sex","mice.father_code","mice.mother_code", "mice.basket_id","mice.generation", ["mice.created_at"]]
+    data = get_datatable_data(column, "Mouse", nil)
     arr = []
     data[0].each do |item|
       op_str = ""
       if can? :read, item 
         op_str = op_str + "<a href='#{mice_path(item)}' class='btn btn-mini'>查看</a>"
-        op_str = op_str + " <a href='#{family_tree_mouse_path(item)}' class='btn btn-mini'>族谱</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
       end
-      if item.strain
-      arr << [item.code, item.strain.name, item.birthday, item.weaningday, item.gender, item.father_code, item.mother_code,item.basket.code, item.identification, item.gfp, item.gfp_val, item.generate_num, op_str]
-      else
-      arr << [item.code, nil, item.birthday, item.weaningday, item.gender, item.father_code, item.mother_code,item.basket.code, item.identification, item.gfp, item.gfp_val, item.generate_num, op_str]
-      end
+      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? item.basket.code : nil,item.generation, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: json }
     end
+  end
+
+
+  def change_strain 
+    @strain = Strain.find(params[:strain_id])
   end
 
   def family_tree
@@ -56,48 +52,7 @@ class MiceController < ApplicationController
     data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
     end
     render :json => data
-    
   end
-
-  def autocomplete 
-    sex = params[:sex]
-    respond_to do |format|
-      ar = Mouse.where(is_survival: true,gender: sex).collect{|m| {:id => m.id, :value => m.code, :label => "#{m.code}[#{m.strain.name}]-#{m.birthday}--#{m.gender}"} }
-      format.json {render :json=>ar}
-    end
-  end
-
-  def remove_mouse  
-    id = params[:id].split("_")[1]
-    @mouse = Mouse.find(id)
-    @basket = Basket.find(params[:old_basket])
-    @another_basket = Basket.find(params[:basket_id])
-    exchange_mouses(@another_basket, @mouse, @basket)
-    @mouse.basket_id = params[:basket_id]
-    @mouse.save
-    box_no = @basket.id / 100
-    @baskets = Basket.limit(100).offset(box_no * 100)
-    respond_to do |format|
-      format.js
-    end
-
-  end
-  def remove_mouse2  
-    id = params[:id].split("_")[1]
-    @mouse = Mouse.find(id)
-    @another_basket= Basket.find(params[:old_basket])
-    @basket = Basket.find(params[:basket_id])
-    exchange_mouses(@basket, @mouse, @another_basket)
-    @mouse.basket_id = params[:basket_id]
-    @mouse.save
-    box_no = @basket.id / 100
-    @baskets = Basket.limit(100).offset(box_no * 100)
-    respond_to do |format|
-      format.js
-    end
-
-  end
-
   # GET /mice/1
   # GET /mice/1.json
   def show
@@ -116,10 +71,19 @@ class MiceController < ApplicationController
   # POST /mice.json
   def create
     @mouse = Mouse.new(mouse_params)
-    @mouse.save
+
+    @mouse.onwer_id = current_user.id
+    @mouse.created_by = current_user.id
 
     respond_to do |format|
       if @mouse.save
+
+        arr = []
+        @mouse.strain.genes.each do |gene|
+          arr << params["gene_allele_#{gene.id}"]
+        end
+        p arr
+        @mouse.allele_ids = arr.uniq
         format.js
 #        format.html { redirect_to @mouse, notice: 'Mouse was successfully created.' }
 #        format.json { render :show, status: :created, location: @mouse }
@@ -134,6 +98,12 @@ class MiceController < ApplicationController
   # PATCH/PUT /mice/1.json
   def update
     @mouse.update(mouse_params)
+    arr = []
+    @mouse.strain.genes.each do |gene|
+      arr << params["gene_allele_#{gene.id}"]
+    end
+    p arr
+    @mouse.allele_ids = arr.uniq
 #    respond_to do |format|
 #      if @mouse.update(mouse_params)
 #        format.html { redirect_to @mouse, notice: 'Mouse was successfully updated.' }
@@ -190,6 +160,6 @@ class MiceController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mouse_params
-      params[:mouse].permit(:basket_id, :strain_id, :generate_num, :birthday, :weaningday, :gender, :code, :identification, :gfp, :gfp_val, :father_code, :mother_code, :batch_id)
+      params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
     end
 end

@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20150601090524) do
 
   create_table "alleles", force: :cascade do |t|
-    t.integer  "genes_id",   limit: 4
+    t.integer  "gene_id",    limit: 4
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(version: 20150601090524) do
   create_table "strains", force: :cascade do |t|
     t.string   "former_name",            limit: 255
     t.string   "common_name",            limit: 255
-    t.text     "protocol",               limit: 65535
+    t.integer  "genetic_type_id",        limit: 4
     t.string   "status",                 limit: 255
     t.string   "coat_color",             limit: 255
     t.string   "wean_age",               limit: 255
@@ -157,6 +157,11 @@ ActiveRecord::Schema.define(version: 20150601090524) do
     t.text     "description",            limit: 65535
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+  end
+
+  create_table "strains_genes", id: false, force: :cascade do |t|
+    t.integer "strain_id", limit: 4
+    t.integer "gene_id",   limit: 4
   end
 
   create_table "users", force: :cascade do |t|

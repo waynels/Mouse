@@ -54,6 +54,7 @@ class StrainsController < ApplicationController
 
   # GET /strains/1/edit
   def edit
+
   end
 
   # POST /strains
@@ -63,6 +64,7 @@ class StrainsController < ApplicationController
 
     respond_to do |format|
       if @strain.save
+        @strain.gene_ids = params[:strain][:gene_ids]
         format.js
       else
         format.html { render :new }
@@ -76,8 +78,10 @@ class StrainsController < ApplicationController
   def update
     respond_to do |format|
       if @strain.update(strain_params)
-        format.html { redirect_to @strain, notice: 'Strain was successfully updated.' }
-        format.json { render :show, status: :ok, location: @strain }
+        @strain.gene_ids = params[:strain][:gene_ids].uniq
+        @strain.save
+
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @strain.errors, status: :unprocessable_entity }
@@ -103,6 +107,6 @@ class StrainsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def strain_params
-      params[:strain].permit(:former_name, :common_name, :protocol, :status, :coat_color, :wean_age, :female_mature_age,:male_mature_age, :mating_system, :breeding_consideration, :source, :origin, :ref_website, :description)
+      params[:strain].permit(:former_name, :common_name, :protocol, :status, :coat_color, :wean_age, :female_mature_age,:male_mature_age, :mating_system, :breeding_consideration, :source, :origin, :ref_website, :description, :gene_ids)
     end
 end

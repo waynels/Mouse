@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       get 'autocomplete'
       get "remove_mouse"
       get "remove_mouse2"
+      get "change_strain"
     end
     member do
       get "family_tree"

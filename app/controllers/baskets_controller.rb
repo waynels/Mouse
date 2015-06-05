@@ -24,18 +24,13 @@ class BasketsController < ApplicationController
   end
 
   def new_framework
-    @framework = Framework.create(code: "mouse#{params[:f_w_type]}")
-    if params[:f_w_type] == "10*10"
-      10.times do |i|
-        10.times do |j|
-          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id, axis_x: 10, axis_y: 10)
-        end
-      end
-    elsif params[:f_w_type] == "5*5"
-      10.times do |i|
-        10.times do |j|
-          basket = Basket.create(code: "#{@framework.id}-#{i+1}#{(j+65).chr}",framework_id: @framework.id, axis_x: 5, axis_y: 5)
-        end
+    xy = params[:f_w_type].split("*")
+    x = xy[0].to_i
+    y = xy[1].to_i
+    @framework = Framework.create( axis_x: x, axis_y:y)
+    x.times do |i|
+      y.times do |j|
+        basket = Basket.create(code: "#{i+1}#{(j+65).chr}",framework_id: @framework.id)
       end
     end
     @frameworks = Framework.all
@@ -164,5 +159,8 @@ class BasketsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def basket_params
       params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
+    end
+    def framework_params
+      params[:framework].permit(:code, :axis_y, :axis_x)
     end
 end

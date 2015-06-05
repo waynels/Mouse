@@ -36,12 +36,6 @@ $(function () {
 
 <div class="row-fluid">
   <div class="span12">
-    <div style="margin-left: 10px; margin-top:20px">
-      <%= link_to "所有品系", mice_url, :remote => true, :class => "btn item_node" %>
-      <% Strain.all.each do |strain| %>
-        <%= link_to strain.name, mice_url(strain_id: strain.id), :remote => true, :class => "btn item_node" %>
-    <% end %>
-    </div>
     <div class="box box-color box-bordered mouse_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
@@ -63,9 +57,6 @@ $(function () {
               <th>父亲编号</th>
               <th>母亲编号</th>
               <th>位置</th>
-              <th>鉴定结果</th>
-              <th>荧光表达阳性率</th>
-              <th>阳性细胞平均荧光强度</th>
               <th>几代小鼠</th>
               <th>操作</th>
             </tr>
@@ -75,6 +66,7 @@ $(function () {
         </table>
       </div>
     </div>
+<div class="mouse_form"></div>
   </div>
 </div>
 
@@ -94,4 +86,3 @@ $(function () {
     <button class="save_btn btn btn-primary">保存</button>
   </div>
 </div>
-<div class="mouse_form"></div>

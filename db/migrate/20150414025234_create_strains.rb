@@ -3,7 +3,8 @@ class CreateStrains < ActiveRecord::Migration
     create_table :strains do |t|
       t.string :former_name
       t.string :common_name
-      t.text :protocol
+      t.integer :genetic_type_id
+     # t.text :protocol
       t.string :status
       t.string :coat_color
       t.string :wean_age
@@ -17,6 +18,10 @@ class CreateStrains < ActiveRecord::Migration
       t.text :description
       t.timestamps null: false
       #t.timestamps
+    end
+     create_table(:strains_genes, :id => false) do |t|
+      t.references :strain
+      t.references :gene
     end
   end
 end
