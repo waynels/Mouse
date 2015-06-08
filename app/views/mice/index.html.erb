@@ -39,26 +39,27 @@ $(function () {
     <div class="box box-color box-bordered mouse_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
-          <span class="mice_strain">小鼠信息</span>
+          <span class="mice_strain">Mouse Info</span>
         </h3>
         <div style="float:right; padding-right:2px;">
-          <%= link_to '新增', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+          <%= link_to 'New', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
         </div>
       </div>
       <div class="box-content nopadding">
         <table id="mice" class="table table-bordered dataTable-scroll-x">
           <thead>
             <tr>
-              <th>小鼠编号</th>
-              <th>小鼠品系</th>
-              <th>出生日期</th>
-              <th>离乳日期</th>
-              <th>性别</th>
-              <th>父亲编号</th>
-              <th>母亲编号</th>
-              <th>位置</th>
-              <th>几代小鼠</th>
-              <th>操作</th>
+              <th>Code</th>
+              <th>Strain</th>
+              <th>Birthday</th>
+              <th>Wean Date</th>
+              <th>Sex</th>
+              <th>Father Code</th>
+              <th>Mother Code</th>
+              <th>Basket Code</th>
+              <th>Generation</th>
+              <th>Is Dead</th>
+              <th>Operation</th>
             </tr>
           </thead>
           <tbody>
@@ -66,7 +67,19 @@ $(function () {
         </table>
       </div>
     </div>
-<div class="mouse_form"></div>
+    <div class="mouse_form"></div>
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">小鼠</h3>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -74,15 +87,3 @@ $(function () {
   <%= render :partial => "sidebar" %>
 <% end %>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">小鼠</h3>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="save_btn btn btn-primary">保存</button>
-  </div>
-</div>

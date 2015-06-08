@@ -13,7 +13,7 @@ class MiceController < ApplicationController
 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "mice.code","mice.strain_id","mice.birthday","mice.wean_date", "mice.sex","mice.father_code","mice.mother_code", "mice.basket_id","mice.generation", ["mice.created_at"]]
+    column = [ "mice.code","mice.strain_id","mice.birthday","mice.wean_date", "mice.sex","mice.father_code","mice.mother_code", "mice.basket_id","mice.generation","mice.is_dead" ["mice.created_at"]]
     data = get_datatable_data(column, "Mouse", nil)
     arr = []
     data[0].each do |item|
@@ -23,9 +23,10 @@ class MiceController < ApplicationController
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
       end
-      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? item.basket.code : nil,item.generation, op_str]
+      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? item.basket.code : nil,item.generation,item.is_dead, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
@@ -38,6 +39,12 @@ class MiceController < ApplicationController
   def change_strain 
     @strain = Strain.find(params[:strain_id])
   end
+
+  def want_to_do 
+    @mouse = Mouse.find(params[:id])
+    @todo_list = TodoList.new
+  end
+
 
   def family_tree
     @mouse = Mouse.find(params[:id])

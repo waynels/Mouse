@@ -9,25 +9,25 @@
         <div class="box-content nopadding">
           <%= form_for @gene, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
             <div class="control-group">
-              <label for="textfield" class="control-label">基因全称</label>
+              <label for="textfield" class="control-label">Name</label>
               <div class="controls">
                 <%= f.text_field :name%>
               </div>
             </div>
             <div class="control-group">
-              <label for="textfield" class="control-label">基因通用名</label>
+              <label for="textfield" class="control-label">Short Name</label>
               <div class="controls">
                 <%= f.text_field :short_name%>
               </div>
             </div>
             <div class="control-group">
-              <label for="textfield" class="control-label">ACCESS_ID</label>
+              <label for="textfield" class="control-label">ACCESS ID</label>
               <div class="controls">
                 <%= f.text_field :access_id%>
               </div>
             </div>
             <div class="control-group">
-              <label for="textfield" class="control-label">位置</label>
+              <label for="textfield" class="control-label">Location</label>
               <div class="controls">
                 <%= f.text_field :location%>
               </div>

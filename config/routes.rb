@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :todo_lists
   resources :genes do
     collection do
       post 'get_data'
@@ -53,6 +54,7 @@ Rails.application.routes.draw do
     end
     member do
       get "family_tree"
+      get "want_to_do"
       get "get_family_tree"
     end
   end

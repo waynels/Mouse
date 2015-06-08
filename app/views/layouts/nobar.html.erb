@@ -32,14 +32,6 @@
     </script>
   </head>
   <body>
-    <% if notice %>
-      <script>
-        $(document).ready(function() { 
-          $.jGrowl("<%= notice %>", { header: '<%= t(:notice) %>'});
-        });        
-      </script>
-    <% end %>
-
     <% if current_user %>
       <div class="topnav">
         <span>

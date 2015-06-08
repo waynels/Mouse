@@ -37,21 +37,21 @@ $(document).ready(function(){
     <div class="box box-color box-bordered gene_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
-         基因信息 
+         Gene Info
         </h3>
         <div style="float:right; padding-right:2px;">
-          <%= link_to '新增', new_gene_path, :remote => true, :class => 'btn' %>
+          <%= link_to 'New', new_gene_path, :remote => true, :class => 'btn' %>
         </div>
       </div>
       <div class="box-content nopadding">
         <table id="genes" class="table table-bordered dataTable-scroll-x">
           <thead>
             <tr>
-              <th>基因全名</th>
-              <th>通用名</th>
-              <th>Acces_ID</th>
-              <th>位置</th>
-              <th>操作</th>
+              <th>Name</th>
+              <th>Short Name</th>
+              <th>Acces ID</th>
+              <th>Location</th>
+              <th>Operation</th>
             </tr>
           </thead>
           <tbody>

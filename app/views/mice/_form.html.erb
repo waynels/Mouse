@@ -3,37 +3,54 @@
     <div class="span12">
       <div class="box box-bordered box-color">
         <div class="box-title">
-          <h3><i class="icon-list"></i>小鼠信息</h3>
+          <h3><i class="icon-list"></i>Mouse</h3>
         </div>
         <div class="box-content nopadding">
           <%= form_for @mouse, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
             <div class="control-group">
-            <label for="textfield" class="control-label">品系</label>
+            <label for="textfield" class="control-label">Strain</label>
             <div class="controls">
-              <%= f.select :strain_id, Strain.all.collect{|s| [s.common_name, s.id]},{},{:class=> 'select input-large'}%>
+              <%= f.select :strain_id, Strain.where(status: "A").collect{|s| [s.common_name, s.id]},{},{:class=> 'select input-large'}%>
             </div>
           </div>
           <div class="mouse_allele">
-          <% @mouse.mouse_genes.each do |gene| %>
-            <div class="control-group">
-              <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
-              <div class="controls">
-                <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name, @mouse.alleles.find_by_gene_id(gene.id).id),{:class=> 'select input-large'}%>
-              </div>
-            </div>
-          <%end%>
+            <% if @mouse.alleles.size > 0 %>
+              <% genes = @mouse.mouse_genes %>
+              <% genes.each do |gene| %>
+                <div class="control-group">
+                  <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
+                  <div class="controls">
+                    <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name, @mouse.alleles.find_by_gene_id(gene.id).id),{:class=> 'select input-large'}%>
+                  </div>
+                </div>
+            <%end%>
+          <% else %>
+              <% genes = Strain.where(status: "A").first.genes %>
+              <% genes.each do |gene| %>
+                <div class="control-group">
+                  <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
+                  <div class="controls">
+                    <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name),{:class=> 'select input-large'}%>
+                  </div>
+                </div>
+              <% end %>
+          <%end %>
           <div class="control-group"></div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">Coat Color</label>
+            <div class="controls">
+              <% if @mouse.strain_id %>
+                <%= f.select :coat_color, @mouse.strain.strain_coat_color, {},{:class=> 'select input-large'} %>  
+              <% else %>
+                <%= f.select :coat_color, Strain.where(status: "A").first.strain_coat_color, {},{:class=> 'select input-large'} %>  
+              <% end %>
+            </div>
           </div>
           <div class="control-group">
             <label for="textfield" class="control-label">Code</label>
             <div class="controls">
               <%= f.text_field :code %>
-            </div>
-          </div>
-          <div class="control-group">
-            <label for="textfield" class="control-label">Coat Color</label>
-            <div class="controls">
-              <%= f.text_field :coat_color, :class => "tagsinput"%>
             </div>
           </div>
           <div class="control-group">

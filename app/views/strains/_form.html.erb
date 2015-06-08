@@ -17,19 +17,19 @@
               <div class="control-group">
                 <label for="textfield" class="control-label">Common Name</label>
                 <div class="controls">
-                  <%= f.text_field :common_name%>
+                  <%= f.text_field :common_name %>
                 </div>
               </div>
               <div class="control-group">
                 <label for="textfield" class="control-label">Genetic Type</label>
                 <div class="controls">
-                  <%= f.text_field :common_name%>
+                  <%= f.select :genetic_type_id, GeneticType.all.collect{|g| [g.full_name, g.id]}, {},{:class=> 'select input-large'} %>  
                 </div>
               </div>
               <div class="control-group">
                 <label for="textfield" class="control-label">Status</label>
                 <div class="controls">
-                  <%= f.text_field :status%>
+                  <%= f.select :status, Strain::STATUS, {},{:class=> 'select input-large'} %>  
                 </div>
               </div>
             </div>
@@ -91,9 +91,9 @@
                 </div>
               </div>
               <div class="control-group">
-                <label for="textfield" class="control-label">Ref Website</label>
+                <label for="textfield" class="control-label">Gene</label>
                 <div class="controls">
-                  <%= f.select :gene_ids, Gene.all.collect { |p| [ p.short_name, p.id ] },{}, {:multiple => true, :class => 'multiselect', "data-selectionheader"=>"已选项", "data-selectableheader" => "可选项"}%>
+                  <%= f.select :gene_ids, Gene.all.collect { |p| [ p.short_name, p.id ] },{}, {:multiple => true, :class => 'multiselect', "data-selectionheader"=>"selected gene", "data-selectableheader" => "optional gene"}%>
                 </div>
               </div>
               <div class="control-group">

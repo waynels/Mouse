@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601090524) do
+ActiveRecord::Schema.define(version: 20150608092954) do
 
   create_table "alleles", force: :cascade do |t|
     t.integer  "gene_id",    limit: 4
@@ -105,15 +105,15 @@ ActiveRecord::Schema.define(version: 20150601090524) do
     t.date     "dead"
     t.integer  "onwer_id",    limit: 4
     t.integer  "created_by",  limit: 4
-    t.string   "is_dead",     limit: 255,   default: "0"
+    t.boolean  "is_dead",     limit: 1,     default: false
     t.text     "description", limit: 65535
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   create_table "mice_alleles", id: false, force: :cascade do |t|
-    t.integer "mouse_id", limit: 4
-    t.integer "alele_id", limit: 4
+    t.integer "mouse_id",  limit: 4
+    t.integer "allele_id", limit: 4
   end
 
   create_table "operations", force: :cascade do |t|
@@ -162,6 +162,15 @@ ActiveRecord::Schema.define(version: 20150601090524) do
   create_table "strains_genes", id: false, force: :cascade do |t|
     t.integer "strain_id", limit: 4
     t.integer "gene_id",   limit: 4
+  end
+
+  create_table "todo_lists", force: :cascade do |t|
+    t.integer  "mouse_id",    limit: 4
+    t.string   "operation",   limit: 255
+    t.text     "description", limit: 65535
+    t.string   "status",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|

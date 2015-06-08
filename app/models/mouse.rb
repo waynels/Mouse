@@ -8,9 +8,18 @@ class Mouse < ActiveRecord::Base
   belongs_to :creator, :foreign_key => "created_by", :class_name => "User"
   belongs_to :onwer, :foreign_key => "onwer_id", :class_name => "User"
   SEXTYPE = {"雄性" => "M", "雌性" => "F"}
+  LIFESTATUS = {"Alive" => "A", "Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD" }
 
   def mouse_show_name
      "#{self.gender}#{self.code}[#{self.strain.name}]"
+  end
+
+  def show_sex 
+    if self.sex == "M"
+      return "♂"
+    elsif self.sex == "F"
+      return "♀"
+    end
   end
   def mouse_genes
     arr = []

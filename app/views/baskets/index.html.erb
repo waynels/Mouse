@@ -1,7 +1,7 @@
 <div id="stores_area">
 <ul class="pot_list">
   <% @frameworks.each do |f_w| %>
-    <li class="pot"><a class="potname" data-remote=true href="<%= framework_path(f_w) %>"><%= f_w.code %></a></li>
+    <li class="pot"><a class="potname" data-remote=true href="<%= framework_path(f_w) %>"><%= Framework.all.index(f_w)+1 %></a></li>
   <% end %>
 </ul>
 </div>

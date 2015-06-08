@@ -49,6 +49,9 @@
     margin: 5px 5px 0 0;
     /*padding: 4px 10px;*/
 }
+.text {
+    text-align:center;
+}
 .box_div {
     border: 1px solid #dddddd;
     min-height: 300px;

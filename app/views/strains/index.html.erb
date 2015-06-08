@@ -44,23 +44,23 @@ $(function () {
     <div class="box box-color box-bordered strain_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
-          品系管理 
+         Strain Info 
         </h3>
         <div style="float:right; padding-right:2px;">
-          <%= link_to '新增', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
+          <%= link_to 'New', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
         </div>
       </div>
       <div class="box-content nopadding">
         <table id="strain" class="table table-bordered dataTable-scroll-x">
           <thead>
             <tr>
-              <th>品系全名</th>
-              <th>通用名</th>
-              <th>状态</th>
-              <th>繁殖系统</th>
-              <th>来源</th>
-              <th>起源</th>
-              <th>操作</th>
+              <th>Former Name</th>
+              <th>Common Name</th>
+              <th>Status</th>
+              <th>Genetic Type</th>
+              <th>Source</th>
+              <th>Origin</th>
+              <th>Operation</th>
             </tr>
           </thead>
           <tbody>
