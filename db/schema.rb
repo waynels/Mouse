@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20150514080409) do
     t.integer  "old_basket",   limit: 4
     t.integer  "new_basket",   limit: 4
     t.integer  "operate_by",   limit: 4
-    t.integer  "operate_at",   limit: 4
+    t.date     "operate_at"
     t.text     "remark",       limit: 65535
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
