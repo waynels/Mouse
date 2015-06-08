@@ -7,5 +7,7 @@ class User < ActiveRecord::Base
          :rememberable, :trackable, :validatable, :authentication_keys => [:username]
   validates_uniqueness_of :username
   validates_presence_of :username
+  has_many :mice, :foreign_key => "onwer_id"
+  has_many :baskets, :foreign_key => "onwer_id"
 
 end

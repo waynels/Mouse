@@ -7,7 +7,7 @@ $(document).on("ready one:load", function() {
 $(document).ready(function(){
     $('#myModal').on('hidden', function () {
       $('.modal-body').empty();
-    });
+      });
     });
 $(function () { 
     $(".main-nav li").removeClass("active");
@@ -39,47 +39,53 @@ $(function () {
 });
 </script>
 
-<div class="box box-color box-bordered strain_box"> 
-  <div class="box-title">
-    <h3><i class="icon-list"></i>
-      品系管理 
-    </h3>
-    <div style="float:right; padding-right:2px;">
-      <%= link_to '新增', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered strain_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+         Strain Info 
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to 'New', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table id="strain" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>Former Name</th>
+              <th>Common Name</th>
+              <th>Status</th>
+              <th>Genetic Type</th>
+              <th>Source</th>
+              <th>Origin</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <div class="strain_form"></div>
+  <div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">小鼠</h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+      <button class="save_btn btn btn-primary">保存</button>
     </div>
   </div>
-  <div class="box-content nopadding">
-    <table id="strain" class="table table-bordered dataTable-scroll-x">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>品系名</th>
-          <th>描述</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
   </div>
 </div>
-<div class="mouse_table"></div>
-<div class="strain_form"></div>
 
 <% content_for :sidebar do %>
   <%= render :partial => "mice/sidebar" %>
 <% end %>
 
-<div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">小鼠</h3>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="save_btn btn btn-primary">保存</button>
-  </div>
-</div>
 </div>

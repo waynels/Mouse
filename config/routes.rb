@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :todo_lists
+  resources :genes do
+    collection do
+      post 'get_data'
+    end
+  end
+  resources :frameworks
   resources :breeds do
     member do
       post "save_mice_cage"
@@ -19,6 +26,8 @@ Rails.application.routes.draw do
   resources :batches
   resources :baskets do 
     member do
+      get "set_cage_type"
+      post "save_cage_type"
       get "add_mouse"
       post "save_mouse"
       post "create_littler_mice"
@@ -29,7 +38,9 @@ Rails.application.routes.draw do
       post "find_new_basket"
     end
     collection do
-      get 'autocomplete'
+      get "cage_setting"
+      get "show_basket"
+      get "new_framework"
 
     end
   end
@@ -39,9 +50,11 @@ Rails.application.routes.draw do
       get 'autocomplete'
       get "remove_mouse"
       get "remove_mouse2"
+      get "change_strain"
     end
     member do
       get "family_tree"
+      get "want_to_do"
       get "get_family_tree"
     end
   end
@@ -51,6 +64,9 @@ Rails.application.routes.draw do
     end
     collection do
       post 'get_data'
+      get "genes_list"
+      get "new_genes_tag"
+      post "save_gene"
     end
   end
   

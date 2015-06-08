@@ -1,17 +1,120 @@
-<div class="modal-body">
-  <%= form_for(@strain, :remote => true, :method => :post, :html => {:class => 'form-validate form-horizontal form-column form-striped'}) do |f| %>
+<div class="strain_form">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>Strain</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for @strain, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+            <div class="span6">
+              <div class="control-group">
+                <label for="textfield" class="control-label">Former Name</label>
+                <div class="controls">
+                  <%= f.text_field :former_name%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Common Name</label>
+                <div class="controls">
+                  <%= f.text_field :common_name %>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Genetic Type</label>
+                <div class="controls">
+                  <%= f.select :genetic_type_id, GeneticType.all.collect{|g| [g.full_name, g.id]}, {},{:class=> 'select input-large'} %>  
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Status</label>
+                <div class="controls">
+                  <%= f.select :status, Strain::STATUS, {},{:class=> 'select input-large'} %>  
+                </div>
+              </div>
+            </div>
+            <div class="span6">
+              <div class="control-group">
+                <label for="textfield" class="control-label">Wean Age</label>
+                <div class="controls">
+                  <%= f.text_field :wean_age%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Female Mature age</label>
+                <div class="controls">
+                  <%= f.text_field :female_mature_age%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Male Mature age</label>
+                <div class="controls">
+                  <%= f.text_field :male_mature_age%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Mating System</label>
+                <div class="controls">
+                  <%= f.text_field :mating_system%>
+                </div>
+              </div>
+            </div>
+            <div class="control-group"></div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Coat Color</label>
+                <div class="controls">
+                  <%= f.text_field :coat_color, :class => "tagsinput"%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Breeding Consideration</label>
+                <div class="controls">
+                  <%= f.text_field :breeding_consideration, :class => "input-xxlarge"%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Source</label>
+                <div class="controls">
+                  <%= f.text_field :source, :class => "input-xxlarge"%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Origin</label>
+                <div class="controls">
+                  <%= f.text_field :origin, :class => "input-xxlarge"%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Ref Website</label>
+                <div class="controls">
+                  <%= f.text_field :ref_website, :class => "input-xxlarge" %>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Gene</label>
+                <div class="controls">
+                  <%= f.select :gene_ids, Gene.all.collect { |p| [ p.short_name, p.id ] },{}, {:multiple => true, :class => 'multiselect', "data-selectionheader"=>"selected gene", "data-selectableheader" => "optional gene"}%>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="textfield" class="control-label">Description</label>
+                <div class="controls">
+                  <%= f.kindeditor :description, :simple_mode => true%>
+                </div>
+              </div>
+            <div class="span12">
+              <div class="form-actions">
+                <div class="actions">
+                  <%= f.submit "保存", :class => 'btn btn-primary' %>
+                  <%= link_to "取消","#", :class => 'btn btn_cancel' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="control-group">
-  <label class="control-label" for="textfield">编号</label>
-  <div class="controls">
-    <%= f.text_field :name%>
-  </div>
-</div>
-<div class="control-group">
-  <label class="control-label" for="textfield">描述</label>
-  <div class="controls">
-    <%= f.text_area :description%>
-  </div>
-</div>
-<% end %>
-</div>

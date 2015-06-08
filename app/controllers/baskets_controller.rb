@@ -1,19 +1,39 @@
 class BasketsController < ApplicationController
   before_action :set_basket, only: [:show, :edit, :update, :destroy]
-  layout "nobar"
 
   # GET /baskets
   # GET /baskets.json
   def index
-    if params[:box_num]
-      @baskets = Basket.limit(100).offset(params[:box_num].to_i * 100)
-    else
-      @baskets = Basket.all
-    end
+    @frameworks = Framework.all
     respond_to do |format|
       format.html # index.html.erb
       format.js 
     end
+  end
+  
+  def cage_setting
+    @frameworks = Framework.all
+  end
+
+  def show_basket 
+    @framework = Framework.find(params[:f_w])
+  end
+
+  def set_cage_type 
+      @basket = Basket.find(params[:id])
+  end
+
+  def new_framework
+    xy = params[:f_w_type].split("*")
+    x = xy[0].to_i
+    y = xy[1].to_i
+    @framework = Framework.create( axis_x: x, axis_y:y)
+    x.times do |i|
+      y.times do |j|
+        basket = Basket.create(code: "#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+      end
+    end
+    @frameworks = Framework.all
   end
 
   def add_mouse
@@ -114,8 +134,7 @@ class BasketsController < ApplicationController
   def update
     respond_to do |format|
       if @basket.update(basket_params)
-        box_no = @basket.id / 100
-        @baskets = Basket.limit(100).offset(box_no * 100)
+        @framework = @basket.framework
         format.js
       end
     end
@@ -139,6 +158,9 @@ class BasketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def basket_params
-      params[:basket].permit(:code, :use_type)
+      params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
+    end
+    def framework_params
+      params[:framework].permit(:code, :axis_y, :axis_x)
     end
 end

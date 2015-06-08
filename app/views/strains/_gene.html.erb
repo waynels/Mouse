@@ -1,0 +1,55 @@
+<div class="gene_form">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="box box-bordered box-color">
+        <div class="box-title">
+          <h3><i class="icon-list"></i>基因</h3>
+        </div>
+        <div class="box-content nopadding">
+          <%= form_for @gene, :url => save_gene_strains_path,:method => :post,:remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+            <div class="control-group">
+              <label for="textfield" class="control-label">基因全称</label>
+              <div class="controls">
+                <%= f.text_field :name%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">基因通用名</label>
+              <div class="controls">
+                <%= f.text_field :short_name%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">ACCESS_ID</label>
+              <div class="controls">
+                <%= f.text_field :access_id%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">位置</label>
+              <div class="controls">
+                <%= f.text_field :location%>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="textfield" class="control-label">ALELE</label>
+              <div class="controls">
+                <div class="span12"><input type="text" name="textfield" id="textfield" class="tagsinput" value="PHP,Laravel,Java"></div>
+              </div>
+            </div>
+            <div class="span12">
+              <div class="form-actions">
+                <div class="actions">
+                  <%= f.submit "保存", :class => 'btn btn-primary' %>
+                  <%= link_to "取消",genes_list_strains_path, :class => 'btn' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

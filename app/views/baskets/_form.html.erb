@@ -9,11 +9,17 @@
   </script>
   <%= form_for @basket, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
     <div class="control-group">
-    <label for="textfield" class="control-label">笼子类型</label>
-    <div class="controls">
-      <%= f.select :use_type, Basket::BASKETTYPE, {},{:class=> 'select input-large'} %>  
+      <label for="textfield" class="control-label">所属用户</label>
+      <div class="controls">
+        <%= f.select :onwer_id, User.all.collect { |p| [ p.full_name, p.id ] }, {},{:class=> 'select input-large'} %>  
+      </div>
     </div>
-  </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">笼子类型</label>
+      <div class="controls">
+        <%= f.select :cage_type, Basket::BASKETTYPE, {include_blank: true},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
 
 <% end %>
 </div>

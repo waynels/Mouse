@@ -29,6 +29,7 @@
 div.DTTT_container {
 	position: relative;
 	float: right;
+    margin-right:2px;
 	margin-bottom: 1em;
 }
 

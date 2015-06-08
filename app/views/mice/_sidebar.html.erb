@@ -1,17 +1,25 @@
 <% if user_signed_in? %>
-  <div class="subnav">
-    <div class="subnav-title">
-      <a href="<%= strains_url%>" class='toggle-subnav2'><span>品系设置</span></a>
-    </div>
+<script>
+  $(document).ready(function() {
+    $("#strain_set_bar h1 a img")
+    .click(function(){  
+      barClick("#strain_set_bar", this);
+    });
+    $("#mouse_set_bar h1 a img")
+    .click(function(){  
+      barClick("#mouse_set_bar", this);
+    });
+  });
+</script>
+<div class="bar" id="strain_set_bar">
+  <h1><img src="/assets/icon_box.png" />小鼠管理<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
+  <div class="bar_content" >
+        <ol class="item" id="role_items">
+          <li class="item_list" id=""><a href="<%= genes_path %>">基因设置</a></li>
+          <li class="item_list" id=""><a href="<%= strains_url %>">品系设置</a></li>
+          <li class="item_list" id=""><a href="<%= mice_url %>">小鼠信息</a></li>
+          <li class="item_list" id=""><a href="<%= mice_url %>">TodoList</a></li>
+        </ol>
   </div>
-  <div class="subnav">
-    <div class="subnav-title">
-      <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>小鼠信息</span></a>
-    </div>
-    <ul class="subnav-menu">
-      <li class="bar1">
-      <%= link_to "所有小鼠", mice_url %>
-      </li>
-    </ul>
-  </div>
+</div>
 <% end %>

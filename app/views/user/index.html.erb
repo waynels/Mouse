@@ -11,55 +11,59 @@ $(function () {
     $(".subnav-menu li").removeClass("active");
     $(".bar1").addClass("active");
     $('#users').DataTable({
-        "language": {
-        "sSearch": "<span>请输入关键字查找:</span> ",
-        "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
-        "lengthMenu": "_MENU_  <span>条每页</span>"
+      "language": {
+      "sSearch": "<span>请输入关键字查找:</span> ",
+      "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+      "lengthMenu": "_MENU_  <span>条每页</span>"
 
-        },
-        "deferRnder": true,
-        "processing": true,
-        "iDisplayLength": 25,
-        "stateSave": true,
-        "aaSorting": [[0,'desc']],
-        "serverSide": true,
-        "scrollY": "500px",
-        "ajax": {
-        "url": "<%= get_data_user_index_path %>",
-        "method": "post",
-        "dataType": "json"
-        }
-        });
-      $('.dataTables_filter input').attr("placeholder", "请输入...");
-      $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
-    });
+      },
+      "deferRnder": true,
+      "processing": true,
+      "iDisplayLength": 25,
+      "stateSave": true,
+      "aaSorting": [[0,'desc']],
+      "serverSide": true,
+      "scrollY": "500px",
+      "ajax": {
+      "url": "<%= get_data_user_index_path %>",
+      "method": "post",
+      "dataType": "json"
+      }
+      });
+    $('.dataTables_filter input').attr("placeholder", "请输入...");
+    $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
+});
 </script>
 
-  <div class="box-title">
-    <h3><i class="icon-list"></i>
-      用户列表
-    </h3>
-    <div style="float:right; padding-right:2px;">
-      <%= link_to '新增', new_user_path, :remote => true, :class => 'new btn add_meet' %>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered breed_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+          用户列表
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to '新增', new_user_path, :remote => true, :class => 'new btn add_meet' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table id="users" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>登录名</th>
+              <th>Email</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <div class="box-content nopadding">
-    <table id="users" class="table table-bordered dataTable-scroll-x">
-  <thead>
-    <tr>
-      <th>登录名</th>
-      <th>Email</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-
-  <tbody>
-  </tbody>
-</table>
-
-<br>
-
-  </div>
+</div>
+<br />
 
 <% content_for :sidebar do %>
   <%= render :partial => "sidebar" %>
@@ -74,6 +78,6 @@ $(function () {
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="save_btn btn btn-primary">保存</button>
+    <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
   </div>
 </div>

@@ -11,12 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150514080409) do
+ActiveRecord::Schema.define(version: 20150608092954) do
 
-  create_table "baskets", force: :cascade do |t|
-    t.string   "code",       limit: 255
+  create_table "alleles", force: :cascade do |t|
+    t.integer  "gene_id",    limit: 4
+    t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "baskets", force: :cascade do |t|
+    t.string   "code",         limit: 255
+    t.string   "cage_type",    limit: 255
+    t.integer  "framework_id", limit: 4
+    t.integer  "onwer_id",     limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "batches", force: :cascade do |t|
@@ -36,9 +46,9 @@ ActiveRecord::Schema.define(version: 20150514080409) do
     t.integer  "father_id",  limit: 4
     t.integer  "mother_id",  limit: 4
     t.date     "cage_at"
-    t.boolean  "is_usable",  limit: 1, default: true
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.boolean  "is_usable",  limit: 1
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "breeds_infos", force: :cascade do |t|
@@ -48,31 +58,62 @@ ActiveRecord::Schema.define(version: 20150514080409) do
     t.integer  "operation_by",   limit: 4
     t.date     "operation_at"
     t.integer  "quantity",       limit: 4
+    t.text     "die_reason",     limit: 65535
     t.text     "remark",         limit: 65535
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.text     "die_reason",     limit: 65535
+  end
+
+  create_table "frameworks", force: :cascade do |t|
+    t.string   "code",       limit: 255
+    t.integer  "axis_y",     limit: 4
+    t.integer  "axis_x",     limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "genes", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "short_name", limit: 255
+    t.integer  "access_id",  limit: 4
+    t.string   "location",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "genetic_types", force: :cascade do |t|
+    t.string   "short_name", limit: 255
+    t.string   "full_name",  limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "mice", force: :cascade do |t|
-    t.integer  "strain_id",      limit: 4
-    t.string   "code",           limit: 255
-    t.string   "generate_num",   limit: 255
+    t.integer  "strain_id",   limit: 4
+    t.string   "code",        limit: 255
+    t.string   "generation",  limit: 255
     t.date     "birthday"
-    t.date     "weaningday"
-    t.string   "gender",         limit: 255
-    t.integer  "father_id",      limit: 4
-    t.string   "father_code",    limit: 255
-    t.integer  "mother_id",      limit: 4
-    t.string   "mother_code",    limit: 255
-    t.integer  "basket_id",      limit: 4
-    t.integer  "batch_id",       limit: 4
-    t.string   "identification", limit: 255
-    t.boolean  "is_survival",    limit: 1,                           default: true
-    t.decimal  "gfp",                        precision: 8, scale: 2
-    t.decimal  "gfp_val",                    precision: 8, scale: 2
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.date     "wean_date"
+    t.string   "sex",         limit: 255
+    t.integer  "father_id",   limit: 4
+    t.integer  "mother_id",   limit: 4
+    t.integer  "basket_id",   limit: 4
+    t.integer  "batch_id",    limit: 4
+    t.string   "life_status", limit: 255
+    t.string   "coat_color",  limit: 255
+    t.date     "dead_date"
+    t.date     "dead"
+    t.integer  "onwer_id",    limit: 4
+    t.integer  "created_by",  limit: 4
+    t.boolean  "is_dead",     limit: 1,     default: false
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "mice_alleles", id: false, force: :cascade do |t|
+    t.integer "mouse_id",  limit: 4
+    t.integer "allele_id", limit: 4
   end
 
   create_table "operations", force: :cascade do |t|
@@ -100,10 +141,36 @@ ActiveRecord::Schema.define(version: 20150514080409) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "strains", force: :cascade do |t|
-    t.string   "name",        limit: 255
+    t.string   "former_name",            limit: 255
+    t.string   "common_name",            limit: 255
+    t.integer  "genetic_type_id",        limit: 4
+    t.string   "status",                 limit: 255
+    t.string   "coat_color",             limit: 255
+    t.string   "wean_age",               limit: 255
+    t.string   "female_mature_age",      limit: 255
+    t.string   "male_mature_age",        limit: 255
+    t.string   "mating_system",          limit: 255
+    t.string   "breeding_consideration", limit: 255
+    t.string   "source",                 limit: 255
+    t.string   "origin",                 limit: 255
+    t.string   "ref_website",            limit: 255
+    t.text     "description",            limit: 65535
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  create_table "strains_genes", id: false, force: :cascade do |t|
+    t.integer "strain_id", limit: 4
+    t.integer "gene_id",   limit: 4
+  end
+
+  create_table "todo_lists", force: :cascade do |t|
+    t.integer  "mouse_id",    limit: 4
+    t.string   "operation",   limit: 255
     t.text     "description", limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "status",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|

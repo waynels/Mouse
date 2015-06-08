@@ -381,15 +381,15 @@ $(document).on("ready page:load", function() {
 		$('.dataTable1').each(function(){
 			if(!$(this).hasClass("dataTable-custom")) {
 				var opt = {
-					"sPaginationType": "full_numbers",
-					"oLanguage":{
-						"sSearch": "<span>Search:</span> ",
-						"sInfo": "Showing <span>_START_</span> to <span>_END_</span> of <span>_TOTAL_</span> entries",
-						"sLengthMenu": "_MENU_ <span>entries per page</span>"
-					},
-                    'sDom': "lfrtip",
-                    "aaSorting": [[0,'desc']],
-                    "bStateSave": true
+                                  "sPaginationType": "full_numbers",
+                                  "oLanguage":{
+                                    "sSearch": "<span>请输入关键字查找:</span> ",
+                                    "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+                                    "sLengthMenu": "_MENU_ <span>条每页</span>"
+                                  },
+                                  'sDom': "lfrtip",
+                                  "aaSorting": [[0,'desc']],
+                                  "bStateSave": true
 				};
 				if($(this).hasClass("dataTable-noheader")){
 					opt.bFilter = false;
