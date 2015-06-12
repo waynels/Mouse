@@ -3,7 +3,7 @@ class Basket < ActiveRecord::Base
   belongs_to :framework
   belongs_to :onwer, :foreign_key => "onwer_id", :class_name => "User"
   has_many :mice, :foreign_key =>"basket_id", :class_name => "Mouse"
-  BASKETTYPE = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Experiment" => "E"}
+  BASKETTYPE = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
   def basket_type_label
     Basket::BASKETTYPE.invert[self.cage_type]
   end

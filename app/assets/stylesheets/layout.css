@@ -116,7 +116,7 @@ b.seled a { color:#e38903;}
 .itemset { background:#fbf5ef; height:30px; line-height:30px; padding-left:10px;}
 .itemset a { margin:0 5px;}
 
-#mainbox {  padding:10px; background:#fff; min-height: 800px; -moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;border-radius:5px; }
+#mainbox {  padding:10px; background:#fff; min-height: 750px; -moz-border-radius: 5px;-khtml-border-radius: 5px;-webkit-border-radius: 5px;border-radius:5px; }
 .content2 #mainbox { margin:20px;}
 .return { position:relative; display:block; height:27px; margin-bottom:10px; color:#e38903;  }
 .return a { position:absolute; right:10px; top:0;display:block; color:#094267; font-weight:bold; font-size:12px;background:url(../assets/return.png) left no-repeat; width:67px; height:27px; line-height:27px; text-indent:25px;z-index: 1000}
@@ -162,7 +162,7 @@ b.seled a { color:#e38903;}
 .gridcontent table td .tddiv div { text-align:center; min-height:28px; line-height:28px;  overflow:hidden; word-warp:break-word; }
 .gridcontent table td .tddiv.empty :hover { border:1px solid #e38903; }
 .gridcontent table td .tddiv.active { border:1px solid red;}
-.gridcontent table td .tddiv div a  { display:block; height:24px; padding:2px; font-weight:bold; line-height:24px; background:#fff; overflow:hidden;white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
+.gridcontent table td .tddiv div a  { display:block; height:24px; padding:2px; font-weight:bold; line-height:24px; overflow:hidden;white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
 .gridcontent table td .tddiv div a.f { background:url(../assets/grid_cell.jpg) repeat;}
 
 .gridcontent table td .gridtips { z-index:100; margin:0; display:none; position:absolute; top:30px; overflow:hidden; background:#fff; border:1px solid #e38903; width:142px; height:43px; padding:3px;}
@@ -185,7 +185,7 @@ b.seled a { color:#e38903;}
 
 
 /*style*/
-textarea { font-family: Arial, Helvetica, sans-serif; border:1px solid #c4cacd; min-width:600px; }
+textarea { font-family: Arial, Helvetica, sans-serif; border:1px solid #c4cacd; min-width:400px; min-height: 150px }
 label { overflow:hidden; display:block; padding-bottom:10px; vertical-align:middle;}
 select { vertical-align:middle; border:1px solid #aaa; height:24px; background:#fff;  }
 select:hover { color:#fc9700;}

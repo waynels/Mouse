@@ -1,19 +1,12 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
-$(document).on("ready one:load", function() {
-    $(".save_btn").click(function(){
-      $(".user_form").submit();
-      });
-    });
 $(document).ready(function(){
     $('#myModal').on('hidden', function () {
       $('.modal-body').empty();
       });
-    });
-$(function () { 
-    $(".main-nav li").removeClass("active");
-    $(".nav5").addClass("active");
-    $(".subnav-menu li").removeClass("active");
-    $(".bar2").addClass("active");
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#strain_set_bar").addClass("seled");
     $("#strain").DataTable({
       "language": {
       "sSearch": "<span>请输入关键字查找:</span> ",

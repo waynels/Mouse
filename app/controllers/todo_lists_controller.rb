@@ -1,3 +1,4 @@
+#encoding: utf-8
 class TodoListsController < ApplicationController
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
 
@@ -6,10 +7,33 @@ class TodoListsController < ApplicationController
   def index
     @todo_lists = TodoList.all
   end
+  def get_data
+    key = params[:search][:value] if params[:search]
+    column = ["todo_lists.mouse_id", "todo_lists.status", "todo_lists.operation","todo_lists.description", ["todo_lists.created_at"]]
+    data = get_datatable_data(column, "TodoList",nil)
+    arr = []
+    data[0].each do |item|
+      op_str = ""
+      if can? :read, item 
+        op_str = op_str + "<a href='#{todo_list_path(item)}' class='btn btn-mini'>查看</a>"
+      end 
+      if can? :manage, item 
+        op_str = op_str + " <a href='#{edit_todo_list_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{todo_list_path(item)}'>删除</a>"
+      end
+      arr << [item.mouse.code, item.operation_lable, item.status, item.description, op_str]
+    end
+    json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: json }
+    end
+  end
 
   # GET /todo_lists/1
   # GET /todo_lists/1.json
   def show
+    p @todo_list
   end
 
   # GET /todo_lists/new
@@ -19,6 +43,7 @@ class TodoListsController < ApplicationController
 
   # GET /todo_lists/1/edit
   def edit
+    @mouse = @todo_list.mouse
   end
 
   # POST /todo_lists
@@ -28,8 +53,7 @@ class TodoListsController < ApplicationController
 
     respond_to do |format|
       if @todo_list.save
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully created.' }
-        format.json { render :show, status: :created, location: @todo_list }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
@@ -42,8 +66,7 @@ class TodoListsController < ApplicationController
   def update
     respond_to do |format|
       if @todo_list.update(todo_list_params)
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
-        format.json { render :show, status: :ok, location: @todo_list }
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
@@ -69,6 +92,6 @@ class TodoListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_list_params
-      params[:todo_list]
+      params[:todo_list].permit(:mouse_id, :description, :operation, :status)
     end
 end

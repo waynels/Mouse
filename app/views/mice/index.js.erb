@@ -1,9 +1,9 @@
-<% if params[:strain_id] %>
-$(".mice_strain").html("小鼠信息[<%= Strain.find(params[:strain_id]).name %>]");
-$("#mice").DataTable().ajax.url("<%= get_data_mice_path(strain_id: params[:strain_id]) %>");
+<% if params[:status] %>
+$("#mice").DataTable().ajax.url("<%= get_data_mice_path(status: params[:status]) %>");
 $("#mice").DataTable().ajax.reload();
+$(".mice_strain").html("Mice Info[<%= params[:status] %>]");
 <% else %>
-$(".mice_strain").html("小鼠信息");
 $("#mice").DataTable().ajax.url("<%= get_data_mice_path %>");
 $("#mice").DataTable().ajax.reload();
+$(".mice_strain").html("Mice Info[alive]");
 <% end %>

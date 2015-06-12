@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :todo_lists
+  resources :todo_lists do
+    collection do
+      post 'get_data'
+    end
+  end
   resources :genes do
     collection do
       post 'get_data'

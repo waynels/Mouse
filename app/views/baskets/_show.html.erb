@@ -25,6 +25,13 @@ $(function() {
       helper: "clone",
       cursor: "move"
     });
+    $( "li", $trash).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
  
     // let the trash be droppable, accepting the gallery items
     $trash.droppable({
@@ -147,7 +154,7 @@ $(function() {
     <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
     <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
   </li>
-  <% 10.times do %>
+  <% 5.times do %>
   <li class="ui-widget-content ui-corner-tr">
     <h5 class="ui-widget-header">Litter</h5>
     <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72">
@@ -159,6 +166,15 @@ $(function() {
  
 <div id="trash" class="ui-widget-content ui-state-default">
   <h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> 临时存放</h4>
+  <ul class="gallery ui-helper-reset">
+  <% @mouse.each do |m|%>
+  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;">
+  <h5 class="ui-widget-header"><%= m.code %></h5>
+    <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
+    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
+    <a class="ui-icon ui-icon-arrowreturnthick-1-s" title="Recycle this image">Recycle image</a>
+  <% end %>
+  </ul>
 </div>
  
 </div>

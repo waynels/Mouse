@@ -11,24 +11,55 @@ class MiceController < ApplicationController
     end
   end
 
+  #<%= select_tag "mouse_life_status", options_for_select([ "alive", "not_alive" ], "alive"), :class => " input-small" %> 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "mice.code","mice.strain_id","mice.birthday","mice.wean_date", "mice.sex","mice.father_code","mice.mother_code", "mice.basket_id","mice.generation","mice.is_dead" ["mice.created_at"]]
-    data = get_datatable_data(column, "Mouse", nil)
+    column = [ "mice.code","strains.common_name",["mice.birthday"],["mice.wean_date"], "mice.sex","mice.father_id","mice.mother_id", "baskets.code","mice.generation","mice.is_dead", ["mice.created_at"]]
+    if params[:order]
+      order_column = params[:order]["0"][:column].to_i
+      dir = params[:order]["0"][:dir]
+    else
+      order_column = 0
+      dir = "asc"
+    end
+    order = column[order_column].class == Array ? column[order_column][0] : column[order_column]
+    
+    total = Mouse.all.size
+    search_conditions = []
+    column.each do |c|
+      if c.class == Array
+       # gen_like_condition search_conditions, "Date(#{c[0]})", key
+      else
+        gen_like_condition search_conditions, c, key
+      end
+    end
+    condition_str = search_conditions.join(' or ')
+    if params[:status]
+      if params[:status] == "alive"
+        condition = "life_status = 'A'"
+      elsif params[:status] == "not_alive"
+        condition = "life_status <> 'A'"
+      end
+    else
+        condition =  "life_status = 'A'"
+    end
+
+    filter_total = Mouse.includes(:strain , :basket).where(condition_str).where(condition).references(:strains, :baskets).size
+    @mice = Mouse.includes(:strain , :basket).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket)
     arr = []
-    data[0].each do |item|
+    @mice.each do |item|
       op_str = ""
       if can? :read, item 
-        op_str = op_str + "<a href='#{mice_path(item)}' class='btn btn-mini'>查看</a>"
+        op_str = op_str + "<a href='#{mouse_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
       end
-      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? item.basket.code : nil,item.generation,item.is_dead, op_str]
+      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil,item.generation,item.is_dead, op_str]
     end
-    json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
+    json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: json }
