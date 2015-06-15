@@ -5,6 +5,7 @@ class BasketsController < ApplicationController
   # GET /baskets.json
   def index
     @frameworks = Framework.all
+    @todo_lists = TodoList.all
     respond_to do |format|
       format.html # index.html.erb
       format.js 

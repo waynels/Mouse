@@ -154,14 +154,6 @@ $(function() {
     <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
     <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
   </li>
-  <% 5.times do %>
-  <li class="ui-widget-content ui-corner-tr">
-    <h5 class="ui-widget-header">Litter</h5>
-    <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72">
-    <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-    <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
-  </li>
-  <% end %>
 </ul>
  
 <div id="trash" class="ui-widget-content ui-state-default">
@@ -169,8 +161,15 @@ $(function() {
   <ul class="gallery ui-helper-reset">
   <% @mouse.each do |m|%>
   <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;">
-  <h5 class="ui-widget-header"><%= m.code %></h5>
+  <% if m.code == nil or m.code == ""  %>
+    <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
+  <%else %>
+    <% if m.sex == "M" %>
+    <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
+    <%else%>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
+    <%end%>
+  <%end%>
     <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
     <a class="ui-icon ui-icon-arrowreturnthick-1-s" title="Recycle this image">Recycle image</a>
   <% end %>

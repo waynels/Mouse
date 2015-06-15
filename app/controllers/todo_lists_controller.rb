@@ -21,7 +21,7 @@ class TodoListsController < ApplicationController
         op_str = op_str + " <a href='#{edit_todo_list_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{todo_list_path(item)}'>删除</a>"
       end
-      arr << [item.mouse.code, item.operation_lable, item.status, item.description, op_str]
+      arr << [item.mouse.code, item.operation_lable, item.status_lable, item.description, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
