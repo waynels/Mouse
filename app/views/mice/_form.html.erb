@@ -20,7 +20,11 @@
                 <div class="control-group">
                   <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
                   <div class="controls">
+                    <% if @mouse.alleles.find_by_gene_id(gene.id) %>
                     <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name, @mouse.alleles.find_by_gene_id(gene.id).id),{:class=> 'select input-large'}%>
+                    <% else %>
+                    <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name),{:class=> 'select input-large'}%>
+                    <% end %>
                   </div>
                 </div>
             <%end%>
@@ -40,11 +44,13 @@
           <div class="control-group">
             <label for="textfield" class="control-label">Coat Color</label>
             <div class="controls">
-              <% if @mouse.strain_id %>
-                <%= f.select :coat_color, @mouse.strain.strain_coat_color, {},{:class=> 'select input-large'} %>  
+              <div class="mouse_coat_color">
+                <% if @mouse.strain_id %>
+                  <%= f.select :coat_color, @mouse.strain.strain_coat_color, {},{:class=> 'select input-large'} %>  
               <% else %>
-                <%= f.select :coat_color, Strain.where(status: "A").first.strain_coat_color, {},{:class=> 'select input-large'} %>  
+                  <%= f.select :coat_color, Strain.where(status: "A").first.strain_coat_color, {},{:class=> 'select input-large'} %>  
               <% end %>
+              </div>
             </div>
           </div>
           <div class="control-group">
@@ -69,6 +75,12 @@
             <label for="textfield" class="control-label">Wean Date</label>
             <div class="controls">
               <%= f.text_field :wean_date%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="textfield" class="control-label">Life Status</label>
+            <div class="controls">
+              <%= f.select :life_status, Mouse::LIFESTATUS, {},{:class=> 'select input-large'} %>  
             </div>
           </div>
           <div class="control-group">

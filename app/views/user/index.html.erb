@@ -6,10 +6,8 @@ $(document).on("ready one:load", function() {
       });
     });
 $(function () { 
-    $(".main-nav li").removeClass("active");
-    $(".nav5").addClass("active");
-    $(".subnav-menu li").removeClass("active");
-    $(".bar1").addClass("active");
+    $(".nav li").removeClass("current");
+    $(".nav li.user_set").addClass("current");
     $('#users').DataTable({
       "language": {
       "sSearch": "<span>请输入关键字查找:</span> ",

@@ -1,4 +1,10 @@
 <div id="stores_area">
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(function () { 
+    $(".nav li").removeClass("current");
+    $(".nav li.baskets_show").addClass("current");
+});
+</script>
 <ul class="pot_list">
   <% @frameworks.each do |f_w| %>
     <li class="pot"><a class="potname" data-remote=true href="<%= framework_path(f_w) %>"><%= Framework.all.index(f_w)+1 %></a></li>
@@ -6,6 +12,7 @@
 </ul>
 </div>
 <div class="basket_show" style="padding-bottom:15px; border: 1px solid #bfbfbf;padding: 1px; display:none;"></div>
+<br />
 <div id="basket_cage_list"></div>
 <% content_for :sidebar do %>
     <%= render :partial => 'todo_list' %>

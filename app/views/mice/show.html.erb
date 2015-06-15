@@ -1,4 +1,8 @@
 <p id="notice"><%= notice %></p>
+mouse alleles show:
+<% @mouse.mouse_genes.each do |gene| %>
+  <%= @mouse.alleles.find_by_gene_id(gene.id).try(:name) %>  
+<% end %>
 
 <%= link_to 'Edit', edit_mouse_path(@mouse) %> |
 <%= link_to 'Back', mice_path %>

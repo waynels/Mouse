@@ -1,0 +1,78 @@
+<div class="modal-body">
+  <dl class="dl-horizontal">
+    <dt>Former Name:</dt>
+    <dd>
+    <%= @strain.former_name %>&nbsp;
+    </dd>
+    <dt>Common Name:</dt>
+    <dd>
+    <%= @strain.common_name %>&nbsp;
+    </dd>
+    <dt>Genetic Type:</dt>
+    <dd>
+    <%= @strain.genetic_type.full_name %>&nbsp;
+    </dd>
+    <dt>Coat Color:</dt>
+    <dd>
+    <%= @strain.coat_color %>&nbsp;
+    </dd>
+    <dt>Status:</dt>
+    <dd>
+    <%= @strain.status%>&nbsp;
+    </dd>
+    <dt>Wean Age:</dt>
+    <dd>
+    <%= @strain.wean_age%>&nbsp;
+    </dd>
+    <dt>Female Mature age:</dt>
+    <dd>
+    <%= @strain.female_mature_age%>&nbsp;
+    </dd>
+    <dt>Male Mature age:</dt>
+    <dd>
+    <%= @strain.male_mature_age%>&nbsp;
+    </dd>
+    <dt>Mating System:</dt>
+    <dd>
+    <%= @strain.mating_system%>&nbsp;
+    </dd>
+    <dt>Breeding Consideration:</dt>
+    <dd>
+    <%= @strain.breeding_consideration %>&nbsp;
+    </dd>
+    <dt>Source:</dt>
+    <dd>
+    <%= @strain.source %>&nbsp;
+    </dd>
+    <dt>Origin:</dt>
+    <dd>
+    <%= @strain.origin %>&nbsp;
+    </dd>
+    <dt>Ref Website:</dt>
+    <dd>
+    <%= @strain.ref_website %>&nbsp;
+    </dd>
+    <dt>Female Mice:</dt>
+    <dd>
+      <%= @strain.mice.female_mice.size %>&nbsp;  
+    </dd>
+    <dt>Male Mice:</dt>
+    <dd>
+      <%= @strain.mice.male_mice.size %>&nbsp;  
+    </dd>
+    <dt>Litter Mice:</dt>
+    <dd>
+      <%= @strain.mice.litter_mice.size %>&nbsp;  
+    </dd>
+    <dt>Gene:</dt>
+    <dd>
+    <% @strain.genes.each do |gene| %>
+      <%= gene.short_name %>&nbsp;  
+    <% end %>&nbsp;
+    </dd>
+    <dt>Description:</dt>
+    <dd>
+    <%= @strain.description %>&nbsp;
+    </dd>
+  </dl>
+</div>

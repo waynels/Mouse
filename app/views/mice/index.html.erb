@@ -5,10 +5,10 @@ $(document).on("ready one:load", function() {
       });
     });
 $(function () { 
-    $(".main-nav li").removeClass("active");
-    $(".nav5").addClass("active");
-    $(".subnav-menu li").removeClass("active");
-    $(".bar1").addClass("active");
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#mouse_set_bar").addClass("seled");
     $('#mice').DataTable({
       "language": {
       "sSearch": "<span>请输入关键字查找:</span> ",
@@ -33,15 +33,28 @@ $(function () {
     $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
 });
 </script>
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).ready(function(){
+    $("#mouse_life_status").change(function(){
+        var checkValue=$(this).val();
+        $.ajax({url:'/mice?status='+checkValue}); 
+        });
+        });
+    $("#mouse_life_status").select2();
+</script>
 
 <div class="row-fluid">
   <div class="span12">
     <div class="box box-color box-bordered mouse_box"> 
       <div class="box-title">
         <h3><i class="icon-list"></i>
-          <span class="mice_strain">Mouse Info</span>
+          <span class="mice_strain">Mice Info[alive]</span>
+        </h3>
+        <h3>
         </h3>
         <div style="float:right; padding-right:2px;">
+          <a data-remote=true class="item_node" href="<%= mice_url(status: :alive)%>">Alive</a>
+          <a data-remote=true class="item_node" href="<%= mice_url(status: :not_alive) %>">Not Alive</a>
           <%= link_to 'New', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
         </div>
       </div>

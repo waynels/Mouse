@@ -4,7 +4,7 @@ class CreateTodoLists < ActiveRecord::Migration
       t.integer :mouse_id
       t.string :operation
       t.text :description
-      t.string :status
+      t.string :status 
       t.timestamps
 
     end

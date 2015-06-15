@@ -16,7 +16,7 @@ class GenesController < ApplicationController
     data[0].each do |item|
       op_str = ""
       if can? :read, item 
-        op_str = op_str + "<a href='#{gene_path(item)}' class='btn btn-mini'>查看</a>"
+        op_str = op_str + "<a href='#{gene_path(item)}'data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_gene_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
@@ -35,6 +35,9 @@ class GenesController < ApplicationController
   # GET /genes/1
   # GET /genes/1.json
   def show
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /genes/new

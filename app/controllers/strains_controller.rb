@@ -24,7 +24,7 @@ class StrainsController < ApplicationController
     data[0].each do |item|
       op_str = ""
       if can? :read, item 
-        op_str = op_str + "<a href='#{strain_path(item)}' class='btn btn-mini'>查看</a>"
+        op_str = op_str + "<a href='#{strain_path(item)}'data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_strain_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"

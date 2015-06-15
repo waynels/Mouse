@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.integer  "mouse_id",    limit: 4
     t.string   "operation",   limit: 255
     t.text     "description", limit: 65535
-    t.string   "status",      limit: 255
+    t.boolean  "status",      limit: 1,     default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

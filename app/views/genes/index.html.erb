@@ -3,10 +3,10 @@ $(document).ready(function(){
     $('#myModal').on('hidden', function () {
       $('.modal-body').empty();
       });
-    $(".main-nav li").removeClass("active");
-    $(".nav5").addClass("active");
-    $(".subnav-menu li").removeClass("active");
-    $(".bar2").addClass("active");
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#gene_set_bar").addClass("seled");
     $("#genes").DataTable({
       "language": {
       "sSearch": "<span>请输入关键字查找:</span> ",
@@ -49,7 +49,7 @@ $(document).ready(function(){
             <tr>
               <th>Name</th>
               <th>Short Name</th>
-              <th>Acces ID</th>
+              <th>Access ID</th>
               <th>Location</th>
               <th>Operation</th>
             </tr>

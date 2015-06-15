@@ -11,7 +11,7 @@ class CreateMice < ActiveRecord::Migration
       t.integer :mother_id
       t.belongs_to :basket #位子
       t.belongs_to :batch #哪一窝
-      t.string :life_status
+      t.string :life_status, default: "A" 
       t.string :coat_color
       t.date :dead_date
       t.date :dead

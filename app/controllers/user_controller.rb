@@ -1,6 +1,6 @@
 #encoding: utf-8
 class UserController < ApplicationController
-#  authorize_resource
+  authorize_resource
   before_action :set_user, only: [:show, :edit, :update, :destroy, :set_roles, :save_roles]
 
   respond_to :html

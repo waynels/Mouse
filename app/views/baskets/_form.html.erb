@@ -11,7 +11,7 @@
     <div class="control-group">
       <label for="textfield" class="control-label">所属用户</label>
       <div class="controls">
-        <%= f.select :onwer_id, User.all.collect { |p| [ p.full_name, p.id ] }, {},{:class=> 'select input-large'} %>  
+        <%= f.select :onwer_id, User.all.collect { |p| [ p.full_name, p.id ] }, {include_blank: true},{:class=> 'select input-large'} %>  
       </div>
     </div>
     <div class="control-group">

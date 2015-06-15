@@ -64,7 +64,7 @@
 }
 
 .M_box{
-  background:#66CCFF;
+  background:#CCCCFF;
 }
 .S_box{
   background:#00CCFF;
@@ -72,8 +72,11 @@
 .B_box{
   background:#FFCCFF;
 }
-.E_box{
-  background:#9999FF;
+.CE_box{
+  background:#CCFFFF;
+}
+.NCE_box{
+  background:#CCCCCC;
 }
 
 .footer a { color: #FFFFFF}
