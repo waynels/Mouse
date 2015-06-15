@@ -7,6 +7,7 @@ class CreateBreedsInfos < ActiveRecord::Migration
       t.integer :operation_by
       t.date :operation_at
       t.integer :quantity
+      t.text :die_reason
       t.text :remark
 
       t.timestamps null: false

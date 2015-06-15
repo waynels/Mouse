@@ -1,5 +1,5 @@
 <div class="modal-body">
-  <%= form_for @mouse, :method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+  <%= form_for @mouse, :url => save_appraisal_mouse_breed_path(id: @breed.id,mouse_id: @mouse.id), :method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
     <div class="control-group">
       <label for="textfield" class="control-label">编号</label>
       <div class="controls">

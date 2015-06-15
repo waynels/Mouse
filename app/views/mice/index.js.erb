@@ -1,0 +1,9 @@
+<% if params[:status] %>
+$("#mice").DataTable().ajax.url("<%= get_data_mice_path(status: params[:status]) %>");
+$("#mice").DataTable().ajax.reload();
+$(".mice_strain").html("Mice Info[<%= params[:status] %>]");
+<% else %>
+$("#mice").DataTable().ajax.url("<%= get_data_mice_path %>");
+$("#mice").DataTable().ajax.reload();
+$(".mice_strain").html("Mice Info[alive]");
+<% end %>

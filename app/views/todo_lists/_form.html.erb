@@ -1,0 +1,29 @@
+<div class="modal-body">
+  <%= form_for @todo_list, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+    <div class="control-group">
+      <label for="textfield" class="control-label">小鼠编号</label>
+      <div class="controls">
+        <%= text_field_tag :mouse_code, @mouse.code, :disabled => true%>
+        <%= f.hidden_field :mouse_id, :value => @mouse.id%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">操作类型</label>
+      <div class="controls">
+        <%= f.select :operation, TodoList::OPERATION, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">状态</label>
+      <div class="controls">
+        <%= f.select :status, TodoList::STATUS, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">描述</label>
+      <div class="controls">
+        <%= f.text_area :description,:style => "width: 60%"%>
+      </div>
+    </div>
+  <% end %>
+</div>

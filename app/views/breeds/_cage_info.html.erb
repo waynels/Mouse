@@ -17,7 +17,12 @@
             <tr>
             <td><%= m_mouse.id %></td>
             <td>
-              <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: m_mouse.id), remote: true ,:class => "btn btn-mini" %>
+              <% if m_mouse.code %>
+              <%= link_to "查看小鼠信息", show_mouse_breeds_path(mouse_id: m_mouse.id, breed_id: @batch.breed_id ), remote: true ,:class => "btn btn-mini" %>
+              <%= link_to "修改信息", edit_mouse_breeds_path(mouse_id: m_mouse.id, breed_id: @batch.breed_id ), remote: true ,:class => "btn btn-mini" %>
+              <% else %>
+              <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: m_mouse.id, breed_id: @batch.breed_id ), remote: true ,:class => "btn btn-mini" %>
+              <%end%>
             </td>
           </tr>
         <%end%>
@@ -40,7 +45,7 @@
             <tr>
               <td><%= f_mouse.id %></td>
               <td>
-                <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: f_mouse.id), remote: true ,:class => "btn btn-mini" %>
+                <%= link_to "鉴定", appraisal_mouse_breeds_path(mouse_id: f_mouse.id,breed_id: @batch.breed_id), remote: true ,:class => "btn btn-mini" %>
               </td>
             </tr>
           <%end%>

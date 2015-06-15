@@ -5,41 +5,91 @@ class MiceController < ApplicationController
   # GET /mice
   # GET /mice.json
   def index
+    respond_to do |format|
+      format.html # index.html.erb
+      format.js 
+    end
   end
 
+  #<%= select_tag "mouse_life_status", options_for_select([ "alive", "not_alive" ], "alive"), :class => " input-small" %> 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "mice.code","mice.strain_id","mice.generate_num","mice.birthday","mice.weaningday", "mice.gender","mice.father_code","mice.mother_code", "mice.basket_id","mice.identification", "mice.gfp", "mice.gfp_val", ["mice.created_at"]]
-    data = get_datatable_data(column, "Mouse")
+    column = [ "mice.code","strains.common_name",["mice.birthday"],["mice.wean_date"], "mice.sex","mice.father_id","mice.mother_id", "baskets.code","mice.generation","mice.is_dead", ["mice.created_at"]]
+    if params[:order]
+      order_column = params[:order]["0"][:column].to_i
+      dir = params[:order]["0"][:dir]
+    else
+      order_column = 0
+      dir = "asc"
+    end
+    order = column[order_column].class == Array ? column[order_column][0] : column[order_column]
+    
+    total = Mouse.all.size
+    search_conditions = []
+    column.each do |c|
+      if c.class == Array
+       # gen_like_condition search_conditions, "Date(#{c[0]})", key
+      else
+        gen_like_condition search_conditions, c, key
+      end
+    end
+    condition_str = search_conditions.join(' or ')
+    if params[:status]
+      if params[:status] == "alive"
+        condition = "life_status = 'A'"
+      elsif params[:status] == "not_alive"
+        condition = "life_status <> 'A'"
+      end
+    else
+        condition =  "life_status = 'A'"
+    end
+
+    filter_total = Mouse.includes(:strain , :basket).where(condition_str).where(condition).references(:strains, :baskets).size
+    @mice = Mouse.includes(:strain , :basket).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket)
     arr = []
-    data[0].each do |item|
+    @mice.each do |item|
       op_str = ""
       if can? :read, item 
-        op_str = op_str + "<a href='#{mice_path(item)}' class='btn btn-mini'>查看</a>"
+        op_str = op_str + "<a href='#{mouse_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
       end
-      if item.strain
-      arr << [item.code, item.strain.name,item.generate_num, item.birthday, item.weaningday, item.gender, item.father_code, item.mother_code,item.basket.code, item.identification, item.gfp, item.gfp_val, op_str]
-      else
-      arr << [item.code, nil,item.generate_num, item.birthday, item.weaningday, item.gender, item.father_code, item.mother_code,item.basket.code, item.identification, item.gfp, item.gfp_val, op_str]
-      end
+      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil,item.generation,item.is_dead, op_str]
     end
-    json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
+    json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: json }
     end
   end
 
-  def autocomplete 
-    sex = params[:sex]
-    respond_to do |format|
-      ar = Mouse.where(is_survival: true,gender: sex).collect{|m| {:id => m.id, :value => m.code, :label => "#{m.code}--#{m.strain.name}--#{m.birthday}--#{m.gender}"} }
-      format.json {render :json=>ar}
+
+  def change_strain 
+    @strain = Strain.find(params[:strain_id])
+  end
+
+  def want_to_do 
+    @mouse = Mouse.find(params[:id])
+    @todo_list = TodoList.new
+  end
+
+
+  def family_tree
+    @mouse = Mouse.find(params[:id])
+  end
+
+  def get_family_tree 
+    user = User.find(current_user.id)
+    @mouse = Mouse.find(params[:id])
+    if @mouse.gender == "M"
+    data = {"name" => @mouse.code ? "#{@mouse.code}♂" : "未编号", "children" => get_tree(@mouse, user)}
+    else
+    data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
     end
+    render :json => data
   end
   # GET /mice/1
   # GET /mice/1.json
@@ -60,10 +110,21 @@ class MiceController < ApplicationController
   def create
     @mouse = Mouse.new(mouse_params)
 
+    @mouse.onwer_id = current_user.id
+    @mouse.created_by = current_user.id
+
     respond_to do |format|
       if @mouse.save
-        format.html { redirect_to @mouse, notice: 'Mouse was successfully created.' }
-        format.json { render :show, status: :created, location: @mouse }
+
+        arr = []
+        @mouse.strain.genes.each do |gene|
+          arr << params["gene_allele_#{gene.id}"]
+        end
+        p arr
+        @mouse.allele_ids = arr.uniq
+        format.js
+#        format.html { redirect_to @mouse, notice: 'Mouse was successfully created.' }
+#        format.json { render :show, status: :created, location: @mouse }
       else
         format.html { render :new }
         format.json { render json: @mouse.errors, status: :unprocessable_entity }
@@ -74,15 +135,22 @@ class MiceController < ApplicationController
   # PATCH/PUT /mice/1
   # PATCH/PUT /mice/1.json
   def update
-    respond_to do |format|
-      if @mouse.update(mouse_params)
-        format.html { redirect_to @mouse, notice: 'Mouse was successfully updated.' }
-        format.json { render :show, status: :ok, location: @mouse }
-      else
-        format.html { render :edit }
-        format.json { render json: @mouse.errors, status: :unprocessable_entity }
-      end
+    @mouse.update(mouse_params)
+    arr = []
+    @mouse.strain.genes.each do |gene|
+      arr << params["gene_allele_#{gene.id}"]
     end
+    p arr
+    @mouse.allele_ids = arr.uniq
+#    respond_to do |format|
+#      if @mouse.update(mouse_params)
+#        format.html { redirect_to @mouse, notice: 'Mouse was successfully updated.' }
+#        format.json { render :show, status: :ok, location: @mouse }
+#      else
+#        format.html { render :edit }
+#        format.json { render json: @mouse.errors, status: :unprocessable_entity }
+#      end
+#    end
   end
 
   # DELETE /mice/1
@@ -95,6 +163,33 @@ class MiceController < ApplicationController
     end
   end
 
+  protected
+  def get_tree( mouse, user)
+    data = []
+
+    if mouse.father_id
+      father = mouse.father_mouse
+      if father.father_id or father.father_code
+        father_hash = {"name" => "#{father.code}♂",  "children" => get_tree( father, user)}
+      else
+        father_hash = {"name" => "#{father.code}♂"}
+      end
+    else
+      father_hash = {"name" => mouse.father_code ? "#{mouse.father_code}♂" : "WT♂" }
+    end
+    if mouse.mother_id
+      mother = mouse.mother_mouse 
+      if mother.mother_id or mother.mother_code
+        mother_hash = {"name" => "#{mother.code}♀",  "children" => get_tree( mother, user)}
+      else
+        mother_hash = {"name" => "#{mother.code}♀"}
+      end
+    else
+      mother_hash = {"name" => mouse.mother_code ? "#{mouse.mother_code}♀" : "WT♀"}
+    end
+    data = [father_hash, mother_hash]
+    return data
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mouse
@@ -103,6 +198,6 @@ class MiceController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mouse_params
-      params[:mouse].permit(:basket_id, :strain_id, :generate_num, :birthday, :weaningday, :gender, :code, :identification, :gfp, :gfp_val, :father_code, :mother_code, :batch_id)
+      params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
     end
 end

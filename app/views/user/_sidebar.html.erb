@@ -1,12 +1,18 @@
 <% if user_signed_in? %>
-  <div class="subnav">
-  <div class="subnav-title">
-    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>管理中心</span></a>
+<script>
+  $(document).ready(function() {
+    $("#user_set_bar h1 a img")
+    .click(function(){  
+      barClick("#user_set_bar", this);
+    });
+  });
+</script>
+<div class="bar" id="user_set_bar">
+  <h1><img src="/assets/icon_box.png" />管理中心<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
+  <div class="bar_content" >
+        <ol class="item" id="role_items">
+          <li class="item_list" id="cell_item_"><a href="<%= user_index_path %>">用户管理</a></li>
+        </ol>
   </div>
-  <ul class="subnav-menu">
-    <li class="bar1">
-    <%= link_to "用户管理", user_index_url %>
-    </li>
-  </ul>
 </div>
 <% end %>

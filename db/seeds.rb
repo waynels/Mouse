@@ -95,24 +95,27 @@
 #end
 #
 
-mice = Mouse.all
-mice.each do |mouse|
-  if mouse.father_code
-    father = Mouse.where(code: mouse.father_code).first
-    if father
-      mouse.father_id = father.id
-    else
-      mouse.father_id = Mouse.where(:strain_id => 8, :gender => "M").first.id
-    end
-  end
-  if mouse.mother_code
-    mother = Mouse.where(code: mouse.mother_code).first
-    if mother
-      mouse.mother_id = mother.id
-    else
-      mouse.mother_id = Mouse.where(:strain_id => 8, :gender => "F").first.id
-    end
-  end
-  mouse.save
-  p "#{mouse.id}--#{mouse.father_id}--#{mouse.mother_id}"
-end
+# mice = Mouse.all
+# mice.each do |mouse|
+#   if mouse.father_code
+#     father = Mouse.where(code: mouse.father_code).first
+#     if father
+#       mouse.father_id = father.id
+#     end
+#   end
+#   if mouse.mother_code
+#     mother = Mouse.where(code: mouse.mother_code).first
+#     if mother
+#       mouse.mother_id = mother.id
+#     end
+#   end
+#   mouse.save
+#   p "#{mouse.id}--#{mouse.father_id}--#{mouse.mother_id}"
+# end
+ user = User.create(full_name: 'PI', username: 'admin', email: 'admin@email.com', password: '12345678')
+ #user = User.first
+ user.add_role :PI
+ arr = [["CTK", "Combonation transgene + KO"], ['E', 'endogenous'], ["Floxed","tissue specific knock out"],  ["KI","knock in"], ["KO","knock out"],["MK","multi allele knock out"], ["MTG","multi allele trans gene"],["TG", "trans gene"], ["SM", 'spontaneous mutation'] ]
+ arr.each do |gt|
+   gentype = GeneticType.create(short_name: gt[0], full_name: gt[1])
+ end

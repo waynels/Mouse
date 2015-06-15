@@ -1,0 +1,40 @@
+<div class="box_div <%= @another_basket.use_type %>_box " id="another_basket">
+<div style="text-align: center" id="another_basket_code"><%= @another_basket.code %>[<%= @another_basket.basket_type_label%>]</div>
+<%= hidden_field_tag :another_basket_id, @another_basket.id %>
+<% @another_basket.mice.each do |m| %>
+  <% if m.gender %>
+  <% if m.gender == "M" %>
+    <div class="division_mouse2" id="mouse_<%= m.id %>" style="width: 200px;">
+    <span><i class="glyphicon-move"></i></span>
+    <button  class="btn "><i class="glyphicon-male"></i><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]</button>
+    </div>
+  <%else%>
+      <div class="division_mouse2" id="mouse_<%= m.id %>" style="width: 200px;">
+      <span><i class="glyphicon-move"></i></span>
+      <button class="btn "><i class="glyphicon-female"></i><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]</button>
+    </div>
+  <%end%>
+  <%else%>
+  <div class="division_mouse2" id="mouse_<%= m.id %>" style="width: 200px;">
+  <span><i class="glyphicon-move"></i></span>
+  <button  class="btn"><%= m.code ? m.code : "未编号" %>[<%= m.strain.name %>]</button>
+</div>
+  <%end%>
+<%end%>
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+//]]>
+  $(function() {
+    $( ".division_mouse2" ).draggable({ revert: "invalid" });
+    $( "#one_basket" ).droppable({
+      accept: ".division_mouse2",
+      drop: function( event, ui ) {
+        var mId = ui.draggable.attr("id");
+        var bId = $("#one_basket_id").val()
+        $.ajax({url: "/mice/remove_mouse2?id="+mId+"&basket_id="+bId+"&old_basket=<%= @another_basket.id%>",type: "GET",async:false})
+
+      }
+      });
+  });
+</script>
+</div>

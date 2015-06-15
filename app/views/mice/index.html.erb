@@ -5,10 +5,10 @@ $(document).on("ready one:load", function() {
       });
     });
 $(function () { 
-    $(".main-nav li").removeClass("active");
-    $(".nav5").addClass("active");
-    $(".subnav-menu li").removeClass("active");
-    $(".bar1").addClass("active");
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#mouse_set_bar").addClass("seled");
     $('#mice').DataTable({
       "language": {
       "sSearch": "<span>请输入关键字查找:</span> ",
@@ -33,38 +33,66 @@ $(function () {
     $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
 });
 </script>
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).ready(function(){
+    $("#mouse_life_status").change(function(){
+        var checkValue=$(this).val();
+        $.ajax({url:'/mice?status='+checkValue}); 
+        });
+        });
+    $("#mouse_life_status").select2();
+</script>
 
-<div class="box box-color box-bordered mouse_box"> 
-  <div class="box-title">
-    <h3><i class="icon-list"></i>
-      小鼠信息 
-    </h3>
-    <div style="float:right; padding-right:2px;">
-      <%= link_to '新增', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered mouse_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+          <span class="mice_strain">Mice Info[alive]</span>
+        </h3>
+        <h3>
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <a data-remote=true class="item_node" href="<%= mice_url(status: :alive)%>">Alive</a>
+          <a data-remote=true class="item_node" href="<%= mice_url(status: :not_alive) %>">Not Alive</a>
+          <%= link_to 'New', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table id="mice" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Strain</th>
+              <th>Birthday</th>
+              <th>Wean Date</th>
+              <th>Sex</th>
+              <th>Father Code</th>
+              <th>Mother Code</th>
+              <th>Basket Code</th>
+              <th>Generation</th>
+              <th>Is Dead</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <div class="box-content nopadding">
-    <table id="mice" class="table table-bordered dataTable-scroll-x">
-      <thead>
-        <tr>
-          <th>小鼠编号</th>
-          <th>小鼠品系</th>
-          <th>小鼠传代系</th>
-          <th>出生日期</th>
-          <th>离乳日期</th>
-          <th>性别</th>
-          <th>父亲编号</th>
-          <th>母亲编号</th>
-          <th>位置</th>
-          <th>鉴定结果</th>
-          <th>荧光表达阳性率</th>
-          <th>阳性细胞平均荧光强度</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    <div class="mouse_form"></div>
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">小鼠</h3>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -72,16 +100,3 @@ $(function () {
   <%= render :partial => "sidebar" %>
 <% end %>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">小鼠</h3>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-    <button class="save_btn btn btn-primary">保存</button>
-  </div>
-</div>
-<div class="mouse_form"></div>

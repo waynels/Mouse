@@ -1,15 +1,13 @@
 <% if user_signed_in? %>
-  <div class="subnav">
-  <div class="subnav-title">
-    <a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>小鼠管理</span></a>
+<div class="bar">
+  <h1><img src="/assets/icon_box.png" />小鼠管理<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
+  <div class="bar_content" >
+        <ol class="item" id="role_items">
+          <li class="item_list" id="gene_set_bar"><a href="<%= genes_path %>">基因设置</a></li>
+          <li class="item_list" id="strain_set_bar"><a href="<%= strains_url %>">品系设置</a></li>
+          <li class="item_list" id="mouse_set_bar"><a href="<%= mice_url %>">小鼠信息</a></li>
+          <li class="item_list" id="todolist_bar"><a href="<%= todo_lists_url %>">TodoList</a></li>
+        </ol>
   </div>
-  <ul class="subnav-menu">
-    <li class="bar1">
-    <%= link_to "小鼠信息", mice_url%>
-    </li>
-    <li class="bar2">
-    <%= link_to "品系设置", strains_url %>
-    </li>
-  </ul>
 </div>
 <% end %>

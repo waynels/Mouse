@@ -29,6 +29,7 @@ class BatchesController < ApplicationController
   def create
     @batch = Batch.new(batch_params)
     @breed = Breed.find(params[:batch][:breed_id]) 
+    @batch.use_val = params[:batch][:quantity] 
     @batch.father_id = @breed.father_id
     @batch.mother_id = @breed.mother_id
     @batch.basket_id = @breed.basket_id

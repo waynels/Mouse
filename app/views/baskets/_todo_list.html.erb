@@ -1,0 +1,16 @@
+<script>
+  $(document).ready(function() {
+      $('.item_list').tooltip();
+    });
+</script>
+<div class="bar" id="temporarily_bar">
+  <h1><img src="/assets/icon_box.png" />待办事项<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
+  <div class="bar_content" >
+    <ul class="left_list" id="temporarily">
+    <% @todo_lists.each do |list| %>
+      <li class="item_list" title="事件描述" ><a href="#">[<%= list.created_at.strftime("%Y-%m-%d") %>]<%= list.mouse.code %>-<%= list.status_lable %>-<%= list.operation_lable %></a></li>
+      <%end%>
+    </ul>
+  </div>
+</div>
+

@@ -1,0 +1,28 @@
+
+<% if user_signed_in? %>
+  <script>
+$(document).ready(function() {
+    $( "#framework_cage_list li").draggable({
+      helper: "clone",
+      cursor: "move"
+      });
+    $( "#mainbox" ).droppable({
+      accept: "#framework_cage_list li",
+      activeClass: "custom-state-active",
+      drop: function( event, ui ) {
+      var dragId = ui.draggable.attr("id");
+      $.ajax({data:'',type:'get', url:'/baskets/new_framework?f_w_type='+dragId}); return false;
+      }
+      });
+});
+</script> 
+<div class="bar" id="framework_set_bar">
+  <h1><img src="/assets/icon_box.png" />笼子设置<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
+  <div class="bar_content" >
+    <ol class="item" id="framework_cage_list">
+      <li class="item_list" id="10*10"><a href="#">10*10</a></li>
+      <li class="item_list" id="5*5"><a href="#">5*5</a></li>
+    </ol>
+  </div>
+</div>
+<% end %>

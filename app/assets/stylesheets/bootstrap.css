@@ -425,8 +425,8 @@ a:focus {
 }
 
 .row-fluid .span12 {
-  width: 100%;
-  *width: 99.94680851063829%;
+  width: 97%;
+  *width: 98.94680851063829%;
 }
 
 .row-fluid .span11 {
@@ -812,7 +812,7 @@ h4 small {
 ul,
 ol {
   padding: 0;
-  margin: 0 0 10px 25px;
+  margin: 0 0 5px 0px;
 }
 
 ul ul,
@@ -823,7 +823,7 @@ ol ul {
 }
 
 li {
-  line-height: 20px;
+/*  line-height: 20px; */
 }
 
 ul.unstyled,
@@ -3626,6 +3626,7 @@ input[type="submit"].btn.btn-mini {
   white-space: nowrap;
   vertical-align: middle;
   *zoom: 1;
+  padding-top: 3px;
 }
 
 .btn-group:first-child {
@@ -3947,7 +3948,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .nav {
-  margin-bottom: 20px;
+/*  margin-bottom: 20px; */
   margin-left: 0;
   list-style: none;
 }

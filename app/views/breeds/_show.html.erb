@@ -41,9 +41,11 @@
           <i class="icon-table"></i>
           繁殖批次 
         </h3>
-        <div style="float:right; padding-right:2px;">
-          <%= link_to '新增', new_batch_path(breed_id: @breed.id), :remote => true, :class => 'new btn add_meet' %>
-        </div>
+        <% if @breed.is_usable %>
+          <div style="float:right; padding-right:2px;">
+            <%= link_to '新增', new_batch_path(breed_id: @breed.id), :remote => true, :class => 'new btn add_meet' %>
+          </div>
+        <%end%>
       </div>
       <div class="box-content nopadding">
         <table class="table table-hover table-nomargin table-striped">
@@ -51,9 +53,8 @@
             <tr>
               <th>批次id</th>
               <th>出生位置</th>
-              <th>父亲</th>
-              <th>母亲</th>
-              <th>数量</th>
+              <th>出生数量</th>
+              <th>存活数量</th>
               <th>小鼠出生时间</th>
               <th>操作</th>
             </tr>
@@ -63,14 +64,15 @@
             <tr>
               <td><%= batch.id %></td>
               <td><%= batch.basket.code %></td>
-              <td><%= batch.father.code %>[<%= batch.father.strain.name %>]</td>
-              <td><%= batch.mother.code %>[<%= batch.mother.strain.name %>]</td>
               <td><%= batch.quantity %></td>
+              <td><%= batch.use_val%></td>
               <td><%= batch.childbirthday%></td>
               <td>
                 <% if batch.mice.size == 0 %>
-                <%= link_to "死亡记录",die_record_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
-                <%= link_to "分笼",cage_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
+                  <% if batch.use_val > 0 %>
+                  <%= link_to "死亡记录",die_record_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
+                  <%= link_to "分笼",cage_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini" %>
+                <%end%>
                 <%else%>
                 <%= link_to "分笼情况",cage_info_breeds_path(:breed_id => @breed.id, :batch_id => batch.id),remote: true ,:class => "btn btn-mini show_cage_info_#{batch.id}" %>
                 <%= link_to "关闭分笼信息","#", :class => "btn btn-mini close_cage_info_#{batch.id}", :style => "display:none;" %>
@@ -87,8 +89,8 @@
               </td>
             </tr>
             <tr>
-              <td colspan=7>
-                <div id="batch_<%= batch.id %>">
+              <td colspan=6>
+                <div id="batch_<%= batch.id %>" style="display:none">
                 </div>
               </td>
             </tr>

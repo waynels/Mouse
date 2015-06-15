@@ -1,0 +1,82 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).ready(function(){
+    $('#myModal').on('hidden', function () {
+      $('.modal-body').empty();
+      });
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#gene_set_bar").addClass("seled");
+    $("#genes").DataTable({
+      "language": {
+      "sSearch": "<span>请输入关键字查找:</span> ",
+      "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+      "lengthMenu": "_MENU_  <span>条每页</span>"
+
+      },
+      "deferRnder": true,
+      "processing": true,
+      "iDisplayLength": 25,
+      "stateSave": true,
+      "aaSorting": [[0,'desc']],
+      "serverSide": true,
+      "scrollY": "500px",
+      "ajax": {
+      "url": "<%= get_data_genes_path %>",
+      "method": "post",
+      "dataType": "json"
+      }
+      });
+    $('.dataTables_filter input').attr("placeholder", "请输入...");
+    $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
+});
+</script>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered gene_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+         Gene Info
+        </h3>
+        <div style="float:right; padding-right:2px;">
+          <%= link_to 'New', new_gene_path, :remote => true, :class => 'btn' %>
+        </div>
+      </div>
+      <div class="box-content nopadding">
+        <table id="genes" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Short Name</th>
+              <th>Access ID</th>
+              <th>Location</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<div class="gene_form"></div>
+<div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">基因</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="save_btn btn btn-primary">保存</button>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+  <%= render :partial => "mice/sidebar" %>
+<% end %>
+

@@ -1,0 +1,29 @@
+<div class="modal-body">
+  <%= form_for @breed, :url => save_die_record_breed_path(@breed),:method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+    <div class="control-group">
+    <label for="textfield" class="control-label">死亡日期</label>
+    <div class="controls">
+      <%= text_field :breed_info, :operation_at%>
+      <%= hidden_field :breed_info, :breed_id, :value => @breed.id %>
+      <%= hidden_field :breed_info, :batch_id, :value => @batch.id %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label for="textfield" class="control-label">死亡数量：</label>
+    <div class="controls">
+      <%= text_field :breed_info, :quantity%>
+    </div>
+  </div>
+  <div class="control-group">
+    <label for="textfield" class="control-label">死亡原因：</label>
+    <div class="controls">
+      <%= text_area :breed_info, :die_reason %>
+    </div>
+  </div>
+<% end %>
+  <script>
+$(document).ready(function(){
+    $("#breed_info_operation_at" ).datepicker({format: "yyyy-mm-dd"});
+    });
+  </script>
+</div>

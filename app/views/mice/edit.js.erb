@@ -1,2 +1,12 @@
 $(".mouse_form").replaceWith("<%= j render "form" %>")
 $(".mouse_box").hide()
+$(".btn_cancel").click(function(){
+  $(".mouse_box").show(); 
+  $(".mouse_form").empty()
+});
+$("#mouse_strain_id").change(function(){
+  var group = $(this).val();
+  $.ajax({url:'/mice/change_strain?strain_id='+group}); 
+});
+$("#mouse_birthday, #mouse_wean_date" ).datepicker({format: "yyyy-mm-dd"});
+$(".select").select2();

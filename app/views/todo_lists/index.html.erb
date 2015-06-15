@@ -1,0 +1,86 @@
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).on("ready one:load", function() {
+    $(".save_btn").click(function(){
+      $(".user_form").submit();
+      });
+    });
+$(document).ready(function(){
+    $('#myModal').on('hidden', function () {
+      $('.modal-body').empty();
+      });
+    });
+$(function () { 
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#todolist_bar").addClass("seled");
+    $("#todolist").DataTable({
+      "language": {
+      "sSearch": "<span>请输入关键字查找:</span> ",
+      "sInfo": "显示 <span>_START_</span> 至 <span>_END_</span> 条记录，共 <span>_TOTAL_</span> 条记录",
+      "lengthMenu": "_MENU_  <span>条每页</span>"
+
+      },
+      "deferRnder": true,
+      "processing": true,
+      "iDisplayLength": 25,
+      "stateSave": true,
+      "aaSorting": [[0,'desc']],
+      "serverSide": true,
+      "scrollY": "500px",
+      "ajax": {
+      "url": "<%= get_data_todo_lists_path %>",
+      "method": "post",
+      "dataType": "json"
+      }
+      });
+    $('.dataTables_filter input').attr("placeholder", "请输入...");
+    $(".dataTables_length select").wrap("<div class='input-mini'></div>").chosen({disable_search_threshold: 9999999});
+});
+</script>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="box box-color box-bordered todolist_box"> 
+      <div class="box-title">
+        <h3><i class="icon-list"></i>
+          ToDoList
+        </h3>
+      </div>
+      <div class="box-content nopadding">
+        <table id="todolist" class="table table-bordered dataTable-scroll-x">
+          <thead>
+            <tr>
+              <th>Mouse Code</th>
+              <th>Operation Type</th>
+              <th>Status</th>
+              <th>Description</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <div class="todolist_form"></div>
+  <div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">小鼠</h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+<% content_for :sidebar do %>
+  <%= render :partial => "mice/sidebar" %>
+<% end %>
+
+</div>

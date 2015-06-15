@@ -4,7 +4,89 @@ class BasketsController < ApplicationController
   # GET /baskets
   # GET /baskets.json
   def index
-    @baskets = Basket.all
+    @frameworks = Framework.all
+    @todo_lists = TodoList.all
+    respond_to do |format|
+      format.html # index.html.erb
+      format.js 
+    end
+  end
+  
+  def cage_setting
+    @frameworks = Framework.all
+  end
+
+  def show_basket 
+    @framework = Framework.find(params[:f_w])
+  end
+
+  def set_cage_type 
+      @basket = Basket.find(params[:id])
+  end
+
+  def new_framework
+    xy = params[:f_w_type].split("*")
+    x = xy[0].to_i
+    y = xy[1].to_i
+    @framework = Framework.create( axis_x: x, axis_y:y)
+    x.times do |i|
+      y.times do |j|
+        basket = Basket.create(code: "#{i+1}#{(j+65).chr}",framework_id: @framework.id)
+      end
+    end
+    @frameworks = Framework.all
+  end
+
+  def add_mouse
+    @basket = Basket.find(params[:id])
+  end
+  def remove_mouse
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+
+  end
+
+  def create_littler_mice 
+    @breed = Breed.find(params[:breed_id])
+    @basket = Basket.find(params[:id])
+    strain_id = params[:strain_id].to_i
+    quantity = params[:quantity].to_i
+    @batch = Batch.create(father_id: @breed.father_id, mother_id: @breed.mother_id, breed_id: @breed.id,quantity: quantity, childbirthday: params[:childbirthday],basket_id: @basket)
+    quantity.times do |i|
+     mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id)
+    end
+  end
+
+  def change_basket 
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+    @mouse.basket_id = params[:mouse][:basket_id]
+    @mouse.save
+    @mouses=@basket.mice
+
+  end
+
+  def get_other_basket 
+    @basket = Basket.find(params[:id])
+  end
+
+  def find_new_basket 
+    @old_basket = Basket.find(params[:id])
+    @another_basket = Basket.find(params[:new_basket_id])
+  end
+
+  def save_mouse
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+    @m_old_basket = @mouse.basket
+    exchange_mouses(@basket, @mouse, @m_old_basket)   
+  end
+
+  def breed_mouse 
+    @basket = Basket.find(params[:id])
+    @f_m = Mouse.find(params[:mouse_id])
+    @m_m = @basket.mice.where(gender: "M").first
+    @breed = Breed.where(basket_id: @basket.id, mother_id: @f_m.id, father_id: @m_m.id, is_usable: true).first
   end
 
   def autocomplete 
@@ -16,6 +98,12 @@ class BasketsController < ApplicationController
   # GET /baskets/1
   # GET /baskets/1.json
   def show
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.where(created_by: current_user.id, basket_id: nil)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.js 
+    end
   end
 
   # GET /baskets/new
@@ -48,11 +136,8 @@ class BasketsController < ApplicationController
   def update
     respond_to do |format|
       if @basket.update(basket_params)
-        format.html { redirect_to @basket, notice: 'Basket was successfully updated.' }
-        format.json { render :show, status: :ok, location: @basket }
-      else
-        format.html { render :edit }
-        format.json { render json: @basket.errors, status: :unprocessable_entity }
+        @framework = @basket.framework
+        format.js
       end
     end
   end
@@ -75,6 +160,9 @@ class BasketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def basket_params
-      params[:basket].permit(:code)
+      params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
+    end
+    def framework_params
+      params[:framework].permit(:code, :axis_y, :axis_x)
     end
 end

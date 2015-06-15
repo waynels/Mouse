@@ -1,0 +1,18 @@
+<div class="modal-body">
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+  
+$(document).ready(function(){
+    $(".select").select2();
+    });
+//]]>
+</script>
+  <%= form_for @mouse,:url => change_basket_basket_path(mouse_id: @mouse.id,id: @basket.id),:method => :post,:remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+  <div class="control-group">
+    <label for="textfield" class="control-label">移动到</label>
+    <div class="controls">
+      <%= f.select :basket_id, Basket.where("id <> #{@basket.id}").collect { |p| [p.code, p.id]},{},{:class=> 'select input-large'}%>
+    </div>
+  </div>
+<% end %>
+</div>

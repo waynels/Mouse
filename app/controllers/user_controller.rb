@@ -1,6 +1,6 @@
 #encoding: utf-8
 class UserController < ApplicationController
-#  authorize_resource
+  authorize_resource
   before_action :set_user, only: [:show, :edit, :update, :destroy, :set_roles, :save_roles]
 
   respond_to :html
@@ -32,7 +32,7 @@ class UserController < ApplicationController
   def get_data
     key = params[:search][:value] if params[:search]
     column = ["users.username", "users.email", ["users.created_at"]]
-    data = get_datatable_data(column, "User")
+    data = get_datatable_data(column, "User",nil)
     arr = []
     data[0].each do |item|
       op_str = ""
@@ -73,7 +73,7 @@ class UserController < ApplicationController
     @user.confirmed_at = DateTime.now()
     @user.confirmation_sent_at = DateTime.now()
     @user.save
-    @user.add_role :seller
+    @user.add_role :Scientist
   end
 
   def update
