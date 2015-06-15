@@ -67,11 +67,11 @@ ActiveRecord::Schema.define(version: 20150429035558) do
     t.integer  "basket_id",      limit: 4
     t.integer  "batch_id",       limit: 4
     t.string   "identification", limit: 255
+    t.boolean  "is_survival",    limit: 1,                           default: true
     t.decimal  "gfp",                        precision: 8, scale: 2
     t.decimal  "gfp_val",                    precision: 8, scale: 2
     t.datetime "created_at",                                                        null: false
     t.datetime "updated_at",                                                        null: false
-    t.boolean  "is_survival",    limit: 1,                           default: true
   end
 
   create_table "operation", force: :cascade do |t|
