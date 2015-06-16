@@ -99,7 +99,7 @@ class BasketsController < ApplicationController
   # GET /baskets/1.json
   def show
     @basket = Basket.find(params[:id])
-    @mouse = Mouse.where(created_by: current_user.id, basket_id: nil)
+    @mice = Mouse.where(created_by: current_user.id, basket_id: nil)
     respond_to do |format|
       format.html # index.html.erb
       format.js 

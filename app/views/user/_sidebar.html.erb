@@ -11,7 +11,11 @@
   <h1><img src="/assets/icon_box.png" />管理中心<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
   <div class="bar_content" >
         <ol class="item" id="role_items">
+          <% if current_user.has_role?(:PI) %>
           <li class="item_list" id="cell_item_"><a href="<%= user_index_path %>">用户管理</a></li>
+          <%else%>
+          <li class="item_list" id="cell_item_"><a href="/user/<%= current_user.id %>/edit">修改信息</a></li>
+          <%end%>
         </ol>
   </div>
 </div>
