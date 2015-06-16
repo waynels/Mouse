@@ -35,7 +35,6 @@ Rails.application.routes.draw do
       get "add_mouse"
       post "save_mouse"
       post "create_littler_mice"
-      get "remove_mouse"
       get "breed_mouse"
       post "change_basket"
       get "get_other_basket"
@@ -52,8 +51,8 @@ Rails.application.routes.draw do
     collection do
       post 'get_data'
       get 'autocomplete'
-      get "remove_mouse"
-      get "remove_mouse2"
+      get "remove_out"
+      get "remove_in"
       get "change_strain"
     end
     member do
