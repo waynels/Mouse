@@ -112,10 +112,14 @@
 #   mouse.save
 #   p "#{mouse.id}--#{mouse.father_id}--#{mouse.mother_id}"
 # end
- user = User.create(full_name: 'PI', username: 'admin', email: 'admin@email.com', password: '12345678')
- #user = User.first
- user.add_role :PI
- arr = [["CTK", "Combonation transgene + KO"], ['E', 'endogenous'], ["Floxed","tissue specific knock out"],  ["KI","knock in"], ["KO","knock out"],["MK","multi allele knock out"], ["MTG","multi allele trans gene"],["TG", "trans gene"], ["SM", 'spontaneous mutation'] ]
- arr.each do |gt|
-   gentype = GeneticType.create(short_name: gt[0], full_name: gt[1])
- end
+#user = User.create(full_name: 'PI', username: 'admin', email: 'admin@email.com', password: '12345678')
+##user = User.first
+#user.add_role :PI
+#arr = [["CTK", "Combonation transgene + KO"], ['E', 'endogenous'], ["Floxed","tissue specific knock out"],  ["KI","knock in"], ["KO","knock out"],["MK","multi allele knock out"], ["MTG","multi allele trans gene"],["TG", "trans gene"], ["SM", 'spontaneous mutation'] ]
+#arr.each do |gt|
+#  gentype = GeneticType.create(short_name: gt[0], full_name: gt[1])
+#end
+ Role.create(name: 'Manager')
+ Role.create(name: 'Faculty')
+ role = Role.find_by_name('Scientist')
+ role.destroy

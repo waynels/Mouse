@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.integer  "mother_id",   limit: 4
     t.integer  "basket_id",   limit: 4
     t.integer  "batch_id",    limit: 4
-    t.string   "life_status", limit: 255
+    t.string   "life_status", limit: 255,   default: "A"
     t.string   "coat_color",  limit: 255
     t.date     "dead_date"
     t.date     "dead"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.integer  "mouse_id",    limit: 4
     t.string   "operation",   limit: 255
     t.text     "description", limit: 65535
-    t.boolean  "status",      limit: 1,     default: false
+    t.string   "status",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
