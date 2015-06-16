@@ -93,29 +93,13 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.string   "code",        limit: 255
     t.string   "generation",  limit: 255
     t.date     "birthday"
-<<<<<<< HEAD
-    t.date     "weaningday"
-    t.string   "gender",         limit: 255
-    t.integer  "father_id",      limit: 4
-    t.string   "father_code",    limit: 255
-    t.integer  "mother_id",      limit: 4
-    t.string   "mother_code",    limit: 255
-    t.integer  "basket_id",      limit: 4
-    t.integer  "batch_id",       limit: 4
-    t.string   "identification", limit: 255
-    t.boolean  "is_survival",    limit: 1,                           default: true
-    t.decimal  "gfp",                        precision: 8, scale: 2
-    t.decimal  "gfp_val",                    precision: 8, scale: 2
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
-=======
     t.date     "wean_date"
     t.string   "sex",         limit: 255
     t.integer  "father_id",   limit: 4
     t.integer  "mother_id",   limit: 4
     t.integer  "basket_id",   limit: 4
     t.integer  "batch_id",    limit: 4
-    t.string   "life_status", limit: 255
+    t.string   "life_status", limit: 255,   default: "A"
     t.string   "coat_color",  limit: 255
     t.date     "dead_date"
     t.date     "dead"
@@ -130,7 +114,6 @@ ActiveRecord::Schema.define(version: 20150608092954) do
   create_table "mice_alleles", id: false, force: :cascade do |t|
     t.integer "mouse_id",  limit: 4
     t.integer "allele_id", limit: 4
->>>>>>> FETCH_HEAD
   end
 
   create_table "operations", force: :cascade do |t|
@@ -185,7 +168,7 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.integer  "mouse_id",    limit: 4
     t.string   "operation",   limit: 255
     t.text     "description", limit: 65535
-    t.boolean  "status",      limit: 1,     default: false
+    t.string   "status",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
