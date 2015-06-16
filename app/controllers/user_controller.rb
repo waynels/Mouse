@@ -65,6 +65,7 @@ class UserController < ApplicationController
 
   def edit
     authorize! :read, @user
+    p @user
   end
 
   def create
@@ -73,7 +74,7 @@ class UserController < ApplicationController
     @user.confirmed_at = DateTime.now()
     @user.confirmation_sent_at = DateTime.now()
     @user.save
-    @user.add_role :Scientist
+    @user.add_role :Manager
   end
 
   def update

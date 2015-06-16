@@ -12,10 +12,17 @@ class Ability
     if user.has_role?(:PI)
       can :manage, :all
     end
-    if user.has_role?(:Scientist)
-      can :manage, Mouse, :created_by => user.id
+    if user.has_role?(:Manager)
+      can :manage, User, :id => user.id 
+      can :manage, Mouse
       can :manage, Strain
       can :manage, Gene
+      can :manage, Basket 
+    end
+    if user.has_role?(:Faculty)
+      can :manage, User, :id => user.id 
+      can :manage, Mouse, :created_by => user.id
+      can :edit, Basket, :onwer_id => user.id
     end
     #
     # The first argument to `can` is the action you are giving the user 
