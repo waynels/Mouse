@@ -1,3 +1,7 @@
 $('#myModal').modal('hide')
 $('.modal-body').empty();
+<% if @operation_type == "set_cage_type" %>
+$("#basket_cage_list").replaceWith("<%= j render "frameworks/framework_baskets" %>")
+<% elsif @operation_type == "set_onwer" %>
 $("#basket_cage_list").replaceWith("<%= j render "baskets_box" %>")
+<% end %>

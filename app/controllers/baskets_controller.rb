@@ -112,7 +112,9 @@ class BasketsController < ApplicationController
   end
 
   # GET /baskets/1/edit
+  #
   def edit
+    @operation_type = params[:operation_type]
   end
 
   # POST /baskets
@@ -135,6 +137,8 @@ class BasketsController < ApplicationController
   # PATCH/PUT /baskets/1.json
   def update
     respond_to do |format|
+      @operation_type = params[:operation_type]
+      p @operation_type
       if @basket.update(basket_params)
         @framework = @basket.framework
         format.js

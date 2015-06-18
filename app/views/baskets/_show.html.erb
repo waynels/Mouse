@@ -40,7 +40,6 @@ $(function() {
       drop: function( event, ui ) {
         deleteImage( ui.draggable );
         var mId = ui.draggable.attr("id");
-        alert(mId);
         $.ajax({url: "/mice/remove_out?id="+mId+"&basket_id=<%= @basket.id %>",type: "GET",async:false})
         }
     });
@@ -51,6 +50,8 @@ $(function() {
       activeClass: "custom-state-active",
       drop: function( event, ui ) {
         recycleImage( ui.draggable );
+        var mId = ui.draggable.attr("id");
+        $.ajax({url: "/mice/remove_in?id="+mId+"&basket_id=<%= @basket.id %>",type: "GET",async:false})
       }
     });
  
@@ -134,7 +135,7 @@ $(function() {
 .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
 .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 .gallery li a { float: right; }
-.gallery li a.ui-icon-zoomin { float: left; }
+.gallery li a.ui-icon-comment { float: left; }
 .gallery li img { width: 100%; cursor: move; }
 
 #trash { float: right; width: 32%; min-height: 18em; padding: 1%; }
@@ -143,7 +144,9 @@ $(function() {
 #trash .gallery h5 { display: none; }
 </style>
 <div class="ui-widget ui-helper-clearfix" style="padding:8px;">
- 
+<div class="">
+  <%= link_to "笼子类型", edit_basket_path(@basket, :operation_type => "set_cage_type") ,:remote => true,:class => 'btn btn-small ' %>
+</div>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
   <% @basket.mice.each do |m|%>
     <li class="ui-widget-content ui-corner-tr" id="mouse_<%= m.id %>">
@@ -158,7 +161,9 @@ $(function() {
           <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
       <%end%>
     <%end%>
+    <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: alert('<%= m.code %>');" >Mouse Information</a>
     <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a title="View larger image" class="ui-icon ui-icon-plusthick">View larger</a>
     <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
     </li>
   <%end%>
@@ -168,16 +173,21 @@ $(function() {
   <h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> 临时存放</h4>
   <ul class="gallery ui-helper-reset">
   <% @mice.each do |m|%>
-  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;">
+  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;" id="mouse_<%= m.id %>">
   <% if m.code == nil or m.code == ""  %>
+    <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
   <%else %>
     <% if m.sex == "M" %>
+      <h5 class="ui-widget-header"><%= m.code %></h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
     <%else%>
+      <h5 class="ui-widget-header"><%= m.code %></h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
     <%end%>
   <%end%>
+    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
+    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
     <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
     <a class="ui-icon ui-icon-arrowreturnthick-1-s" title="Recycle this image">Recycle image</a>
   <% end %>

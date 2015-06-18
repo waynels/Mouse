@@ -17,3 +17,15 @@ $(function () {
 <% content_for :sidebar do %>
     <%= render :partial => 'todo_list' %>
 <% end %>
+<div id="myModal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">小鼠</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="save_btn btn btn-primary" onclick="javascript: $('form:first').submit();">保存</button>
+  </div>
+</div>

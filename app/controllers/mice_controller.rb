@@ -87,6 +87,17 @@ class MiceController < ApplicationController
       format.js
     end
   end
+  def remove_in
+    mouse_id = params[:id].split("_")[1]
+    @mouse = Mouse.find(mouse_id)
+    @basket = Basket.find(params[:basket_id])
+    @mouse.basket_id = @basket.id 
+    @mouse.save
+    @mice = Mouse.where(created_by: current_user.id, basket_id: nil)
+    respond_to do |format|
+      format.js
+    end
+  end
 
 
   def family_tree
