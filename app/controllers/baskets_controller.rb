@@ -11,6 +11,10 @@ class BasketsController < ApplicationController
       format.js 
     end
   end
+
+  def show_mouse
+    @mouse = Mouse.find(params[:mouse_id])
+  end
   
   def cage_setting
     @frameworks = Framework.all
@@ -46,14 +50,25 @@ class BasketsController < ApplicationController
 
   end
 
+  def breeding_littler_mice 
+    @basket = Basket.find(params[:id])
+    @f_m = Mouse.find(params[:mouse_id])
+    @breed = Breed.where(mother_id: @f_m.id).last
+    @m_m = @breed.father
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def create_littler_mice 
     @breed = Breed.find(params[:breed_id])
     @basket = Basket.find(params[:id])
+    @framework = @basket.framework
     strain_id = params[:strain_id].to_i
     quantity = params[:quantity].to_i
     @batch = Batch.create(father_id: @breed.father_id, mother_id: @breed.mother_id, breed_id: @breed.id,quantity: quantity, childbirthday: params[:childbirthday],basket_id: @basket)
     quantity.times do |i|
-     mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id)
+     mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id, onwer_id: current_user.id, created_by: current_user.id)
     end
   end
 
@@ -64,6 +79,11 @@ class BasketsController < ApplicationController
     @mouse.save
     @mouses=@basket.mice
 
+  end
+
+  def appraisal_mouse 
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
   end
 
   def get_other_basket 
@@ -141,6 +161,16 @@ class BasketsController < ApplicationController
       p @operation_type
       if @basket.update(basket_params)
         @framework = @basket.framework
+        if @basket.cage_type == "M"
+          breed_cage_at  = params[:breed_cage_at]
+          male = @basket.mice.male_mice.first
+          females = @basket.mice.female_mice
+          females.each do |f|
+            breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at)
+          end
+
+          
+        end
         format.js
       end
     end

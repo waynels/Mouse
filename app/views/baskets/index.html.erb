@@ -1,3 +1,6 @@
+<div class="basket_show" style="padding-bottom:15px; border: 1px solid #bfbfbf;padding: 1px; display:none;"></div>
+<br />
+<div id="basket_cage_list"></div>
 <div id="stores_area">
 <script type="text/javascript" language="javascript" charset="utf-8">
 $(function () { 
@@ -11,9 +14,6 @@ $(function () {
   <% end %>
 </ul>
 </div>
-<div class="basket_show" style="padding-bottom:15px; border: 1px solid #bfbfbf;padding: 1px; display:none;"></div>
-<br />
-<div id="basket_cage_list"></div>
 <% content_for :sidebar do %>
     <%= render :partial => 'todo_list' %>
 <% end %>

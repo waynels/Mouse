@@ -14,14 +14,12 @@ Rails.application.routes.draw do
     member do
       post "save_mice_cage"
       post "save_die_record"
-      post "save_appraisal_mouse"
       get "disable"
     end
     collection do
       post 'get_data'
       get "cage"
       get "cage_info"
-      get "appraisal_mouse"
       get "show_mouse"
       get "edit_mouse"
       get "die_record"
@@ -39,10 +37,14 @@ Rails.application.routes.draw do
       post "change_basket"
       get "get_other_basket"
       post "find_new_basket"
+      get "breeding_littler_mice"
+      get "appraisal_mouse"
+      post "save_appraisal_mouse"
     end
     collection do
       get "cage_setting"
       get "show_basket"
+      get "show_mouse"
       get "new_framework"
 
     end

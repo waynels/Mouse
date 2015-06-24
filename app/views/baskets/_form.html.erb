@@ -23,6 +23,12 @@
         <%= f.select :cage_type, Basket::BASKETTYPE, {include_blank: true},{:class=> 'select input-large'} %>  
       </div>
     </div>
+    <div class="control-group cage_at" style="display:none;" >
+      <label for="textfield" class="control-label">合笼时间</label>
+      <div class="controls">
+        <%= text_field_tag :breed_cage_at %>
+      </div>
+    </div>
   <% end %>
 <% end %>
 </div>

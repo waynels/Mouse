@@ -5,7 +5,7 @@ class CreateBreeds < ActiveRecord::Migration
       t.integer :father_id
       t.integer :mother_id
       t.date :cage_at
-      t.boolean :is_usable
+      t.boolean :is_usable, default: true
 
       t.timestamps null: false
     end

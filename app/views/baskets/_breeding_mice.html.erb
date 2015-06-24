@@ -1,0 +1,41 @@
+<div class="modal-body">
+  <%= form_for @basket,:url => create_littler_mice_basket_path(id: @basket.id),:method => :post,:remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+    <div class="span6">
+    <div class="control-group">
+      <label for="textfield" class="control-label">父亲</label>
+      <div class="controls">
+        <%= @m_m.code %>[<%= @m_m.strain.name %>]
+      </div>
+    </div>
+  </div>
+  <div class="span6">
+    <div class="control-group">
+      <label for="textfield" class="control-label">母亲</label>
+      <div class="controls">
+        <%= @f_m.code %>[<%= @f_m.strain.name %>]
+      </div>
+    </div>
+  </div>
+  <div class="span12">
+    <div class="control-group">
+      <label for="textfield" class="control-label">品系</label>
+      <div class="controls">
+        <%= select_tag :strain_id, options_from_collection_for_select(Strain.all, :id, :name ),{:class=> 'select input-large'}%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">生产数量</label>
+      <div class="controls">
+        <%= text_field_tag :quantity %>
+        <%= hidden_field_tag :breed_id,  @breed.id %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">繁殖日期</label>
+      <div class="controls">
+        <%= text_field_tag :childbirthday %>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>

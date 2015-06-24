@@ -1,4 +1,17 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
+    function show_mouse(mouse)
+    {
+      $.ajax({url: "/baskets/show_mouse?mouse_id="+mouse});
+    }
+    function breeding_littler_mice(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/breeding_littler_mice?mouse_id="+mouse});
+    }
+
+    function appraisal_mouse(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/appraisal_mouse?mouse_id="+mouse});
+    }
 //<![CDATA[
 //]]>
 $(function() {
@@ -136,6 +149,7 @@ $(function() {
 .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 .gallery li a { float: right; }
 .gallery li a.ui-icon-comment { float: left; }
+.gallery li a.ui-icon-plusthick{ float: left; }
 .gallery li img { width: 100%; cursor: move; }
 
 #trash { float: right; width: 32%; min-height: 18em; padding: 1%; }
@@ -144,8 +158,8 @@ $(function() {
 #trash .gallery h5 { display: none; }
 </style>
 <div class="ui-widget ui-helper-clearfix" style="padding:8px;">
-<div class="">
-  <%= link_to "笼子类型", edit_basket_path(@basket, :operation_type => "set_cage_type") ,:remote => true,:class => 'btn btn-small ' %>
+<div class="pull-right">
+  <a style="font-size: 26px;" href="<%= edit_basket_path(@basket, :operation_type => "set_cage_type") %>" data-remote=true ><i class="icon-cog"></i></a> 
 </div>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
   <% @basket.mice.each do |m|%>
@@ -153,27 +167,32 @@ $(function() {
     <% if m.code == nil or m.code == ""  %>
       <h5 class="ui-widget-header">Litter</h5>
       <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72" />
+      <a title="Appraisal Mouse" class="ui-icon ui-icon-contact" onclick="javascript: appraisal_mouse(<%= m.id %>)" >Appraisal Mouse</a> 
     <%else %>
         <h5 class="ui-widget-header"><%= m.code %></h5>
       <% if m.sex == "M" %>
         <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
       <%else %>
           <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
+          <% if @basket.cage_type == "B" or @basket.cage_type == "M" %>
+          <% if query_breed_is_usable(m) %>
+            <a title="Breeding litter mice" class="ui-icon ui-icon-plusthick" onclick="javascript: breeding_littler_mice(<%= m.id %>)" >Breeding Litter Mice</a>
+          <%end%>
+          <%end%>
       <%end%>
     <%end%>
-    <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: alert('<%= m.code %>');" >Mouse Information</a>
-    <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-    <a title="View larger image" class="ui-icon ui-icon-plusthick">View larger</a>
-    <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
+    <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
+    <a title="Mouse Information" class="ui-icon ui-icon-clipboard" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
+    <a title="Mouse Information" class="ui-icon ui-icon-closethick" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
     </li>
   <%end%>
 </ul>
  
-<div id="trash" class="ui-widget-content ui-state-default">
+<div id="trash" style="margin-top:28px;" class="ui-widget-content ui-state-default">
   <h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> 临时存放</h4>
   <ul class="gallery ui-helper-reset">
   <% @mice.each do |m|%>
-  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;" id="mouse_<%= m.id %>">
+  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 60px;" id="mouse_<%= m.id %>">
   <% if m.code == nil or m.code == ""  %>
     <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
@@ -186,8 +205,7 @@ $(function() {
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
     <%end%>
   <%end%>
-    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
-    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
+    <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a>
     <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
     <a class="ui-icon ui-icon-arrowreturnthick-1-s" title="Recycle this image">Recycle image</a>
   <% end %>
