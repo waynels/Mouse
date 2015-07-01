@@ -1,0 +1,17 @@
+<% if @return_info == "Mate" %>
+  alert("Mate");
+$(".modal-body").replaceWith("<%= j render "baskets/mate" %>");
+$('#myModal').modal('show');
+<% elsif @return_info == "TRUE" %>
+  alert("放入成功");
+$(".basket_show").replaceWith("<%= j render "baskets/show" %>");
+$(".basket_show").show();
+<% elsif @return_info == "FALSE" %>
+  alert("对不起，该小鼠无法放入其中");
+$(".basket_show").replaceWith("<%= j render "baskets/show" %>");
+$(".basket_show").show();
+<% elsif @return_info == "Move_Out" %>
+$(".basket_show").replaceWith("<%= j render "baskets/show" %>");
+$(".basket_show").show();
+<% end %>
+

@@ -1,0 +1,22 @@
+<div class="modal-body">
+  <%= form_for @mouse, :url => dead_record_basket_path(@basket,mouse_id: @mouse.id), :method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Dead Reason</label>
+      <div class="controls">
+        <%= f.select :life_status, Mouse::DEADTYPE, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Dead Date</label>
+      <div class="controls">
+        <%= f.text_field :dead_date%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Description</label>
+      <div class="controls">
+        <%= f.text_area :description%>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,6 @@
+$(".modal-body").replaceWith("<%= j render "dead" %>")
+$("#myModalLabel").html("死亡记录");
+$('#myModal').modal('show');
+$(".select").select2();
+$(".save_btn").show();
+$("#mouse_dead_date" ).datepicker({format: "yyyy-mm-dd"});

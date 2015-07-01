@@ -1,18 +1,27 @@
+<div class="basket_show <%= @basket.cage_type %>basket_border" style="padding-bottom:15px; padding: 1px; display:none;">
 <script type="text/javascript" language="javascript" charset="utf-8">
-//<![CDATA[
-//]]>
-$(function() {
-  //    $( ".division_mouse" ).draggable({ revert: "invalid" });
-  //    $( "#another_basket" ).droppable({
-  //accept: ".division_mouse",
-  //drop: function( event, ui ) {
-  //var mId = ui.draggable.attr("id");
-  //var bId = $("#another_basket_id").val()
-  //$( this ).addClass( "ui-state-highlight" )
-  //$.ajax({url: "/mice/remove_mouse?id="+mId+"&basket_id="+bId+"&old_basket=<%= @basket.id%>",type: "GET",async:false})
-  //}
-  //});
+    function show_mouse(mouse)
+    {
+      $.ajax({url: "/baskets/show_mouse?mouse_id="+mouse});
+    }
+    function breeding_littler_mice(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/breeding_littler_mice?mouse_id="+mouse});
+    }
+    function mouse_dead(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/mouse_dead?mouse_id="+mouse});
+    }
+    function share_mouse(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/share_mouse?mouse_id="+mouse});
+    }
 
+    function appraisal_mouse(mouse)
+    {
+      $.ajax({url: "/baskets/<%= @basket.id %>/appraisal_mouse?mouse_id="+mouse});
+    }
+$(function() {
 //新的笼子js
     var $gallery = $( "#gallery" ),
     $trash = $( "#trash" );
@@ -40,8 +49,7 @@ $(function() {
       drop: function( event, ui ) {
         deleteImage( ui.draggable );
         var mId = ui.draggable.attr("id");
-        alert(mId);
-        $.ajax({url: "/mice/remove_out?id="+mId+"&basket_id=<%= @basket.id %>",type: "GET",async:false})
+        $.ajax({url: "/mice/mouse_remove?id="+mId+"&basket_id=<%= @basket.id %>&move_type=remove_out"})
         }
     });
  
@@ -51,6 +59,9 @@ $(function() {
       activeClass: "custom-state-active",
       drop: function( event, ui ) {
         recycleImage( ui.draggable );
+        var mId = ui.draggable.attr("id");
+        $.ajax({url: "/mice/mouse_remove?id="+mId+"&basket_id=<%= @basket.id %>&move_type=remove_in"})
+        //$.ajax({url: "/mice/remove_in?id="+mId+"&basket_id=<%= @basket.id %>"})
       }
     });
  
@@ -134,7 +145,8 @@ $(function() {
 .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
 .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 .gallery li a { float: right; }
-.gallery li a.ui-icon-zoomin { float: left; }
+.gallery li a.ui-icon-comment { float: left; }
+.gallery li a.ui-icon-plusthick{ float: left; }
 .gallery li img { width: 100%; cursor: move; }
 
 #trash { float: right; width: 32%; min-height: 18em; padding: 1%; }
@@ -143,47 +155,57 @@ $(function() {
 #trash .gallery h5 { display: none; }
 </style>
 <div class="ui-widget ui-helper-clearfix" style="padding:8px;">
- 
+<div class="pull-right">
+  <a style="font-size: 26px;" href="<%= edit_basket_path(@basket, :operation_type => "set_cage_type") %>" data-remote=true ><i class="icon-cog"></i></a> 
+</div>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
   <% @basket.mice.each do |m|%>
     <li class="ui-widget-content ui-corner-tr" id="mouse_<%= m.id %>">
-    <% if m.code == nil or m.code == ""  %>
+    <% if m.sex == "" or m.sex == nil  %>
       <h5 class="ui-widget-header">Litter</h5>
       <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72" />
-    <%else %>
+      <a title="Appraisal Mouse" class="ui-icon ui-icon-contact" onclick="javascript: appraisal_mouse(<%= m.id %>)" >Appraisal Mouse</a> 
+    <% elsif m.sex == "M" %>
         <h5 class="ui-widget-header"><%= m.code %></h5>
-      <% if m.sex == "M" %>
-        <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
-      <%else %>
-          <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
+      <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
+    <%elsif m.sex == "F" %>
+      <h5 class="ui-widget-header"><%= m.code %></h5>
+      <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
+      <% if @basket.cage_type == "B" or @basket.cage_type == "M" %>
+        <% if query_breed_is_usable(m) %>
+          <a title="Breeding litter mice" class="ui-icon ui-icon-plusthick" onclick="javascript: breeding_littler_mice(<%= m.id %>)" >Breeding Litter Mice</a>
+        <%end%>
       <%end%>
     <%end%>
-    <a title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-    <a title="Delete this image" class="ui-icon ui-icon-arrowreturnthick-1-n">Delete image</a>
+    <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
+    <a title="Mouse Dead" class="ui-icon ui-icon-closethick" onclick="javascript: mouse_dead(<%= m.id %>)" >Mouse Information</a> 
     </li>
   <%end%>
 </ul>
  
-<div id="trash" class="ui-widget-content ui-state-default">
-  <h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">Trash</span> 临时存放</h4>
+<div id="trash" style="margin-top:28px;" class="ui-widget-content ui-state-default">
+  <h4 class="ui-widget-header">&nbsp; 临时存放</h4>
   <ul class="gallery ui-helper-reset">
   <% @mice.each do |m|%>
-  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 48px;">
-  <% if m.code == nil or m.code == ""  %>
+  <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 60px;" id="mouse_<%= m.id %>">
+  <% if m.sex == "" or m.sex == nil %>
+    <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
-  <%else %>
-    <% if m.sex == "M" %>
+    <a title="Appraisal Mouse" class="ui-icon ui-icon-contact" onclick="javascript: appraisal_mouse(<%= m.id %>)" >Appraisal Mouse</a> 
+  <% elsif m.sex == "M" %>
+    <h5 class="ui-widget-header"><%= m.code %></h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
-    <%else%>
+  <%elsif m.sex == "F"%>
+    <h5 class="ui-widget-header"><%= m.code %></h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
-    <%end%>
   <%end%>
-    <a class="ui-icon ui-icon-zoomin" title="View larger image">View larger</a>
-    <a class="ui-icon ui-icon-arrowreturnthick-1-s" title="Recycle this image">Recycle image</a>
-  <% end %>
+  <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a>
+  <a title="Share Mouse" class="ui-icon ui-icon-extlink" onclick="javascript: share_mouse(<%= m.id %>)" >Mouse Information</a>
+<% end %>
   </ul>
 </div>
  
 </div>
 <br/>
 <br/>
+</div>

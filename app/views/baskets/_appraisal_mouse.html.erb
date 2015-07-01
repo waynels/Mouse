@@ -1,0 +1,56 @@
+<div class="modal-body">
+  <%= form_for @mouse, :url => save_appraisal_mouse_basket_path(@basket,mouse_id: @mouse.id), :method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+    <div class="mouse_allele">
+      <% @mouse.mouse_genes.each do |gene| %>
+        <div class="control-group">
+        <label for="textfield" class="control-label"><%= gene.short_name %> Allele</label>
+        <div class="controls">
+            <%= select_tag "gene_allele_#{gene.id}", options_from_collection_for_select(gene.alleles, :id, :name),{:class=> 'select input-large'}%>
+        </div>
+      </div>
+    <%end%>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Coat Color</label>
+      <div class="controls">
+        <div class="mouse_coat_color">
+          <% if @mouse.strain_id %>
+            <%= f.select :coat_color, @mouse.strain.strain_coat_color, {},{:class=> 'select input-large'} %>  
+        <% else %>
+            <%= f.select :coat_color, Strain.where(status: "A").first.strain_coat_color, {},{:class=> 'select input-large'} %>  
+        <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Code</label>
+      <div class="controls">
+        <%= f.text_field :code %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Generation</label>
+      <div class="controls">
+        <%= f.text_field :generation%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Birthday</label>
+      <div class="controls">
+        <%= f.text_field :birthday%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Wean Date</label>
+      <div class="controls">
+        <%= f.text_field :wean_date%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Sex</label>
+      <div class="controls">
+        <%= f.select :sex, Mouse::SEXTYPE, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+  <% end %>
+</div>

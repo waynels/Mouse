@@ -37,10 +37,11 @@ $(function () {
 $(document).ready(function(){
     $("#mouse_life_status").change(function(){
         var checkValue=$(this).val();
+        alert(checkValue);
         $.ajax({url:'/mice?status='+checkValue}); 
         });
-        });
     $("#mouse_life_status").select2();
+    });
 </script>
 
 <div class="row-fluid">
@@ -53,8 +54,8 @@ $(document).ready(function(){
         <h3>
         </h3>
         <div style="float:right; padding-right:2px;">
-          <a data-remote=true class="item_node" href="<%= mice_url(status: :alive)%>">Alive</a>
-          <a data-remote=true class="item_node" href="<%= mice_url(status: :not_alive) %>">Not Alive</a>
+          <a data-remote=true id="alive" class="btn btn_status btn-info" href="<%= mice_url(status: :alive)%>">Alive</a>
+          <a data-remote=true id="not_alive" class="btn btn_status" href="<%= mice_url(status: :not_alive) %>">Not Alive</a>
           <%= link_to 'New', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
         </div>
       </div>

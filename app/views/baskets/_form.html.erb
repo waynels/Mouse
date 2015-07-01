@@ -8,18 +8,33 @@
 //]]>
   </script>
   <%= form_for @basket, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+    <%= hidden_field_tag :operation_type, @operation_type %>
+    <% if @operation_type == "set_onwer" %>
     <div class="control-group">
       <label for="textfield" class="control-label">所属用户</label>
       <div class="controls">
         <%= f.select :onwer_id, User.all.collect { |p| [ p.full_name, p.id ] }, {include_blank: true},{:class=> 'select input-large'} %>  
       </div>
     </div>
+    <% elsif @operation_type == "set_cage_type" %>
     <div class="control-group">
       <label for="textfield" class="control-label">笼子类型</label>
       <div class="controls">
-        <%= f.select :cage_type, Basket::BASKETTYPE, {include_blank: true},{:class=> 'select input-large'} %>  
+        <%= f.select :cage_type, @basket.get_basket_types, {},{:class=> 'select input-large'} %>  
       </div>
     </div>
-
+   <div class="control-group cage_at" 
+    <% if @basket.cage_type != "M"
+         unless (@basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1) %> 
+      style="display:none;" 
+    <% end
+     end %>
+     >
+      <label for="textfield" class="control-label">合笼时间</label>
+      <div class="controls">
+        <%= text_field_tag :breed_cage_at %>
+      </div>
+    </div>
+  <% end %>
 <% end %>
 </div>

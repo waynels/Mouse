@@ -1,4 +1,5 @@
 <% if user_signed_in? %>
+  <% if current_user.has_role?(:PI) %>
   <script>
 $(document).ready(function() {
     $( "#framework_cage_list li").draggable({
@@ -24,4 +25,5 @@ $(document).ready(function() {
     </ol>
   </div>
 </div>
+<% end %>
 <% end %>

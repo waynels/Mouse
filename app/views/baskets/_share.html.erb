@@ -1,0 +1,10 @@
+<div class="modal-body">
+  <%= form_for @mouse, :url => set_share_basket_path(@basket,mouse_id: @mouse.id), :method => :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-striped'} do |f| %>
+    <div class="control-group">
+      <label for="textfield" class="control-label">Share</label>
+      <div class="controls">
+        <%= f.select :onwer_id, User.all.collect{|s| [s.full_name, s.id]}, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+  <% end %>
+</div>
