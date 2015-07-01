@@ -44,6 +44,7 @@ class BasketsController < ApplicationController
   def add_mouse
     @basket = Basket.find(params[:id])
   end
+
   def remove_mouse
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
@@ -70,6 +71,7 @@ class BasketsController < ApplicationController
     quantity.times do |i|
      mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id, onwer_id: current_user.id, created_by: current_user.id)
     end
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
   end
 
   def change_basket 
@@ -78,12 +80,54 @@ class BasketsController < ApplicationController
     @mouse.basket_id = params[:mouse][:basket_id]
     @mouse.save
     @mouses=@basket.mice
-
   end
 
   def appraisal_mouse 
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
+  end
+
+  def save_appraisal_mouse
+    @basket = Basket.find(params[:id])
+    @framework = @basket.framework
+    @mouse = Mouse.find(params[:mouse_id])
+    @mouse.update(mouse_params)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+
+  def share_mouse  
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+  end
+  def set_share  
+    @basket = Basket.find(params[:id])
+    @framework = @basket.framework
+    @mouse = Mouse.find(params[:mouse_id])
+    @mouse.update(mouse_params)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def mouse_dead
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+  end
+
+  def dead_record 
+    @basket = Basket.find(params[:id])
+    @framework = @basket.framework
+    @mouse = Mouse.find(params[:mouse_id])
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mouse.update(mouse_params)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def get_other_basket 
@@ -119,11 +163,15 @@ class BasketsController < ApplicationController
   # GET /baskets/1.json
   def show
     @basket = Basket.find(params[:id])
-    @mice = Mouse.where(created_by: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
     respond_to do |format|
       format.html # index.html.erb
       format.js 
     end
+  end
+
+  def update_breed_cage
+    
   end
 
   # GET /baskets/new
@@ -168,9 +216,8 @@ class BasketsController < ApplicationController
           females.each do |f|
             breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at)
           end
-
-          
         end
+        @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
         format.js
       end
     end
@@ -198,5 +245,8 @@ class BasketsController < ApplicationController
     end
     def framework_params
       params[:framework].permit(:code, :axis_y, :axis_x)
+    end
+    def mouse_params
+      params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
     end
 end

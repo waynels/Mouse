@@ -1,0 +1,18 @@
+<div class="modal-body">
+  <script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+
+  $(document).ready(function(){
+      $(".select").select2();
+      $("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
+      });
+//]]>
+  </script>
+  <%= form_for @basket,update_breed_cage_basket_path(@basket,mouse_id: @mouse.id), :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+      <label for="textfield" class="control-label">合笼时间</label>
+      <div class="controls">
+        <%= text_field_tag :breed_cage_at %>
+      </div>
+    </div>
+<% end %>
+</div>

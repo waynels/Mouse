@@ -1,11 +1,17 @@
 $(".modal-body").replaceWith("<%= j render "form" %>")
-$("#myModalLabel").html("设置笼子类型");
+<% if @operation_type == "set_onwer" %>
+  $("#myModalLabel").html("选择所属人");
+<% elsif @operation_type == "set_cage_type" %>
+  $("#myModalLabel").html("设置笼子类型");
+<%end%>
 $('#myModal').modal('show');
-//alert("aaaccc");
+$("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
 $("#basket_cage_type").change(function(){ 
 var cage_type = $('#basket_cage_type option:selected').val(); 
 if(cage_type == "M"){
-$('.cage_at').show();
-$("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
+  <% if @basket.cage_type == "M" and @basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1 %>
+    $('.cage_at').show();
+    $("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
+<% end %>
 }
 });

@@ -3,7 +3,7 @@
     <div class="control-group">
     <label class="control-label" for="textfield">角色</label>
     <div class="controls">
-      <%= select_tag "role", options_for_select(Role.all.map{|r| r.name}, @user.roles.first.name), :class => "select2-me input-large" %>
+      <%= select_tag "role", options_for_select(Role.all.map{|r| r.name}, @user.roles.size > 0 ? @user.roles.first.name : nil), :class => "select2-me input-large" %>
     </div>
   </div>
 <% end %>

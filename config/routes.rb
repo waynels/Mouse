@@ -32,14 +32,16 @@ Rails.application.routes.draw do
       post "save_cage_type"
       get "add_mouse"
       post "save_mouse"
-      post "create_littler_mice"
-      get "breed_mouse"
-      post "change_basket"
-      get "get_other_basket"
-      post "find_new_basket"
+      get "mouse_dead"
+      post "dead_record"
+      get "share_mouse"
+      post "set_share"
+      post "save_mouse"
       get "breeding_littler_mice"
+      post "create_littler_mice"
       get "appraisal_mouse"
       post "save_appraisal_mouse"
+      put "update_breed_cage"
     end
     collection do
       get "cage_setting"
@@ -53,6 +55,7 @@ Rails.application.routes.draw do
     collection do
       post 'get_data'
       get 'autocomplete'
+      get "mouse_remove"
       get "remove_out"
       get "remove_in"
       get "change_strain"

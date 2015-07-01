@@ -20,10 +20,16 @@
     <div class="control-group">
       <label for="textfield" class="control-label">笼子类型</label>
       <div class="controls">
-        <%= f.select :cage_type, Basket::BASKETTYPE, {include_blank: true},{:class=> 'select input-large'} %>  
+        <%= f.select :cage_type, @basket.get_basket_types, {},{:class=> 'select input-large'} %>  
       </div>
     </div>
-    <div class="control-group cage_at" style="display:none;" >
+   <div class="control-group cage_at" 
+    <% if @basket.cage_type != "M"
+         unless (@basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1) %> 
+      style="display:none;" 
+    <% end
+     end %>
+     >
       <label for="textfield" class="control-label">合笼时间</label>
       <div class="controls">
         <%= text_field_tag :breed_cage_at %>

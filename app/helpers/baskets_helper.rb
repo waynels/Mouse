@@ -12,11 +12,13 @@ module BasketsHelper
     
   end
   def query_breed_is_usable(mouse) 
-    breed = Breed.where(mother_id: mouse.id).last
-    if breed.is_usable == true
+    breed = Breed.where(mother_id: mouse.id)
+    unless breed == nil or breed == []
+    if breed.last.is_usable == true
       true
     else
       false
+    end
     end
   end
 

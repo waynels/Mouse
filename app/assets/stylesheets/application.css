@@ -63,6 +63,24 @@
   padding-top: 3px;
 }
 
+.Mbasket_border{
+  border: 2px solid #CCCCFF;
+}
+.Sbasket_border{
+  border: 2px solid #00CCFF;
+}
+.Bbasket_border{
+  border: 2px solid #FFCCFF;
+}
+.CEbasket_border{
+  border: 2px solid #CCFFFF;
+}
+.NCEbasket_border{
+  border: 2px solid #CCCCCC;
+}
+.basket_border{
+  border: 2px solid #CCCCCC;
+}
 .M_box{
   background:#CCCCFF;
 }

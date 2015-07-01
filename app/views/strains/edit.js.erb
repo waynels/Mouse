@@ -2,7 +2,6 @@ $(".strain_form").replaceWith("<%= j render "form" %>")
 $(".strain_box").hide()
 $(".select").select2();
 $(".tagsinput").tagsInput({width:'auto', height:'auto'});
-KindEditor.create('#strain_description', {"width":"100%","height":300,"allowFileManager":false, "items":["fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline","removeformat","|","justifyleft","justifycenter","justifyright","insertorderedlist","insertunorderedlist","|","emoticons","image","link"]});
 $(".btn_cancel").click(function(){
   $(".strain_box").show(); 
   $(".strain_form").empty()

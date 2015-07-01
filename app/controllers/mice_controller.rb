@@ -23,12 +23,12 @@ class MiceController < ApplicationController
       dir = "asc"
     end
     order = column[order_column].class == Array ? column[order_column][0] : column[order_column]
-    
+
     total = Mouse.all.size
     search_conditions = []
     column.each do |c|
       if c.class == Array
-       # gen_like_condition search_conditions, "Date(#{c[0]})", key
+        # gen_like_condition search_conditions, "Date(#{c[0]})", key
       else
         gen_like_condition search_conditions, c, key
       end
@@ -41,11 +41,11 @@ class MiceController < ApplicationController
         condition = "life_status <> 'A'"
       end
     else
-        condition =  "life_status = 'A'"
+      condition =  "life_status = 'A'"
     end
 
     filter_total = Mouse.includes(:strain , :basket).where(condition_str).where(condition).references(:strains, :baskets).size
-    @mice = Mouse.includes(:strain , :basket).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket)
+    @mice = Mouse.includes(:strain , :basket).where(condition_str).where(condition).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket)
     arr = []
     @mice.each do |item|
       op_str = ""
@@ -82,7 +82,7 @@ class MiceController < ApplicationController
     @basket = Basket.find(params[:basket_id])
     @mouse.basket_id = nil
     @mouse.save
-    @mice = Mouse.where(created_by: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
     respond_to do |format|
       format.js
     end
@@ -93,7 +93,73 @@ class MiceController < ApplicationController
     @basket = Basket.find(params[:basket_id])
     @mouse.basket_id = @basket.id 
     @mouse.save
-    @mice = Mouse.where(created_by: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def mouse_remove 
+    mouse_id = params[:id].split("_")[1]
+    @mouse = Mouse.find(mouse_id)
+    @basket = Basket.find(params[:basket_id])
+    if params[:move_type] == "remove_out"
+      if @basket.cage_type == "M" 
+        if @mouse.sex == "M"
+          breed = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true).last
+          p breed
+          unless breed == nil or breed == [] or breed == ""
+            breed.is_usable = false
+            p breed
+          end
+        elsif @mouse.sex == "F"
+          breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
+          unless breed == nil or breed == [] or breed == ""
+            p breed
+            breed.is_usable = false
+          end
+        else
+        end
+      else
+      end
+      @mouse.basket_id = nil
+      @return_info = "Move_Out"
+    else
+      #判断小鼠能否拖入笼子内
+      if aduit_mouse_to_cage(@mouse, @basket)
+        p "1111111111111"
+        #判断笼子属性做相应的事情
+        if @basket.cage_type == "M"
+          #弹出窗口录入相应信息提交表单
+          #mating_mouse_to_cage(mouse, cage)
+          #
+          if @basket.mice.size > 0
+            if @mouse.sex == "M"
+              females = @basket.mice.female_mice
+              females.each do |f|
+                breed = Breed.create(basket_id: @basket.id,father_id: @mouse.id, mother_id: f.id,cage_at: Time.now.strftime("%Y-%m-%d"))
+              end
+              @return_info = "Mate"
+            elsif @mouse.sex == "F"
+              male = @basket.mice.male_mice.first
+              breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: @mouse.id,cage_at: Time.now.strftime("%Y-%m-%d"))
+              @return_info = "Mate"
+            else
+              @return_info = "TRUE"
+            end
+          else
+            @return_info = "TRUE"
+          end
+        else
+          @return_info = "TRUE"
+        end
+        @mouse.basket_id = @basket.id 
+      else
+        @return_info = "FALSE"
+      end
+    end
+    @mouse.save
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
     respond_to do |format|
       format.js
     end
@@ -108,9 +174,9 @@ class MiceController < ApplicationController
     user = User.find(current_user.id)
     @mouse = Mouse.find(params[:id])
     if @mouse.gender == "M"
-    data = {"name" => @mouse.code ? "#{@mouse.code}♂" : "未编号", "children" => get_tree(@mouse, user)}
+      data = {"name" => @mouse.code ? "#{@mouse.code}♂" : "未编号", "children" => get_tree(@mouse, user)}
     else
-    data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
+      data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
     end
     render :json => data
   end
@@ -146,8 +212,8 @@ class MiceController < ApplicationController
         p arr
         @mouse.allele_ids = arr.uniq
         format.js
-#        format.html { redirect_to @mouse, notice: 'Mouse was successfully created.' }
-#        format.json { render :show, status: :created, location: @mouse }
+        #        format.html { redirect_to @mouse, notice: 'Mouse was successfully created.' }
+        #        format.json { render :show, status: :created, location: @mouse }
       else
         format.html { render :new }
         format.json { render json: @mouse.errors, status: :unprocessable_entity }
@@ -165,15 +231,15 @@ class MiceController < ApplicationController
     end
     p arr
     @mouse.allele_ids = arr.uniq
-#    respond_to do |format|
-#      if @mouse.update(mouse_params)
-#        format.html { redirect_to @mouse, notice: 'Mouse was successfully updated.' }
-#        format.json { render :show, status: :ok, location: @mouse }
-#      else
-#        format.html { render :edit }
-#        format.json { render json: @mouse.errors, status: :unprocessable_entity }
-#      end
-#    end
+    #    respond_to do |format|
+    #      if @mouse.update(mouse_params)
+    #        format.html { redirect_to @mouse, notice: 'Mouse was successfully updated.' }
+    #        format.json { render :show, status: :ok, location: @mouse }
+    #      else
+    #        format.html { render :edit }
+    #        format.json { render json: @mouse.errors, status: :unprocessable_entity }
+    #      end
+    #    end
   end
 
   # DELETE /mice/1
@@ -213,14 +279,82 @@ class MiceController < ApplicationController
     data = [father_hash, mother_hash]
     return data
   end
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_mouse
-      @mouse = Mouse.find(params[:id])
+  def aduit_mouse_to_cage(mouse,cage)
+    if cage.cage_type =="M"
+      if cage.mice.size > 0
+        if mouse.sex == "M" and cage.mice.male_mice.size == 0
+          return true
+        elsif mouse.sex == "F"
+          return true
+        elsif (mouse.sex == "" or mouse.sex == nil)
+          mother_litter = false 
+          p mother_litter
+          cage.mice.female_mice.each do |female|
+            if female.id == mouse.mother_id
+              mother_litter = true
+            end
+          end
+          p mother_litter
+          return mother_litter 
+        end
+      else
+        if (mouse.sex == "" or mouse.sex == nil)
+          return false 
+        else
+          return true
+        end
+      end
+    elsif cage.cage_type == "S"
+      if cage.mice.size > 0
+        if mouse.sex == "M" and cage.mice.female_mice.size == 0
+          return true
+        elsif mouse.sex == "F" and cage.mice.male_mice.size == 0
+          return true
+        elsif (mouse.sex == "" or mouse.sex == nil)
+          mother_litter = false 
+          p mother_litter
+          cage.mice.female_mice.each do |female|
+            if female.id == mouse.mother_id
+              mother_litter = true
+            end
+          end
+          p mother_litter
+          return mother_litter 
+        end
+      else
+        if (mouse.sex == "" or mouse.sex == nil)
+          return false 
+        else
+          return true
+        end
+      end
+    elsif cage.cage_type == "B" 
+      if cage.mice.size > 0
+        return false 
+      else
+        if mouse.sex == "F"
+        return true
+        else
+        return false 
+        end
+      end
+    else
+      if (mouse.sex == "" or mouse.sex == nil)
+        return false 
+      else
+        return true
+      end
     end
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def mouse_params
-      params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
-    end
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_mouse
+    @mouse = Mouse.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def mouse_params
+    params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
+  end
 end

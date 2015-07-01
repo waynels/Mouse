@@ -2,8 +2,11 @@
 $("#mice").DataTable().ajax.url("<%= get_data_mice_path(status: params[:status]) %>");
 $("#mice").DataTable().ajax.reload();
 $(".mice_strain").html("Mice Info[<%= params[:status] %>]");
+$(".btn_status").removeClass("btn-info");
+$("#<%= params[:status] %>").addClass("btn-info");
 <% else %>
 $("#mice").DataTable().ajax.url("<%= get_data_mice_path %>");
 $("#mice").DataTable().ajax.reload();
 $(".mice_strain").html("Mice Info[alive]");
+$("#alive").addClass("btn-info");
 <% end %>
