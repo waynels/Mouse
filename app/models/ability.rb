@@ -11,6 +11,8 @@ class Ability
     end
     if user.has_role?(:PI)
       can :manage, :all
+      cannot :update, Mouse 
+      cannot :handle_mouse, Mouse 
     end
     if user.has_role?(:Manager)
       can :manage, User, :id => user.id 

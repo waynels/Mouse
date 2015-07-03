@@ -1,2 +1,4 @@
 $(".basket_show").replaceWith("<%= j render "show" %>")
 $(".basket_show").show();
+$(".tddiv").removeClass("active");
+$("#cage_<%= @basket.id %>").addClass("active");

@@ -53,11 +53,9 @@ class MiceController < ApplicationController
         op_str = op_str + "<a href='#{mouse_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
-          op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
-        if can? :update, item 
-          op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+        op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
-        end
       end
       arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil,item.generation,item.is_dead, op_str]
     end
@@ -145,12 +143,8 @@ class MiceController < ApplicationController
               @return_info = "Mate"
             elsif @mouse.sex == "F"
               male = @basket.mice.male_mice.first
-              if male
               breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: @mouse.id,cage_at: Time.now.strftime("%Y-%m-%d"))
               @return_info = "Mate"
-              else
-              @return_info = "TRUE"
-              end
             else
               @return_info = "TRUE"
             end
@@ -166,7 +160,6 @@ class MiceController < ApplicationController
       end
     end
     @mouse.save
-    @basket = Basket.find(params[:basket_id])
     @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
     respond_to do |format|
       format.js
@@ -318,8 +311,16 @@ class MiceController < ApplicationController
           return true
         elsif mouse.sex == "F" and cage.mice.male_mice.size == 0
           return true
-        else
-          return false
+        elsif (mouse.sex == "" or mouse.sex == nil)
+          mother_litter = false 
+          p mother_litter
+          cage.mice.female_mice.each do |female|
+            if female.id == mouse.mother_id
+              mother_litter = true
+            end
+          end
+          p mother_litter
+          return mother_litter 
         end
       else
         if (mouse.sex == "" or mouse.sex == nil)
@@ -330,16 +331,7 @@ class MiceController < ApplicationController
       end
     elsif cage.cage_type == "B" 
       if cage.mice.size > 0
-        if (mouse.sex == "" or mouse.sex == nil)
-          mother = cage.mice.female_mice.first
-          if mother
-            if female.id == mouse.mother_id
-              return true
-            end
-          end
-        else
-          return false 
-        end
+        return false 
       else
         if mouse.sex == "F"
         return true
@@ -348,7 +340,11 @@ class MiceController < ApplicationController
         end
       end
     else
+      if (mouse.sex == "" or mouse.sex == nil)
+        return false 
+      else
         return true
+      end
     end
   end
 

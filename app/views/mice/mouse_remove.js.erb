@@ -3,7 +3,7 @@
 $(".modal-body").replaceWith("<%= j render "baskets/mate" %>");
 $('#myModal').modal('show');
 <% elsif @return_info == "TRUE" %>
-  alert("放入成功");
+alert("放入成功");
 $(".basket_show").replaceWith("<%= j render "baskets/show" %>");
 $(".basket_show").show();
 <% elsif @return_info == "FALSE" %>

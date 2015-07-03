@@ -24,8 +24,8 @@
       </div>
     </div>
    <div class="control-group cage_at" 
-    <% if @basket.cage_type != "M"
-         unless (@basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1) %> 
+    <% unless @basket.mice.size >=2 and (@basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1) %>
+      <% if @basket.cage_type == "M" %>
       style="display:none;" 
     <% end
      end %>
