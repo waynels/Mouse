@@ -82,12 +82,12 @@ class BasketsController < ApplicationController
     @mouses=@basket.mice
   end
 
-  def appraisal_mouse 
+  def edit_mouse 
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
   end
 
-  def save_appraisal_mouse
+  def update_mouse
     @basket = Basket.find(params[:id])
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
@@ -163,15 +163,32 @@ class BasketsController < ApplicationController
   # GET /baskets/1.json
   def show
     @basket = Basket.find(params[:id])
+    if current_user.has_role?(:PI)
+    @mice = Mouse.where(basket_id: nil)
+    else
     @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.js 
     end
   end
 
-  def update_breed_cage
-    
+  def breed_cage
+    @basket = Basket.find(params[:id])
+    @mouse = Mouse.find(params[:mouse_id])
+    if @mouse.sex == "M"
+          breeds = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true)
+          breeds.each do |b|
+          b.cage_at = params[:breed_cage_at]
+          b.save
+          end
+    else @mouse.sex == "F"
+          breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
+          breed.cage_at = params[:breed_cage_at]
+          breed.save
+    end
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
   end
 
   # GET /baskets/new

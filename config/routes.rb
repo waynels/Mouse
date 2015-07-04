@@ -39,9 +39,11 @@ Rails.application.routes.draw do
       post "save_mouse"
       get "breeding_littler_mice"
       post "create_littler_mice"
-      get "appraisal_mouse"
-      post "save_appraisal_mouse"
-      put "update_breed_cage"
+      get "edit_mouse"
+      post "update_mouse"
+      get "edit_mouse_sex"
+      post "update_mouse_sex"
+      post "breed_cage"
     end
     collection do
       get "cage_setting"

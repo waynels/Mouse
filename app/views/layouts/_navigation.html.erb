@@ -1,18 +1,18 @@
 <span class="sys_logo"></span>
 <% if current_user %>
   <% if current_user.has_role?(:PI) %>
-    <li class="cage_set"><a href="/frameworks" class="nav_plasmid_set">库设置</a></li>
-    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠信息</a></li>
-    <li class="baskets_show"><a href="/baskets" class="nav_save">笼子信息</a></li>
+    <li class="cage_set"><a href="/frameworks" class="nav_plasmid_set">笼架设置</a></li>
+    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠管理</a></li>
+    <li class="baskets_show"><a href="/baskets" class="nav_save">饲养管理</a></li>
     <li class="user_set"><a href="<%= user_index_path%>" class="nav_file_set">系统设置</a></li>
   <% elsif current_user.has_role?(:Manager) %>
-    <li class="cage_set"><a href="/frameworks" class="nav_plasmid_set">库设置</a></li>
-    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠信息</a></li>
-    <li class="baskets_show"><a href="/baskets" class="nav_save">笼子信息</a></li>
+    <li class="cage_set"><a href="/frameworks" class="nav_plasmid_set">笼架设置</a></li>
+    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠管理</a></li>
+    <li class="baskets_show"><a href="/baskets" class="nav_save">饲养管理</a></li>
     <li class="user_set"><a href="/user/<%= current_user.id %>" class="nav_file_set">个人设置</a></li>
   <% elsif current_user.has_role?(:Faculty) %>
-    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠信息</a></li>
-    <li class="baskets_show"><a href="/baskets" class="nav_save">笼子信息</a></li>
+    <li class="mice_show"><a href="/mice" class="nav_cell_set">小鼠管理</a></li>
+    <li class="baskets_show"><a href="/baskets" class="nav_save">饲养管理</a></li>
     <li class="user_set"><a href="/user/<%= current_user.id %>" class="nav_file_set">个人设置</a></li>
   <%end%>
 <%end%>

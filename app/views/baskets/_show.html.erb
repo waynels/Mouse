@@ -17,9 +17,9 @@
       $.ajax({url: "/baskets/<%= @basket.id %>/share_mouse?mouse_id="+mouse});
     }
 
-    function appraisal_mouse(mouse)
+    function edit_mouse(mouse)
     {
-      $.ajax({url: "/baskets/<%= @basket.id %>/appraisal_mouse?mouse_id="+mouse});
+      $.ajax({url: "/baskets/<%= @basket.id %>/edit_mouse?mouse_id="+mouse});
     }
 $(function() {
 //新的笼子js
@@ -32,13 +32,19 @@ $(function() {
       revert: "invalid", // when not dropped, the item will revert back to its initial position
       containment: "document",
       helper: "clone",
-      cursor: "move"
+      cursor: "move",
+      <% if current_user.has_role?(:PI) %>
+        disabled: true
+      <%end%>
     });
     $( "li", $trash).draggable({
       cancel: "a.ui-icon", // clicking an icon won't initiate dragging
       revert: "invalid", // when not dropped, the item will revert back to its initial position
       containment: "document",
       helper: "clone",
+      <% if current_user.has_role?(:PI) %>
+        disabled: true,
+      <%end%>
       cursor: "move"
     });
  
@@ -47,9 +53,11 @@ $(function() {
       accept: "#gallery > li",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
+      if(confirm("确定移除该小鼠么")){
         deleteImage( ui.draggable );
         var mId = ui.draggable.attr("id");
         $.ajax({url: "/mice/mouse_remove?id="+mId+"&basket_id=<%= @basket.id %>&move_type=remove_out"})
+      }
         }
     });
  
@@ -164,22 +172,26 @@ $(function() {
     <% if m.sex == "" or m.sex == nil  %>
       <h5 class="ui-widget-header">Litter</h5>
       <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72" />
-      <a title="Appraisal Mouse" class="ui-icon ui-icon-contact" onclick="javascript: appraisal_mouse(<%= m.id %>)" >Appraisal Mouse</a> 
     <% elsif m.sex == "M" %>
         <h5 class="ui-widget-header"><%= m.code %></h5>
       <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
     <%elsif m.sex == "F" %>
       <h5 class="ui-widget-header"><%= m.code %></h5>
       <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
+    <% if can? :handle_mouse, m %>
       <% if @basket.cage_type == "B" or @basket.cage_type == "M" %>
         <% if query_breed_is_usable(m) %>
           <a title="Breeding litter mice" class="ui-icon ui-icon-plusthick" onclick="javascript: breeding_littler_mice(<%= m.id %>)" >Breeding Litter Mice</a>
         <%end%>
       <%end%>
+      <%end%>
     <%end%>
     <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
+    <% if can? :handle_mouse, m %>
     <a title="Mouse Dead" class="ui-icon ui-icon-closethick" onclick="javascript: mouse_dead(<%= m.id %>)" >Mouse Information</a> 
+    <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
     </li>
+  <%end%>
   <%end%>
 </ul>
  
@@ -191,7 +203,6 @@ $(function() {
   <% if m.sex == "" or m.sex == nil %>
     <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
-    <a title="Appraisal Mouse" class="ui-icon ui-icon-contact" onclick="javascript: appraisal_mouse(<%= m.id %>)" >Appraisal Mouse</a> 
   <% elsif m.sex == "M" %>
     <h5 class="ui-widget-header"><%= m.code %></h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
@@ -200,8 +211,11 @@ $(function() {
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
   <%end%>
   <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a>
-  <a title="Share Mouse" class="ui-icon ui-icon-extlink" onclick="javascript: share_mouse(<%= m.id %>)" >Mouse Information</a>
-<% end %>
+    <% if can? :handle_mouse, m %>
+      <a title="Share Mouse" class="ui-icon ui-icon-extlink" onclick="javascript: share_mouse(<%= m.id %>)" >Mouse Information</a>
+      <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
+    <% end %>
+  <% end %>
   </ul>
 </div>
  

@@ -13,7 +13,7 @@
         <% for x in 65...(@framework.axis_x+65) %>
           <% box_position = "#{y}#{x.chr}" %><% basket = @framework.baskets.find_by_code(box_position) %>
           <td width="<%= 90/(@framework.axis_y) %>%">
-            <div data-original-title="操作" data-content="" rel="popover" id="" class="tddiv  has_cell  ui-droppable">
+            <div data-original-title="操作" data-content="" rel="popover" id="cage_<%= basket.id %>" class="tddiv  has_cell  ui-droppable">
               <div class="f_box_grid be_filled <%= basket.cage_type%>_box">
                 <% if basket.onwer == current_user or current_user.has_role?(:PI) %>
                   <a data-remote=true href="<%= basket_path(basket) %>"><%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= Framework.all.index(@framework)+1 %>-<%= basket.code %></a>

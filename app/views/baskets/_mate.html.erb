@@ -8,7 +8,7 @@
       });
 //]]>
   </script>
-  <%= form_for @basket,update_breed_cage_basket_path(@basket,mouse_id: @mouse.id), :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+  <%= form_for @basket,:url => breed_cage_basket_path(@basket,mouse_id: @mouse.id), method: :post, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
       <label for="textfield" class="control-label">合笼时间</label>
       <div class="controls">
         <%= text_field_tag :breed_cage_at %>
