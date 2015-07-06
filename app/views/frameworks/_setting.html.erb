@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
-  <% if current_user.has_role?(:PI) %>
+  <% if current_user.has_role?(:PI) or current_user.has_role?(:Manager) %>
   <script>
 $(document).ready(function() {
     $( "#framework_cage_list li").draggable({

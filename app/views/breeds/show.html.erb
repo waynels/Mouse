@@ -4,7 +4,7 @@
       <div class="box-title">
         <h3>
           <i class="icon-reorder"></i>
-          <%= @breed.father.code %>[<%= @breed.father.strain.name %>]+<%= @breed.mother.code %>[<%= @breed.mother.strain.name %>] 
+          <%= @breed.father.code %>[<%= @breed.father.strain.common_name %>]+<%= @breed.mother.code %>[<%= @breed.mother.strain.common_name%>] 
         </h3>
         <div style="float:right; padding-right:2px;">
           <%= link_to "返回", breeds_path ,:class => 'btn btn' %>
@@ -60,5 +60,5 @@
   </div>
 </div>
 <% content_for :sidebar do %>
-  <%= render :partial => "sidebar" %>
+  <%= render :partial => "mice/sidebar" %>
 <% end %>

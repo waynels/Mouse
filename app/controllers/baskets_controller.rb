@@ -71,7 +71,7 @@ class BasketsController < ApplicationController
     quantity.times do |i|
      mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id, onwer_id: current_user.id, created_by: current_user.id)
     end
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
   end
 
   def change_basket 
@@ -79,7 +79,7 @@ class BasketsController < ApplicationController
     @mouse = Mouse.find(params[:mouse_id])
     @mouse.basket_id = params[:mouse][:basket_id]
     @mouse.save
-    @mouses=@basket.mice
+    @mouses=@basket.mice.alive_mice
   end
 
   def edit_mouse 
@@ -92,7 +92,7 @@ class BasketsController < ApplicationController
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
     @mouse.update(mouse_params)
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end
@@ -108,7 +108,7 @@ class BasketsController < ApplicationController
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
     @mouse.update(mouse_params)
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end
@@ -123,7 +123,7 @@ class BasketsController < ApplicationController
     @basket = Basket.find(params[:id])
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     @mouse.update(mouse_params)
     respond_to do |format|
       format.js
@@ -149,7 +149,7 @@ class BasketsController < ApplicationController
   def breed_mouse 
     @basket = Basket.find(params[:id])
     @f_m = Mouse.find(params[:mouse_id])
-    @m_m = @basket.mice.where(gender: "M").first
+    @m_m = @basket.mice.alive_mice.where(gender: "M").first
     @breed = Breed.where(basket_id: @basket.id, mother_id: @f_m.id, father_id: @m_m.id, is_usable: true).first
   end
 
@@ -166,7 +166,7 @@ class BasketsController < ApplicationController
     if current_user.has_role?(:PI)
     @mice = Mouse.where(basket_id: nil)
     else
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -188,7 +188,7 @@ class BasketsController < ApplicationController
           breed.cage_at = params[:breed_cage_at]
           breed.save
     end
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
   end
 
   # GET /baskets/new
@@ -221,20 +221,31 @@ class BasketsController < ApplicationController
   # PATCH/PUT /baskets/1
   # PATCH/PUT /baskets/1.json
   def update
+    old_type = @basket.cage_type
     respond_to do |format|
       @operation_type = params[:operation_type]
-      p @operation_type
       if @basket.update(basket_params)
         @framework = @basket.framework
         if @basket.cage_type == "M"
-          breed_cage_at  = params[:breed_cage_at]
-          male = @basket.mice.male_mice.first
-          females = @basket.mice.female_mice
-          females.each do |f|
-            breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at)
+          unless @basket.cage_type == old_type
+            breed_cage_at  = params[:breed_cage_at]
+            male = @basket.mice.alive_mice.male_mice.first
+            females = @basket.mice.alive_mice.female_mice
+            females.each do |f|
+              breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at)
+            end
+          end
+        else
+          if  old_type == "M"
+            @basket.breeds.each do |breed|
+              if bread.is_usable == true
+                breed.is_usable = false
+                bread.save
+              end
+            end
           end
         end
-        @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+        @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
         format.js
       end
     end

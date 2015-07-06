@@ -10,6 +10,32 @@ class Basket < ActiveRecord::Base
   def count_mice_in_basket 
      "#{self.code}[#{self.basket_type_label}][#{self.mice.size}]只"
   end
+  def is_correct_cage_type
+    mice = self.mice.alive_mice
+    if self.cage_type == "S"
+      if (mice.male_mice.size > 0 and mice.female_mice.size > 0 ) or mice.litter_mice.size > 0
+        false
+      else
+        true
+      end
+    elsif self.cage_type == "M"
+      if mice.male_mice.size > 1
+        false
+      else
+        true
+      end
+    elsif self.cage_type == "B"
+      if mice.female_mice.size > 1 or mice.male_mice.size > 0 or (mice.female_mice.size == 1 and mice.female_mice.first.f_breeds.size < 0)
+        false
+      else
+        true
+      end
+    elsif self.cage_type == "CE"
+      true
+    elsif self.cage_type == "NE"
+      true
+    end
+  end
   def get_basket_types
     if self.mice.size == 0
       bask_types = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}

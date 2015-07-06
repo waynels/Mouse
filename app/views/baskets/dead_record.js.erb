@@ -1,4 +1,5 @@
 $('#myModal').modal('hide')
 $('.modal-body').empty();
-$(".baskets_box").html("<%= j render "baskets_box" %>")
-$(".basket_show").html("<%= j render "show" %>")
+$("#basket_cage_list").replaceWith("<%= j render "frameworks/framework_baskets" %>")
+$(".basket_show").replaceWith("<%= j render "show" %>")
+$(".basket_show").show();

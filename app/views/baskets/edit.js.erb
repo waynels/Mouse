@@ -10,8 +10,10 @@ $("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
 $("#basket_cage_type").change(function(){ 
 var cage_type = $('#basket_cage_type option:selected').val(); 
 if(cage_type == "M"){
-  <% if  @basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1 %>
+  <% if @basket.mice.alive_mice.female_mice.size > 0 and @basket.mice.alive_mice.male_mice.size == 1 %>
+    <% unless @basket.cage_type == "M" %>
     $('.cage_at').show();
+    <% end %>
     $("#breed_cage_at" ).datepicker({format: "yyyy-mm-dd"});
 <% end %>
 }else{

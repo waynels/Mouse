@@ -158,7 +158,7 @@ b.seled a { color:#e38903;}
 .pailwarp .gridcontent {  margin-right:110px; padding-bottom:50px;}
 .gridcontent table td.xline { background:#e38903; font-size:12px; font-weight:bold; color:#fff; text-align:center; height:16px; line-height:16px; overflow:hidden;}
 .gridcontent table td.yline { vertical-align:middle;background:#e38903; font-weight:bold; color:#fff; text-align:center; width:16px; height:28px; line-height:28px; overflow:hidden;}
-.gridcontent table td .tddiv { position:relative;border:1px solid #2e8ccf;}
+.gridcontent table td .tddiv { position:relative;border:2px solid #2e8ccf;}
 .gridcontent table td .tddiv div { text-align:center; min-height:28px; line-height:28px;  overflow:hidden; word-warp:break-word; }
 .gridcontent table td .tddiv.empty :hover { border:2px solid #e38903; }
 .gridcontent table td .tddiv.active { border:2px solid #e38903;}

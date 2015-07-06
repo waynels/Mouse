@@ -20,11 +20,13 @@ class Ability
       can :manage, Strain
       can :manage, Gene
       can :manage, Basket 
+      can :manage, Breed 
     end
     if user.has_role?(:Faculty)
       can :manage, User, :id => user.id 
       can :manage, Mouse, :created_by => user.id
       can :edit, Basket, :onwer_id => user.id
+      can :manage, Breed 
     end
     #
     # The first argument to `can` is the action you are giving the user 
