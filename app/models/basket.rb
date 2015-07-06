@@ -38,16 +38,16 @@ class Basket < ActiveRecord::Base
   end
   def get_basket_types
     if self.mice.size == 0
-      bask_types = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
+      bask_types = { "Stock" => "S","Breeding" => "B","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE","Mating" => "M"}
     else
       if self.mice.male_mice.size > 1 and self.mice.female_mice.size == 0
         bask_types = {"Stock" => "S","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
       elsif self.mice.male_mice.size == 1 and self.mice.female_mice.size == 0 
-        bask_types = {"Mating" => "M","Stock" => "S","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
+        bask_types = {"Stock" => "S","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE","Mating" => "M"}
       elsif self.mice.female_mice.size > 0 and self.mice.male_mice.size < 1
-        bask_types = {"Mating" => "M", "Stock" => "S","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
+        bask_types = { "Stock" => "S","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE","Mating" => "M"}
       elsif self.mice.female_mice.size > 0 and self.mice.male_mice.size == 1
-        bask_types = {"Mating" => "M", "Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
+        bask_types = { "Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE","Mating" => "M"}
       else
         bask_types = {"Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
       end
