@@ -26,11 +26,9 @@ class BreedsController < ApplicationController
         op_str = op_str + " <a href='#{breed_path(item)}' data-remote=true class='btn btn-mini'>详细信息</a>"
         if item.is_usable
         op_str = op_str + " <a href='#{edit_breed_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
-        op_str = op_str + " <a href='#{disable_breed_path(item)}' data-remote=true class='btn btn-mini'>取消配对</a>"
-        op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{breed_path(item)}'>删除</a>"
         end
       end
-      arr << ["#{item.father.code}[#{item.father.strain.name}]", "#{item.mother.code}[#{item.mother.strain.name}]",item.basket.code, item.cage_at, item.show_can_usable.html_safe, op_str]
+      arr << ["#{item.father.code}[#{item.father.strain.common_name}]", "#{item.mother.code}[#{item.mother.strain.common_name}]",item.basket.code, item.cage_at, item.show_can_usable.html_safe, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|

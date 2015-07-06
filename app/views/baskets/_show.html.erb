@@ -53,7 +53,7 @@ $(function() {
       accept: "#gallery > li",
       activeClass: "ui-state-highlight",
       drop: function( event, ui ) {
-      if(confirm("确定移除该小鼠么")){
+      if(confirm("确定移出该小鼠么")){
         deleteImage( ui.draggable );
         var mId = ui.draggable.attr("id");
         $.ajax({url: "/mice/mouse_remove?id="+mId+"&basket_id=<%= @basket.id %>&move_type=remove_out"})
@@ -153,7 +153,9 @@ $(function() {
 .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
 .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 .gallery li a { float: right; }
+
 .gallery li a.ui-icon-comment { float: left; }
+.gallery li a.ui-icon-closethick { float: right; }
 .gallery li a.ui-icon-plusthick{ float: left; }
 .gallery li img { width: 100%; cursor: move; }
 
@@ -167,16 +169,17 @@ $(function() {
   <a style="font-size: 26px;" href="<%= edit_basket_path(@basket, :operation_type => "set_cage_type") %>" data-remote=true ><i class="icon-cog"></i></a> 
 </div>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
-  <% @basket.mice.each do |m|%>
+  <% @basket.mice.alive_mice.each do |m|%>
     <li class="ui-widget-content ui-corner-tr" id="mouse_<%= m.id %>">
     <% if m.sex == "" or m.sex == nil  %>
       <h5 class="ui-widget-header">Litter</h5>
       <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72" />
+      <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
     <% elsif m.sex == "M" %>
-        <h5 class="ui-widget-header"><%= m.code %></h5>
+        <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
       <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
     <%elsif m.sex == "F" %>
-      <h5 class="ui-widget-header"><%= m.code %></h5>
+      <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
       <img src="/assets/mouse_f.png" alt="Planning the ascent" width="96" height="72" />
     <% if can? :handle_mouse, m %>
       <% if @basket.cage_type == "B" or @basket.cage_type == "M" %>
@@ -189,7 +192,6 @@ $(function() {
     <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a> 
     <% if can? :handle_mouse, m %>
     <a title="Mouse Dead" class="ui-icon ui-icon-closethick" onclick="javascript: mouse_dead(<%= m.id %>)" >Mouse Information</a> 
-    <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
     </li>
   <%end%>
   <%end%>
@@ -203,17 +205,17 @@ $(function() {
   <% if m.sex == "" or m.sex == nil %>
     <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
+    <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
   <% elsif m.sex == "M" %>
-    <h5 class="ui-widget-header"><%= m.code %></h5>
+    <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
   <%elsif m.sex == "F"%>
-    <h5 class="ui-widget-header"><%= m.code %></h5>
+    <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
   <%end%>
   <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a>
     <% if can? :handle_mouse, m %>
       <a title="Share Mouse" class="ui-icon ui-icon-extlink" onclick="javascript: share_mouse(<%= m.id %>)" >Mouse Information</a>
-      <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
     <% end %>
   <% end %>
   </ul>

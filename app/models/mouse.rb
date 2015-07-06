@@ -8,9 +8,14 @@ class Mouse < ActiveRecord::Base
   belongs_to :mother_mouse, :foreign_key => "mother_id", :class_name => "Mouse"
   belongs_to :creator, :foreign_key => "created_by", :class_name => "User"
   belongs_to :onwer, :foreign_key => "onwer_id", :class_name => "User"
-  scope :male_mice, -> {where("sex = 'M' and life_status = 'A'") } 
-  scope :female_mice, -> {where("sex = 'F' and life_status = 'A'") } 
-  scope :litter_mice, -> {where("(code is NULL or code = '')and life_status = 'A'") } 
+  has_many :f_breeds, :foreign_key => "mother_id" , :class_name => "Breed"
+  has_many :m_breeds, :foreign_key => "father_id" , :class_name => "Breed"
+  belongs_to :breed
+  scope :alive_mice, -> {where("life_status = 'A'") } 
+  scope :not_alive_mice, -> {where("life_status <> 'A'") } 
+  scope :male_mice, -> {where("sex = 'M'") } 
+  scope :female_mice, -> {where("sex = 'F' ") } 
+  scope :litter_mice, -> {where("sex is NULL or sex= ''") } 
   SEXTYPE = {"雄性" => "M", "雌性" => "F"}
   LIFESTATUS = {"Alive" => "A", "Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD" }
 

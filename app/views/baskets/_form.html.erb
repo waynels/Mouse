@@ -23,13 +23,7 @@
         <%= f.select :cage_type, @basket.get_basket_types, {},{:class=> 'select input-large'} %>  
       </div>
     </div>
-   <div class="control-group cage_at" 
-    <% unless @basket.mice.size >=2 and (@basket.mice.female_mice.size > 0 and @basket.mice.male_mice.size == 1) %>
-      <% if @basket.cage_type == "M" %>
-      style="display:none;" 
-    <% end
-     end %>
-     >
+   <div class="control-group cage_at" style="display:none;">
       <label for="textfield" class="control-label">合笼时间</label>
       <div class="controls">
         <%= text_field_tag :breed_cage_at %>

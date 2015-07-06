@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608092954) do
+ActiveRecord::Schema.define(version: 20150706081242) do
 
   create_table "alleles", force: :cascade do |t|
     t.integer  "gene_id",    limit: 4
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 20150608092954) do
 
   create_table "baskets", force: :cascade do |t|
     t.string   "code",         limit: 255
-    t.string   "cage_type",    limit: 255
     t.integer  "framework_id", limit: 4
     t.integer  "onwer_id",     limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "cage_type",    limit: 255, default: "S"
   end
 
   create_table "batches", force: :cascade do |t|
@@ -46,9 +46,9 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.integer  "father_id",  limit: 4
     t.integer  "mother_id",  limit: 4
     t.date     "cage_at"
-    t.boolean  "is_usable",  limit: 1
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.boolean  "is_usable",  limit: 1, default: true
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   create_table "breeds_infos", force: :cascade do |t|
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150608092954) do
     t.text     "description", limit: 65535
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.integer  "breed_id",    limit: 4
   end
 
   create_table "mice_alleles", id: false, force: :cascade do |t|

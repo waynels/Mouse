@@ -84,7 +84,7 @@ class MiceController < ApplicationController
     @basket = Basket.find(params[:basket_id])
     @mouse.basket_id = nil
     @mouse.save
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end
@@ -95,7 +95,7 @@ class MiceController < ApplicationController
     @basket = Basket.find(params[:basket_id])
     @mouse.basket_id = @basket.id 
     @mouse.save
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end
@@ -136,15 +136,15 @@ class MiceController < ApplicationController
           #弹出窗口录入相应信息提交表单
           #mating_mouse_to_cage(mouse, cage)
           #
-          if @basket.mice.size > 0
+          if @basket.mice.alive_mice.size > 0
             if @mouse.sex == "M"
-              females = @basket.mice.female_mice
+              females = @basket.mice.alive_mice.female_mice
               females.each do |f|
                 breed = Breed.create(basket_id: @basket.id,father_id: @mouse.id, mother_id: f.id,cage_at: Time.now.strftime("%Y-%m-%d"))
               end
               @return_info = "Mate"
             elsif @mouse.sex == "F"
-              male = @basket.mice.male_mice.first
+              male = @basket.mice.alive_mice.male_mice.first
               if male
               breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: @mouse.id,cage_at: Time.now.strftime("%Y-%m-%d"))
               @return_info = "Mate"
@@ -167,7 +167,8 @@ class MiceController < ApplicationController
     end
     @mouse.save
     @basket = Basket.find(params[:basket_id])
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil)
+    @framework = @basket.framework
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end
@@ -289,15 +290,15 @@ class MiceController < ApplicationController
   end
   def aduit_mouse_to_cage(mouse,cage)
     if cage.cage_type =="M"
-      if cage.mice.size > 0
-        if mouse.sex == "M" and cage.mice.male_mice.size == 0
+      if cage.mice.alive_mice.size > 0
+        if mouse.sex == "M" and cage.mice.alive_mice.male_mice.size == 0
           return true
         elsif mouse.sex == "F"
           return true
         elsif (mouse.sex == "" or mouse.sex == nil)
           mother_litter = false 
           p mother_litter
-          cage.mice.female_mice.each do |female|
+          cage.mice.alive_mice.female_mice.each do |female|
             if female.id == mouse.mother_id
               mother_litter = true
             end
@@ -313,10 +314,10 @@ class MiceController < ApplicationController
         end
       end
     elsif cage.cage_type == "S"
-      if cage.mice.size > 0
-        if mouse.sex == "M" and cage.mice.female_mice.size == 0
+      if cage.mice.alive_mice.size > 0
+        if mouse.sex == "M" and cage.mice.alive_mice.female_mice.size == 0
           return true
-        elsif mouse.sex == "F" and cage.mice.male_mice.size == 0
+        elsif mouse.sex == "F" and cage.mice.alive_mice.male_mice.size == 0
           return true
         else
           return false
@@ -329,22 +330,22 @@ class MiceController < ApplicationController
         end
       end
     elsif cage.cage_type == "B" 
-      if cage.mice.size > 0
+      if cage.mice.alive_mice.size > 0
         if (mouse.sex == "" or mouse.sex == nil)
-          mother = cage.mice.female_mice.first
+          mother = cage.mice.alive_mice.female_mice.first
           if mother
-            if female.id == mouse.mother_id
+            if mother.id == mouse.mother_id
               return true
             end
           end
         else
-          return false 
+          return false
         end
       else
-        if mouse.sex == "F"
-        return true
+        if mouse.sex == "F" and mouse.f_breeds.size > 0
+          return true
         else
-        return false 
+          return false 
         end
       end
     else

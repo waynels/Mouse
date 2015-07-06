@@ -15,7 +15,12 @@
           <td width="<%= 90/(@framework.axis_y) %>%">
             <div data-original-title="操作" data-content="" rel="popover" id="" class="tddiv  has_cell  ui-droppable">
               <div class="f_box_grid be_filled <%= basket.cage_type%>_box">
-                  <a data-remote=true href="<%= edit_basket_path(basket, operation_type: "set_onwer") %>"><%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= Framework.all.index(@framework)+1 %>-<%= basket.code %></a>
+                <a data-remote=true href="<%= edit_basket_path(basket, operation_type: "set_onwer") %>">
+                  <% if basket.is_correct_cage_type %>
+                  <%else%>
+                    <span ><i class="glyphicon-warning_sign" style="color:red"></i></span>
+                  <%end%>
+                  <%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= Framework.all.index(@framework)+1 %>-<%= basket.code %></a>
               </div>
             </div>
           </td>
