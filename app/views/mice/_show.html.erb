@@ -48,7 +48,17 @@
     </dd>
     <dt>Basket Code:</dt>
     <dd>
-    <%= @mouse.basket ? "#{Framework.all.index(@mouse.basket.framework)+1}-#{@mouse.basket.code}" : nil %>&nbsp;
+    <% if current_user.has_role?(:PI)
+        basket_code = @mouse.basket ? "#{Framework.all.index(@mouse.basket.framework)+1}-#{@mouse.basket.code}" : nil
+      else
+        if @mouse.onwer == current_user
+          basket_code = @mouse.basket ? "#{Framework.all.index(@mouse.basket.framework)+1}-#{@mouse.basket.code}" : nil
+        else
+          basket_code = "-"
+        end
+      end
+    %>
+    <%= basket_code %>&nbsp;
     </dd>
     <dt>Onwer:</dt>
     <dd>
