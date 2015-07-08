@@ -15,4 +15,5 @@ $("#basket_cage_list").replaceWith("<%= j render "frameworks/framework_baskets" 
 $(".basket_show").replaceWith("<%= j render "baskets/show" %>");
 $(".basket_show").show();
 <% end %>
-
+$(".tddiv").removeClass("active");
+$("#cage_<%= @basket.id %>").addClass("active");

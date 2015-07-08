@@ -40,13 +40,13 @@
         <%= f.text_field :birthday%>
       </div>
     </div>
+    <% if @mouse.basket_id == nil or @mouse.basket_id == "" %>
     <div class="control-group">
       <label for="textfield" class="control-label">Wean Date</label>
       <div class="controls">
         <%= f.text_field :wean_date%>
       </div>
     </div>
-    <% if @mouse.basket_id == nil or @mouse.basket_id == "" %>
       <div class="control-group">
         <label for="textfield" class="control-label">Sex</label>
         <div class="controls">

@@ -4,6 +4,8 @@ $('.modal-body').empty();
 $("#basket_cage_list").replaceWith("<%= j render "frameworks/framework_baskets" %>")
 $(".basket_show").replaceWith("<%= j render "show" %>")
 $(".basket_show").show();
+$(".tddiv").removeClass("active");
+$("#cage_<%= @basket.id %>").addClass("active");
 <% elsif @operation_type == "set_onwer" %>
 $("#basket_cage_list").replaceWith("<%= j render "baskets_box" %>")
 <% end %>

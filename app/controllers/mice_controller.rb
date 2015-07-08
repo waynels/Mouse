@@ -53,10 +53,12 @@ class MiceController < ApplicationController
         op_str = op_str + "<a href='#{mouse_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
+        if item.life_status == "A" 
           op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
         if can? :update, item 
           op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
+        end
         end
       end
       arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil,item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil,item.generation,item.is_dead, op_str]

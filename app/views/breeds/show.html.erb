@@ -1,5 +1,14 @@
 <div class="row-fluid">
   <div class="span12">
+<script type="text/javascript" language="javascript" charset="utf-8">
+//<![CDATA[
+$(function () { 
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#breeds_bar").addClass("seled");
+    });
+</script>
     <div class="box box-color box-bordered">
       <div class="box-title">
         <h3>
@@ -22,7 +31,7 @@
               <div class="date"><%= @breed.cage_at %></div>
             </div>
             <div class="activity">
-              <div class="user">&nbsp;由<%= @breed.creator.full_name %><span>配对</span></div>
+              <div class="user"></div>
               <p>
               <%= "#{@breed.father.code}[#{@breed.father.strain.common_name}]和#{@breed.mother.code}[#{@breed.mother.strain.common_name}]在#{Framework.all.index(@breed.basket.framework)+1}-#{@breed.basket.code }处合笼"%>
               </p>
@@ -41,10 +50,61 @@
                 <div class="date"><%= batch.childbirthday %></div>
               </div>
               <div class="activity">
-                <div class="user"><%= @breed.creator.full_name %>&nbsp;<span>操作</span></div>
-                <p>
-                Lorem ipsum Fugiat magna velit consectetur qui in veniam cillum exercitation Ut occaecat Duis mollit. Lorem ipsum Dolore dolor Excepteur sunt amet officia officia sunt aliquip id occaecat officia.
-                </p>
+                <ul class="timeline2">
+                  <div class="li-line"></div>
+                    <li>
+                    <div class="timeline-content">
+                      <div class="left">
+                        <div class="icon orange">
+                          <i class="icon-bullhorn"></i>
+                        </div>
+                      </div>
+                      <div class="activity">
+                        <div><%= batch.childbirthday %>
+                        小鼠出生
+                        </div>
+                      </div>
+                    </div>
+                    <div class="line"></div>
+                    </li>
+                  <% if batch.mice %>
+                    <% batch.mice.where(life_status: "DD").each do |mouse| %>
+                      <li>
+                      <div class="timeline-content">
+                        <div class="left">
+                          <div class="icon green">
+                            <i class="icon-comment"></i>
+                          </div>
+                        </div>
+                        <div class="activity">
+                          <div><%= mouse.dead_date %>
+                          小鼠发育不良死亡
+                          </div>
+                        </div>
+                      </div>
+                      <div class="line"></div>
+                      </li>
+                    <% end %>
+                    <% m = batch.mice.alive_mice.where("wean_date is not null").first %>
+                    <% if m  %>
+                    <li>
+                    <div class="timeline-content">
+                      <div class="left">
+                        <div class="icon orange">
+                          <i class="icon-bullhorn"></i>
+                        </div>
+                      </div>
+                      <div class="activity">
+                        <div><%= m.wean_date %>
+                        小鼠离乳
+                        </div>
+                      </div>
+                    </div>
+                    <div class="line"></div>
+                    </li>
+                  <% end %>
+                  <% end %>
+                </ul>
               </div>
             </div>
             <div class="line"></div>

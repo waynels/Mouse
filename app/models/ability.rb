@@ -24,7 +24,8 @@ class Ability
     end
     if user.has_role?(:Faculty)
       can :manage, User, :id => user.id 
-      can :manage, Mouse, :created_by => user.id
+      can :read, Mouse
+      can :manage, Mouse, :onwer_id => user.id
       can :edit, Basket, :onwer_id => user.id
       can :manage, Breed 
     end
