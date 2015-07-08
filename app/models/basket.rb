@@ -32,7 +32,7 @@ class Basket < ActiveRecord::Base
       end
     elsif self.cage_type == "CE"
       true
-    elsif self.cage_type == "NE"
+    elsif self.cage_type == "NCE"
       true
     end
   end

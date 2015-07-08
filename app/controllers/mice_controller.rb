@@ -140,7 +140,7 @@ class MiceController < ApplicationController
             if @mouse.sex == "M"
               females = @basket.mice.alive_mice.female_mice
               females.each do |f|
-                breed = Breed.create(basket_id: @basket.id,father_id: @mouse.id, mother_id: f.id,cage_at: Time.now.strftime("%Y-%m-%d"))
+                breed = Breed.create(basket_id: @basket.id,father_id: @mouse.id, mother_id: f.id,cage_at: Time.now.strftime("%Y-%m-%d"),created_by: current_user.id)
               end
               @return_info = "Mate"
             elsif @mouse.sex == "F"

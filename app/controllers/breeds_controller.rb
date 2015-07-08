@@ -14,7 +14,7 @@ class BreedsController < ApplicationController
 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "breeds.father_id","breeds.mother_id","breeds.basket_id","breeds.cage_at","breeds.is_usable",["breeds.created_at"]]
+    column = [ "breeds.father_id","breeds.mother_id","breeds.basket_id","breeds.cage_at","breeds.is_usable","breeds.breeding",["breeds.created_at"]]
     data = get_datatable_data(column, "Breed", nil)
     arr = []
     data[0].each do |item|
@@ -23,12 +23,11 @@ class BreedsController < ApplicationController
         op_str = op_str + "<a href='#{breed_path(item)}' class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
-        op_str = op_str + " <a href='#{breed_path(item)}' data-remote=true class='btn btn-mini'>详细信息</a>"
         if item.is_usable
         op_str = op_str + " <a href='#{edit_breed_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         end
       end
-      arr << ["#{item.father.code}[#{item.father.strain.common_name}]", "#{item.mother.code}[#{item.mother.strain.common_name}]",item.basket.code, item.cage_at, item.show_can_usable.html_safe, op_str]
+      arr << ["#{item.father.code}[#{item.father.strain.common_name}]", "#{item.mother.code}[#{item.mother.strain.common_name}]",item.basket.code, item.cage_at, item.show_can_usable.html_safe, item.breeding, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
@@ -202,7 +201,7 @@ class BreedsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def breed_params
-      params[:breed].permit(:father_id, :mother_id, :basket_id, :cage_at)
+      params[:breed].permit(:father_id, :mother_id, :basket_id, :cage_at, :is_usable, :breeding)
     end
     def breed_info_params
       params[:breed_info].permit(:breed_id, :batch_id,  :operation_type, :operation_by, :operation_at, :quantity, :remark, :die_reason)

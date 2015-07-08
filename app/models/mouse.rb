@@ -19,7 +19,6 @@ class Mouse < ActiveRecord::Base
   SEXTYPE = {"雄性" => "M", "雌性" => "F"}
   LIFESTATUS = {"Alive" => "A", "Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD" }
 
-  DEADTYPE = {"Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD" }
   def life_status_lable 
     Mouse::LIFESTATUS.invert[self.life_status]
   end
@@ -27,6 +26,13 @@ class Mouse < ActiveRecord::Base
      "#{self.gender}#{self.code}[#{self.strain.name}]"
   end
 
+  def get_life_status
+    if self.sex == nil or self.sex == ""
+      deadtype = { "Dysplasia Death" => "DD" }
+    else
+      deadtype = {"Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD"}
+    end
+  end
   def show_sex 
     if self.sex == "M"
       return "♂"
