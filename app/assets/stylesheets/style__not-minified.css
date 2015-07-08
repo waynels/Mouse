@@ -7004,6 +7004,18 @@ label, input, button, select, textarea {
 .timeline > li:hover {
   background: #f6f6f6;
 }
+.timeline2 {
+  margin-left: 50px !important;
+}
+.timeline2 > li {
+  position: relative;
+  border-bottom: 2px dotted #ddd;
+  padding: 30px 0;
+}
+.li-line {
+  border-bottom: 2px dotted #dddddd;
+  position: relative;
+}
 .timeline > li:last-child {
   border-bottom: 0;
 }
