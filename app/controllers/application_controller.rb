@@ -111,18 +111,18 @@ class ApplicationController < ActionController::Base
             if m_old_basket.use_type == "B"
               if m_old_basket.mice.where(gender: "F").size > 0
                 m_old_basket.mice.where(gender: "F").each do |f_m|
-                  breed = Breed.create(basket_id: m_old_basket.id,father_id: old_m_m.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+                  breed = Breed.create(basket_id: m_old_basket.id,father_id: old_m_m.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"), is_usable: true, created_by: current_user.id)
                 end
               end
             end
           end
           #创建新小鼠与该笼子中母鼠的配对关系
           basket.mice.where(gender: "F").each do |f_m|
-            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"), is_usable: true, created_by: current_user.id)
           end
         else
           basket.mice.where(gender: "F").each do |f_m|
-            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+            breed = Breed.create(basket_id: basket.id,father_id: mouse.id, mother_id: f_m.id,cage_at: Time.new.strftime("%Y-%m-%d"), is_usable: true, created_by: current_user.id)
           end
           #进来老鼠原位置笼子老鼠之间的配对关系打断
           that_old_breeds = Breed.where(father_id: mouse.id, basket_id: m_old_basket.id)
@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
       else
         m_m = basket.mice.where(gender: "M").first
         if m_m
-          breed = Breed.create(basket_id: basket.id,father_id: m_m.id, mother_id: mouse.id,cage_at: Time.new.strftime("%Y-%m-%d"))
+          breed = Breed.create(basket_id: basket.id,father_id: m_m.id, mother_id: mouse.id,cage_at: Time.new.strftime("%Y-%m-%d"), is_usable: true, created_by: current_user.id)
         end
         #进来老鼠原位置笼子公老鼠的配对关系打断
         old_breeds = Breed.where(mother_id: mouse.id, basket_id: m_old_basket.id)
