@@ -1,4 +1,23 @@
-$(".modal-body").replaceWith("<%= j render "breed_mouse" %>")
+$(".modal-body").replaceWith("<%= j render "breeding_mice" %>")
 $("#myModalLabel").html("Mouse Info");
 $('#myModal').modal('show');
 $('.save_btn').show();
+$(".select").select2();
+$("#childbirthday" ).datepicker({
+  format: "yyyy-mm-dd",
+  startDate: "<%= @breed.cage_at %>"
+  //minDate: "< %= @breed.cage_at %>" 
+});
+$(".form-validate" ).validate({
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});

@@ -23,7 +23,7 @@ class Mouse < ActiveRecord::Base
     Mouse::LIFESTATUS.invert[self.life_status]
   end
   def mouse_show_name
-     "#{self.gender}#{self.code}[#{self.strain.name}]"
+     "#{self.code}[#{self.strain.common_name}]"
   end
 
   def get_life_status

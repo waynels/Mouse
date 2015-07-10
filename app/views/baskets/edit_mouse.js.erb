@@ -2,5 +2,9 @@ $(".modal-body").replaceWith("<%= j render "edit_mouse" %>")
 $("#myModalLabel").html("小鼠信息");
 $('#myModal').modal('show');
 $(".save_btn").show();
-$("#mouse_birthday, #mouse_wean_date" ).datepicker({format: "yyyy-mm-dd"});
+$("#mouse_birthday" ).datepicker({format: "yyyy-mm-dd"});
+$("#mouse_wean_date" ).datepicker({
+  format: "yyyy-mm-dd",
+  startDate: "<%= @mouse.birthday%>"
+});
 $(".select").select2();

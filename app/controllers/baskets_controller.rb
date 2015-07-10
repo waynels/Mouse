@@ -96,6 +96,12 @@ class BasketsController < ApplicationController
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
     @mouse.update(mouse_params)
+    arr = []
+    @mouse.strain.genes.each do |gene|
+      arr << params["gene_allele_#{gene.id}"]
+    end
+    p arr
+    @mouse.allele_ids = arr.uniq
     @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
