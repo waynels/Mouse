@@ -16,7 +16,8 @@ class Ability
     end
     if user.has_role?(:Manager)
       can :manage, User, :id => user.id 
-      can :manage, Mouse
+      can :read, Mouse
+      can :manage, Mouse, :onwer_id => user.id
       can :manage, Strain
       can :manage, Gene
       can :manage, Basket 

@@ -92,17 +92,17 @@
           <div class="control-group">
             <label for="textfield" class="control-label">Father Code</label>
             <div class="controls">
-              <%= f.select :father_id, Mouse.where(sex: "M").collect { |p| [p.code, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
+              <%= f.select :father_id, Mouse.where(sex: "M").collect { |p| [p.mouse_show_name, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>
           </div>
           <div class="control-group">
             <label for="textfield" class="control-label">Mother Code</label>
             <div class="controls">
-              <%= f.select :mother_id, Mouse.where(sex: "F").collect { |p| [p.code, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
+              <%= f.select :mother_id, Mouse.where(sex: "F").collect { |p| [p.mouse_show_name, p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>
           </div>
           <div class="control-group">
-            <label for="textfield" class="control-label">Basket Code</label>
+            <label for="textfield" class="control-label">Cage Code</label>
             <div class="controls">
               <%= f.select :basket_id, current_user.baskets.collect { |p| ["#{Framework.all.index(p.framework)+1}-#{p.code}", p.id]},{include_blank: true},{:class=> 'select input-large'}%>
             </div>

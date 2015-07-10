@@ -3,4 +3,20 @@ $("#myModalLabel").html("死亡记录");
 $('#myModal').modal('show');
 $(".select").select2();
 $(".save_btn").show();
-$("#mouse_dead_date" ).datepicker({format: "yyyy-mm-dd"});
+$("#mouse_dead_date" ).datepicker({
+  format: "yyyy-mm-dd",
+  startDate: "<%= @mouse.birthday %>"
+});
+$(".form-validate" ).validate({
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});
