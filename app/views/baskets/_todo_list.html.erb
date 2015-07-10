@@ -8,7 +8,9 @@
   <div class="bar_content" >
     <ul class="left_list" id="temporarily">
     <% @todo_lists.each do |list| %>
+      <% if list.mouse.onwer_id == current_user.id %>
       <li class="item_list" title="事件描述" ><a href="#">[<%= list.created_at.strftime("%Y-%m-%d") %>]<%= list.mouse.code %>-<%= list.status_lable %>-<%= list.operation_lable %></a></li>
+      <%end%>
       <%end%>
     </ul>
   </div>

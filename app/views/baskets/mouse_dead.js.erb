@@ -5,7 +5,11 @@ $(".select").select2();
 $(".save_btn").show();
 $("#mouse_dead_date" ).datepicker({
   format: "yyyy-mm-dd",
-  startDate: "<%= @mouse.birthday %>"
+  <% if @mouse.wean_date %>
+    startDate: "<%= @mouse.wean_date %>"
+  <%else%>
+    startDate: "<%= @mouse.birthday %>"
+  <%end%>
 });
 $(".form-validate" ).validate({
   errorElement:'span',
