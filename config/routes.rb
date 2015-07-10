@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   resources :todo_lists do
+    member do
+      post "finish_list"
+      get "set_status"
+    end
     collection do
       post 'get_data'
     end

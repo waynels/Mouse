@@ -1,6 +1,6 @@
 #encoding: utf-8
 class TodoListsController < ApplicationController
-  before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_todo_list, only: [:show, :edit, :update, :destroy,:set_status,:finish_list]
 
   # GET /todo_lists
   # GET /todo_lists.json
@@ -15,13 +15,13 @@ class TodoListsController < ApplicationController
     data[0].each do |item|
       op_str = ""
       if can? :read, item 
-        op_str = op_str + "<a href='#{todo_list_path(item)}' class='btn btn-mini'>查看</a>"
+        op_str = op_str + "<a href='#{todo_list_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
       end 
       if can? :manage, item 
         op_str = op_str + " <a href='#{edit_todo_list_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{todo_list_path(item)}'>删除</a>"
       end
-      arr << [item.mouse.code, item.operation_lable, item.status_lable, item.description, op_str]
+      arr << ["#{item.mouse.code}[#{item.mouse.strain.common_name}]", item.operation_lable, item.status_lable, item.description, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
@@ -33,12 +33,23 @@ class TodoListsController < ApplicationController
   # GET /todo_lists/1
   # GET /todo_lists/1.json
   def show
-    p @todo_list
   end
 
   # GET /todo_lists/new
   def new
     @todo_list = TodoList.new
+  end
+
+  def set_status
+  end
+
+  def finish_list
+    @todo_lists = TodoList.all
+    respond_to do |format|
+      if @todo_list.update(todo_list_params)
+        format.js
+      end
+    end
   end
 
   # GET /todo_lists/1/edit

@@ -1,0 +1,10 @@
+<div class="modal-body">
+  <%= form_for @todo_list,:url => finish_list_todo_list_path(@todo_list),:method => "post", :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+    <div class="control-group">
+      <label for="textfield" class="control-label">状态</label>
+      <div class="controls">
+        <%= f.select :status, TodoList::FINISH, {},{:class=> 'select input-large'} %>  
+      </div>
+    </div>
+  <% end %>
+</div>
