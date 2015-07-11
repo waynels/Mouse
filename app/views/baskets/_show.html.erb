@@ -165,9 +165,11 @@ $(function() {
 #trash .gallery h5 { display: none; }
 </style>
 <div class="ui-widget ui-helper-clearfix" style="padding:8px;">
+<% if can? :set_cage_type, @basket %>
 <div class="pull-right">
   <a style="font-size: 26px;" href="<%= edit_basket_path(@basket, :operation_type => "set_cage_type") %>" data-remote=true ><i class="icon-cog"></i></a> 
 </div>
+<% end %>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
   <% @basket.mice.alive_mice.each do |m|%>
     <li class="ui-widget-content ui-corner-tr" id="mouse_<%= m.id %>">
