@@ -1,5 +1,6 @@
 $(".gene_form").replaceWith("<%= j render "form" %>")
 $(".gene_box").hide()
+$('.save_btn').show();
 $(".tagsinput").tagsInput({width:'auto', height:'auto'});
 $(".btn_cancel").click(function(){
   $(".gene_box").show(); 

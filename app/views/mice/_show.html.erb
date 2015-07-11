@@ -68,10 +68,14 @@
     <dd>
     <%= @mouse.creator.full_name %>&nbsp;
     </dd>
-    <% if @mouse.is_dead %>
+    <% if @mouse.life_status != "A" %>
     <dt>Dead Date:</dt>
     <dd>
     <%= @mouse.dead_date %>&nbsp;
+    </dd>
+    <dt>Dead Description:</dt>
+    <dd>
+    <%= @mouse.description %>&nbsp;
     </dd>
     <% end %>
   </dl>

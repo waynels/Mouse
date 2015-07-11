@@ -1,10 +1,3 @@
-<script>
-  $(document).ready(function() {
-      $('.item_list').tooltip();
-    });
-</script>
-<div class="bar" id="temporarily_bar">
-  <h1><img src="/assets/icon_box.png" />待办事项<span><a href="#"><img src="/assets/bar_close.png" class="slide_close" /></a></span></h1>
   <div class="todo_list_show" >
     <ul class="left_list" id="temporarily">
     <% @todo_lists.each do |list| %>
@@ -14,5 +7,4 @@
       <%end%>
     </ul>
   </div>
-</div>
 

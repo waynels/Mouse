@@ -13,6 +13,7 @@ class Ability
       can :manage, :all
       cannot :update, Mouse 
       cannot :handle_mouse, Mouse 
+      cannot :set_cage_type, Basket 
     end
     if user.has_role?(:Manager)
       can :manage, User, :id => user.id 

@@ -165,16 +165,20 @@ $(function() {
 #trash .gallery h5 { display: none; }
 </style>
 <div class="ui-widget ui-helper-clearfix" style="padding:8px;">
+<% if can? :set_cage_type, @basket %>
 <div class="pull-right">
   <a style="font-size: 26px;" href="<%= edit_basket_path(@basket, :operation_type => "set_cage_type") %>" data-remote=true ><i class="icon-cog"></i></a> 
 </div>
+<% end %>
 <ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
   <% @basket.mice.alive_mice.each do |m|%>
     <li class="ui-widget-content ui-corner-tr" id="mouse_<%= m.id %>">
     <% if m.sex == "" or m.sex == nil  %>
       <h5 class="ui-widget-header">Litter</h5>
       <img src="/assets/litter.png" alt="Planning the ascent" width="96" height="72" />
-      <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
+      <% if can? :handle_mouse, m %>
+        <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
+      <%end%>
     <% elsif m.sex == "M" %>
         <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
       <img src="/assets/mouse_m.png" alt="Planning the ascent" width="96" height="72" />
@@ -205,7 +209,9 @@ $(function() {
   <% if m.sex == "" or m.sex == nil %>
     <h5 class="ui-widget-header">Litter</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
+    <% if can? :handle_mouse, m %>
     <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
+    <%end%>
   <% elsif m.sex == "M" %>
     <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
