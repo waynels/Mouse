@@ -8549,15 +8549,6 @@ html, body {
   height: 100%;
 }
 
-
-a {
-  color: #368ee0;
-}
-a:focus {
-  outline: none;
-  text-decoration: none;
-}
-
 .ulreset, #navigation .user .icon-nav, #navigation .main-nav, .letterbox .letter, .blog-widget-recent-posts, .blog-widget-latest-photos, .blog-widget-categories, .blog-widget-tags, .user-list > ul, .statistic-big .stats-overview, .pagestats, .userlist, .quickstats, .tags, .bestseller, .tabs, .stats, .minitiles, .timeline, .timeline > li .timeline-content .activity .timeline-assets, .search-results ul, .shop-items, .colors {
   list-style-type: none;
   margin: 0;
