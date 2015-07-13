@@ -14,7 +14,11 @@
           <% box_position = "#{y}#{x.chr}" %><% basket = @framework.baskets.find_by_code(box_position) %>
           <td width="<%= 90/(@framework.axis_y) %>%">
             <div data-original-title="操作" data-content="" rel="popover" id="" class="tddiv  has_cell  ui-droppable">
-              <div class="f_box_grid be_filled <%= basket.cage_type%>_box">
+              <% if basket.mice.alive_mice.size > 0 or basket.onwer %>
+                <div class="f_box_grid be_filled <%= basket.cage_type%>_box">
+                <%else%>
+                <div class="f_box_grid be_filled">
+                <%end%>
                 <a data-remote=true href="<%= edit_basket_path(basket, operation_type: "set_onwer") %>">
                   <% if basket.is_correct_cage_type %>
                   <%else%>

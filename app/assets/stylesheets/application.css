@@ -82,19 +82,19 @@
   border: 2px solid #CCCCCC;
 }
 .M_box{
-  background:#CCCCFF;
+  background:#2ed6fd;
 }
 .S_box{
-  background:#00CCFF;
+  background:#76d85d;
 }
 .B_box{
-  background:#FFCCFF;
+  background:#ffbd04;
 }
 .CE_box{
-  background:#CCFFFF;
+  background:#f8ff00;
 }
 .NCE_box{
-  background:#CCCCCC;
+  background:#fcb9dc;
 }
 
 .footer a { color: #FFFFFF}

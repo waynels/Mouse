@@ -14,7 +14,7 @@ class MiceController < ApplicationController
   #<%= select_tag "mouse_life_status", options_for_select([ "alive", "not_alive" ], "alive"), :class => " input-small" %> 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "mice.code","strains.common_name",["mice.birthday"],["mice.wean_date"], "mice.sex","mice.father_id","mice.mother_id", "baskets.code","mice.generation","mice.is_dead","users.full_name", ["mice.created_at"]]
+    column = [ "mice.code","strains.common_name",["mice.birthday"],["mice.wean_date"], "mice.sex","mice.father_id","mice.mother_id", "baskets.code","mice.generation","mice.life_status","users.full_name", ["mice.created_at"]]
     if params[:order]
       order_column = params[:order]["0"][:column].to_i
       dir = params[:order]["0"][:dir]
@@ -71,7 +71,7 @@ class MiceController < ApplicationController
           basket_code = "-"
         end
       end
-      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,item.is_dead, item.onwer.try(:full_name), op_str]
+      arr << [item.code, item.strain ? item.strain.common_name : nil, item.birthday, item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,item.life_status_lable, item.onwer.try(:full_name), op_str]
     end
     json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|

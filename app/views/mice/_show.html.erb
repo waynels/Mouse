@@ -7,13 +7,14 @@
     <dt>Strain:</dt>
     <dd>
     <%= @mouse.strain.common_name %>&nbsp;
-    </dd>
-    <dt>Mouse Alleles:</dt>
-    <dd>
     <% @mouse.mouse_genes.each do |gene| %>
-      <%= @mouse.alleles.find_by_gene_id(gene.id).try(:name) %>  
-    <% end %>&nbsp;
     </dd>
+    <dt>
+      <%= @mouse.strain.genes.find(gene.id).short_name%>:</dt>
+    <dd>
+      <%= @mouse.alleles.find_by_gene_id(gene.id).try(:name) %>  
+    </dd>
+    <% end %>&nbsp;
     <dt>Coat Color:</dt>
     <dd>
     <%= @mouse.coat_color %>&nbsp;

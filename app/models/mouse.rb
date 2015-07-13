@@ -17,7 +17,7 @@ class Mouse < ActiveRecord::Base
   scope :female_mice, -> {where("sex = 'F' ") } 
   scope :litter_mice, -> {where("sex is NULL or sex= ''") } 
   SEXTYPE = {"雄性" => "M", "雌性" => "F"}
-  LIFESTATUS = {"Alive" => "A", "Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD" }
+  LIFESTATUS = {"Alive" => "A", "Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Dysplasia Death" => "DD", "Transfer" => "T" }
 
   def life_status_lable 
     Mouse::LIFESTATUS.invert[self.life_status]
@@ -30,7 +30,7 @@ class Mouse < ActiveRecord::Base
     if self.sex == nil or self.sex == ""
       deadtype = { "Dysplasia Death" => "DD" }
     else
-      deadtype = {"Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD"}
+      deadtype = {"Killed" => "K", "Culled" => "C", "Missing" => "M", "Unhealthy Death" => "UD", "Transfer" => "T"}
     end
   end
   def show_sex 
