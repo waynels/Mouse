@@ -29,6 +29,7 @@ class Ability
       can :read, Mouse
       can :manage, Mouse, :onwer_id => user.id
       can :edit, Basket, :onwer_id => user.id
+      can :set_cage_type, Basket 
       can :manage, Breed 
     end
     #
