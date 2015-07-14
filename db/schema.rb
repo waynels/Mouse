@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707045549) do
+ActiveRecord::Schema.define(version: 20150713094751) do
 
   create_table "alleles", force: :cascade do |t|
     t.integer  "gene_id",    limit: 4
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150707045549) do
     t.integer  "father_id",  limit: 4
     t.integer  "mother_id",  limit: 4
     t.date     "cage_at"
-    t.boolean  "is_usable",  limit: 1
+    t.boolean  "is_usable",  limit: 1, default: true
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "created_by", limit: 4
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 20150707045549) do
     t.string   "status",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "created_by",  limit: 4
   end
 
   create_table "users", force: :cascade do |t|

@@ -12,9 +12,9 @@
     <dt>
       <%= @mouse.strain.genes.find(gene.id).short_name%>:</dt>
     <dd>
-      <%= @mouse.alleles.find_by_gene_id(gene.id).try(:name) %>  
+      <%= @mouse.alleles.find_by_gene_id(gene.id).try(:name) %> &nbsp; 
     </dd>
-    <% end %>&nbsp;
+    <% end %>
     <dt>Coat Color:</dt>
     <dd>
     <%= @mouse.coat_color %>&nbsp;

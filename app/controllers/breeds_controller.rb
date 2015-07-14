@@ -27,7 +27,7 @@ class BreedsController < ApplicationController
         op_str = op_str + " <a href='#{edit_breed_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         end
       end
-      arr << ["#{item.father.code}[#{item.father.strain.common_name}]", "#{item.mother.code}[#{item.mother.strain.common_name}]","#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}", item.cage_at, item.show_can_usable.html_safe, item.breeding, item.creator.try(:full_name), op_str]
+      arr << ["#{item.father.code}[#{item.father.strain.common_name}](#{item.father.mouse_age})", "#{item.mother.code}[#{item.mother.strain.common_name}](#{item.mother.mouse_age})","#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}", item.cage_at, item.show_can_usable.html_safe, item.breeding, item.creator.try(:full_name), op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|

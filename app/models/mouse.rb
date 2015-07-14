@@ -25,6 +25,19 @@ class Mouse < ActiveRecord::Base
   def mouse_show_name
      "#{self.code}[#{self.strain.common_name}]"
   end
+  def mouse_age
+    if self.birthday
+      if self.life_status == "A"
+        "#{(Date.today() - self.birthday).to_i/7}周"
+      else
+        if self.dead_date
+          "#{(self.dead_date - self.birthday).to_i/7}周"
+        else
+          "未知"
+        end
+      end
+    end
+  end
 
   def get_life_status
     if self.sex == nil or self.sex == ""

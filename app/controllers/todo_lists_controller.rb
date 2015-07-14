@@ -9,7 +9,7 @@ class TodoListsController < ApplicationController
   end
   def get_data
     key = params[:search][:value] if params[:search]
-    column = ["todo_lists.mouse_id", "todo_lists.status", "todo_lists.operation","todo_lists.description", ["todo_lists.created_at"]]
+    column = ["todo_lists.mouse_id","todo_lists.mouse_id", "todo_lists.status", "todo_lists.operation","todo_lists.description","todo_lists.mouse_id",["todo_lists.created_at"], ["todo_lists.created_at"]]
     data = get_datatable_data(column, "TodoList",nil)
     arr = []
     data[0].each do |item|
@@ -21,7 +21,7 @@ class TodoListsController < ApplicationController
         op_str = op_str + " <a href='#{edit_todo_list_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{todo_list_path(item)}'>删除</a>"
       end
-      arr << ["#{item.mouse.code}[#{item.mouse.strain.common_name}]", item.operation_lable, item.status_lable, item.description, op_str]
+      arr << ["#{item.mouse.code}[#{item.mouse.strain.common_name}]", item.mouse.onwer.full_name, item.operation_lable, item.status_lable, item.description, item.created_by,item.created_at.strftime('%Y-%m-%d'), op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
@@ -61,7 +61,7 @@ class TodoListsController < ApplicationController
   # POST /todo_lists.json
   def create
     @todo_list = TodoList.new(todo_list_params)
-
+    @todo_list.created_by = current_user.id
     respond_to do |format|
       if @todo_list.save
         format.js
