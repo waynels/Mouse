@@ -13,7 +13,7 @@ $(function () {
       <div class="box-title">
         <h3>
           <i class="icon-reorder"></i>
-          <%= @breed.father.code %>[<%= @breed.father.strain.common_name %>]+<%= @breed.mother.code %>[<%= @breed.mother.strain.common_name%>] 
+          <%= @breed.father ? "#{@breed.father.code}[#{@breed.father.strain.common_name}](#{@breed.father.mouse_age})" : "丢失"%> + <%= @breed.mother ? "#{@breed.mother.code}[#{@breed.mother.strain.common_name}](#{@breed.mother.mouse_age})" : "丢失"%>] 
         </h3>
         <div style="float:right; padding-right:2px;">
           <%= link_to "返回", breeds_path ,:class => 'btn btn' %>

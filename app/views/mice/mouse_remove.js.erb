@@ -1,6 +1,7 @@
 <% if @return_info == "Mate" %>
 $(".modal-body").replaceWith("<%= j render "baskets/mate" %>");
 $('#myModal').modal('show');
+$(".save_btn").show();
 <% elsif @return_info == "TRUE" %>
 alert("放入成功");
 $("#basket_cage_list").replaceWith("<%= j render "frameworks/framework_baskets" %>")

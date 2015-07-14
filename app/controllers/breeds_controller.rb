@@ -14,10 +14,37 @@ class BreedsController < ApplicationController
 
   def get_data 
     key = params[:search][:value] if params[:search]
-    column = [ "breeds.father_id","breeds.mother_id","breeds.basket_id","breeds.cage_at","breeds.is_usable","breeds.breeding",["breeds.created_at"]]
-    data = get_datatable_data(column, "Breed", nil)
+    column = [ "mice.code","mice.code","baskets.code","breeds.cage_at","breeds.is_usable","breeds.breeding",["breeds.created_at"]]
+    if params[:order]
+      order_column = params[:order]["0"][:column].to_i
+      dir = params[:order]["0"][:dir]
+    else
+      order_column = 0
+      dir = "asc"
+    end
+    order = column[order_column].class == Array ? column[order_column][0] : column[order_column]
+
+    search_conditions = []
+    column.each do |c|
+      if c.class == Array
+        # gen_like_condition search_conditions, "Date(#{c[0]})", key
+      else
+        gen_like_condition search_conditions, c, key
+      end
+    end
+    gen_like_condition search_conditions, "strains.common_name", key
+    condition_str = search_conditions.join(' or ')
+    if current_user.has_role?(:PI)
+      total = Breed.all.size
+      filter_total = Breed.includes([{father: :strain}, :basket]).where(condition_str).references([{father: :strain}, :basket]).size
+      @breeds = Breed.includes([{father: :strain}, :basket]).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references([{father: :strain}, :basket])
+    else
+      total = current_user.breeds.size
+      filter_total = current_user.breeds.includes(:father, :mother, :basket).where(condition_str).references(:father, :mother, :basket).size
+      @breeds = current_user.breeds.includes(:father, :mother, :basket).where(condition_str).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:father, :mother, :basket)
+    end
     arr = []
-    data[0].each do |item|
+    @breeds.each do |item|
       op_str = ""
       if can? :read, item 
         op_str = op_str + "<a href='#{breed_path(item)}' class='btn btn-mini'>查看</a>"
@@ -27,9 +54,9 @@ class BreedsController < ApplicationController
         op_str = op_str + " <a href='#{edit_breed_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         end
       end
-      arr << ["#{item.father.code}[#{item.father.strain.common_name}](#{item.father.mouse_age})", "#{item.mother.code}[#{item.mother.strain.common_name}](#{item.mother.mouse_age})","#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}", item.cage_at, item.show_can_usable.html_safe, item.breeding, item.creator.try(:full_name), op_str]
+      arr << [ item.father ? "#{item.father.code}[#{item.father.strain.common_name}](#{item.father.mouse_age})" : "丢失", item.mother ? "#{item.mother.code}[#{item.mother.strain.common_name}](#{item.mother.mouse_age})" : "丢失","#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}", item.cage_at, item.show_can_usable.html_safe, item.breeding, item.creator.try(:full_name), op_str]
     end
-    json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
+    json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: json }
@@ -174,11 +201,7 @@ class BreedsController < ApplicationController
   def update
     respond_to do |format|
       if @breed.update(breed_params)
-        format.html { redirect_to @breed, notice: 'Breed was successfully updated.' }
-        format.json { render :show, status: :ok, location: @breed }
-      else
-        format.html { render :edit }
-        format.json { render json: @breed.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
