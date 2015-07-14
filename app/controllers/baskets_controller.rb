@@ -118,6 +118,21 @@ class BasketsController < ApplicationController
     @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
     @mouse.update(mouse_params)
+    if @basket.cage_type == "M" 
+      if @mouse.sex == "M"
+        breed = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true).last
+        if breed
+          breed.is_usable = false
+          breed.save
+        end
+      elsif @mouse.sex == "F"
+        breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
+        if breed
+          breed.is_usable = false
+          breed.save
+        end
+      end
+    end
     @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
@@ -131,10 +146,10 @@ class BasketsController < ApplicationController
 
   def dead_record 
     @basket = Basket.find(params[:id])
-    @framework = @basket.framework
     @mouse = Mouse.find(params[:mouse_id])
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     @mouse.update(mouse_params)
+    @framework = @basket.framework
+    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     respond_to do |format|
       format.js
     end

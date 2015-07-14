@@ -33,7 +33,6 @@ class MiceController < ApplicationController
       end
     end
     condition_str = search_conditions.join(' or ')
-    p condition_str
     if params[:status]
       if params[:status] == "alive"
         condition = "life_status = 'A'"
@@ -43,10 +42,15 @@ class MiceController < ApplicationController
     else
       condition =  "life_status = 'A'"
     end
+    if current_user.has_role?(:PI)
     total = Mouse.where(condition).size
-
     filter_total = Mouse.includes(:strain , :basket, :onwer).where(condition_str).where(condition).references(:strain, :basket, :onwer).size
     @mice = Mouse.includes(:strain , :basket, :onwer).where(condition_str).where(condition).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket, :onwer)
+    else
+    total = current_user.mice.where(condition).size
+    filter_total = current_user.mice.includes(:strain , :basket, :onwer).where(condition_str).where(condition).references(:strain, :basket, :onwer).size
+    @mice = current_user.mice.includes(:strain , :basket, :onwer).where(condition_str).where(condition).order("#{order} #{dir}").limit(params[:length].to_i).offset(params[:start].to_i).references(:strain, :basket, :onwer)
+    end
     arr = []
     @mice.each do |item|
       op_str = ""
@@ -56,22 +60,25 @@ class MiceController < ApplicationController
       if can? :manage, item 
         if item.life_status == "A" 
           op_str = op_str + " <a href='#{want_to_do_mouse_path(item)}' data-remote=true class='btn btn-mini'>ToDo</a>"
-        if can? :update, item 
-          op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
-        op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
-        end
+          if can? :update, item 
+            op_str = op_str + " <a href='#{edit_mouse_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
+            if item.can_destroy
+              op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{mouse_path(item)}'>删除</a>"
+            end
+          end
         end
       end
       if current_user.has_role?(:PI)
-        basket_code = item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil
+        basket_code = item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}(#{item.basket.basket_type_label})" : nil
       else
         if item.onwer == current_user
-          basket_code = item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}" : nil
+          basket_code = item.basket ? "#{Framework.all.index(item.basket.framework)+1}-#{item.basket.code}(#{item.basket.basket_type_label})" : nil
         else
           basket_code = "-"
         end
       end
-        arr << [item.code, item.strain ? item.strain.common_name : nil, "#{item.birthday}(#{item.mouse_age})", item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,item.life_status_lable, item.onwer.try(:full_name), op_str]
+      code = "#{item.code}"
+        arr << [code, item.strain ? item.strain.common_name : nil, "#{item.birthday}(#{item.mouse_age})", item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,item.life_status_lable, item.onwer.try(:full_name), op_str]
     end
     json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|
@@ -268,8 +275,7 @@ class MiceController < ApplicationController
   def destroy
     @mouse.destroy
     respond_to do |format|
-      format.html { redirect_to mice_url, notice: 'Mouse was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 
