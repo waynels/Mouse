@@ -130,15 +130,15 @@ class MiceController < ApplicationController
           breed = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true).last
           if breed
             breed.is_usable = false
+            breed.cancel_date = Time.now.strftime("%Y-%m-%d")
             breed.save
-            p breed
           end
         elsif @mouse.sex == "F"
           breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
           if breed
             breed.is_usable = false
+            breed.cancel_date = Time.now.strftime("%Y-%m-%d")
             breed.save
-            p breed
           end
         else
         end

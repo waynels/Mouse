@@ -13,6 +13,12 @@ class Breed < ActiveRecord::Base
     else
       return "<span style='color:#CC3333'>已取消配对</span>"
     end
-    
+  end
+  def mate_age
+    if self.cancel_date
+        "#{(self.cancel_date - self.cage_at).to_i/7}周"
+      else
+        "#{(Date.today() - self.cage_at).to_i/7}周"
+      end
   end
 end
