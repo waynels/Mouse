@@ -24,7 +24,7 @@
                   <%else%>
                     <span ><i class="glyphicon-warning_sign" style="color:red"></i></span>
                   <%end%>
-                  <%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= Framework.all.index(@framework)+1 %>-<%= basket.code %></a>
+                  <%= basket.onwer ? "[#{basket.onwer.full_name}]" : nil %><%= basket.get_cage_code %>(<%= basket.mice.alive_mice.size %>)</a>
               </div>
             </div>
           </td>

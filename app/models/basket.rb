@@ -3,12 +3,26 @@ class Basket < ActiveRecord::Base
   belongs_to :framework
   belongs_to :onwer, :foreign_key => "onwer_id", :class_name => "User"
   has_many :mice, :foreign_key =>"basket_id", :class_name => "Mouse"
+  scope :litter_mice, -> {where("sex is NULL or sex= ''") } 
   BASKETTYPE = {"Mating" => "M", "Stock" => "S","Breeding" => "B","Contagious Experiment" => "CE","Non-Contagious Experiment" => "NCE"}
   def basket_type_label
     Basket::BASKETTYPE.invert[self.cage_type]
   end
   def count_mice_in_basket 
      "#{self.code}[#{self.basket_type_label}][#{self.mice.size}]只"
+  end
+
+  def get_cage_code 
+    str = Framework.all.index(self.framework)+1 
+    str = str.to_s + "-"
+    str = str + self.code 
+  end
+  def is_null_cage  
+    if self.mice.alive_mice.size == 0
+      true
+    else
+      false
+    end
   end
   def is_correct_cage_type
     mice = self.mice.alive_mice

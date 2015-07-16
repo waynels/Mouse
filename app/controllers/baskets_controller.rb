@@ -15,7 +15,7 @@ class BasketsController < ApplicationController
   def show_mouse
     @mouse = Mouse.find(params[:mouse_id])
   end
-  
+
   def cage_setting
     @frameworks = Framework.all
   end
@@ -25,7 +25,7 @@ class BasketsController < ApplicationController
   end
 
   def set_cage_type 
-      @basket = Basket.find(params[:id])
+    @basket = Basket.find(params[:id])
   end
 
   def new_framework
@@ -69,7 +69,7 @@ class BasketsController < ApplicationController
     quantity = params[:quantity].to_i
     @batch = Batch.create(father_id: @breed.father_id, mother_id: @breed.mother_id, breed_id: @breed.id,quantity: quantity, childbirthday: params[:childbirthday],basket_id: @basket)
     quantity.times do |i|
-     mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id, onwer_id: current_user.id, created_by: current_user.id,batch_id: @batch.id )
+      mouse = Mouse.create(basket_id: @basket.id,strain_id: strain_id, birthday: @batch.childbirthday,father_id: @breed.father_id, mother_id: @breed.mother_id ,batch_id: @batch_id, onwer_id: current_user.id, created_by: current_user.id,batch_id: @batch.id )
     end
     if quantity > 0
       @breed.breeding = true
@@ -192,9 +192,9 @@ class BasketsController < ApplicationController
   def show
     @basket = Basket.find(params[:id])
     if current_user.has_role?(:PI)
-    @mice = Mouse.where(basket_id: nil)
+      @mice = Mouse.where(basket_id: nil)
     else
-    @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
+      @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -206,15 +206,15 @@ class BasketsController < ApplicationController
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
     if @mouse.sex == "M"
-          breeds = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true)
-          breeds.each do |b|
-          b.cage_at = params[:breed_cage_at]
-          b.save
-          end
+      breeds = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true)
+      breeds.each do |b|
+        b.cage_at = params[:breed_cage_at]
+        b.save
+      end
     else @mouse.sex == "F"
-          breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
-          breed.cage_at = params[:breed_cage_at]
-          breed.save
+      breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
+      breed.cage_at = params[:breed_cage_at]
+      breed.save
     end
     @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
   end
@@ -253,26 +253,48 @@ class BasketsController < ApplicationController
     respond_to do |format|
       @operation_type = params[:operation_type]
       if @basket.update(basket_params)
-        @framework = @basket.framework
-        if @basket.cage_type == "M"
-          unless @basket.cage_type == old_type
-            breed_cage_at  = params[:breed_cage_at]
-            male = @basket.mice.alive_mice.male_mice.first
-            females = @basket.mice.alive_mice.female_mice
-            females.each do |f|
-              breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at, is_usable: true, created_by: current_user.id)
+        if operation_type == "set_onwer"
+          if params[:other_basket_id] != nil or params[:other_basket_id] != ""
+            other_basket = Basket.find(params[:other_basket_id])
+            other_basket.onwer_id = @basket.onwer_id
+            other_basket.save
+            if @basket.mice.alive_mice
+              @basket.mice.alive_mice.each do |m|
+                m.onwer_id = @basket.onwer_id
+                m.basket_id = other_basket.id
+                m.save
+              end
+            end
+             #小鼠有配对的配对的位置尚未改变 
+          else
+            if @basket.mice.alive_mice
+              @basket.mice.alive_mice.each do |m|
+                m.onwer_id = @basket.onwer_id
+              end
             end
           end
         else
-          if  old_type == "M"
-            @basket.breeds.each do |breed|
-              if bread.is_usable == true
-                breed.is_usable = false
-                bread.save
+          if @basket.cage_type == "M"
+            unless @basket.cage_type == old_type
+              breed_cage_at  = params[:breed_cage_at]
+              male = @basket.mice.alive_mice.male_mice.first
+              females = @basket.mice.alive_mice.female_mice
+              females.each do |f|
+                breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at, is_usable: true, created_by: current_user.id)
+              end
+            end
+          else
+            if  old_type == "M"
+              @basket.breeds.each do |breed|
+                if bread.is_usable == true
+                  breed.is_usable = false
+                  bread.save
+                end
               end
             end
           end
         end
+        @framework = @basket.framework
         @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
         format.js
       end
@@ -290,19 +312,19 @@ class BasketsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_basket
-      @basket = Basket.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_basket
+    @basket = Basket.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def basket_params
-      params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
-    end
-    def framework_params
-      params[:framework].permit(:code, :axis_y, :axis_x)
-    end
-    def mouse_params
-      params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def basket_params
+    params[:basket].permit(:code, :cage_type, :framework_id, :onwer_id)
+  end
+  def framework_params
+    params[:framework].permit(:code, :axis_y, :axis_x)
+  end
+  def mouse_params
+    params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
+  end
 end
