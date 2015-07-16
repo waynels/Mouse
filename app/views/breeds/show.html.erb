@@ -63,7 +63,7 @@ $(function () {
                     <div class="line"></div>
                     </li>
                   <% if batch.mice %>
-                    <% batch.mice.where(life_status: "DD").each do |mouse| %>
+                    <% batch.mice.dd_mice.each do |mouse| %>
                       <li>
                       <div class="timeline-content">
                         <div class="activity">
@@ -83,8 +83,8 @@ $(function () {
                         <div><%= m.wean_date %>
                         小鼠离乳(<%= batch.mice.alive_mice.size %>)只
                         <br/>
-                        <% alive_m = batch.mice.alive_mice %>
-                        <% alive_m.each do |mouse| %>
+                        <% wean_mice = batch.mice - batch.mice.dd_mice %>
+                        <% wean_mice.each do |mouse| %>
                         <dl class="dl-horizontal">
                           <dt><%= mouse.code %><%= mouse.show_sex %>&nbsp;</dt>
                           <dd>
@@ -92,6 +92,7 @@ $(function () {
                             <%= mouse.strain.genes.find(gene.id).short_name %>:
                             <%= mouse.alleles.find_by_gene_id(gene.id).try(:name) %> &nbsp; 
                           <% end %>
+                          <%= "(#{mouse.life_status_lable} #{mouse.dead_date})" if mouse.life_status != "A" %>
                           </dd>
                         </dl>
                         <% end %>
