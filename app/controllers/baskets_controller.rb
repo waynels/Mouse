@@ -132,20 +132,21 @@ class BasketsController < ApplicationController
   def dead_record 
     @basket = Basket.find(params[:id])
     @mouse = Mouse.find(params[:mouse_id])
+    params[:mouse][:basket_id] = nil
     @mouse.update(mouse_params)
     if @basket.cage_type == "M" 
       if @mouse.sex == "M"
         breed = Breed.where(basket_id: @basket.id, father_id: @mouse.id, is_usable: true).last
         if breed
           breed.is_usable = false
-          breed.cancel_date = Time.now.strftime("%Y-%m-%d")
+          breed.cancel_date = Date.today()
           breed.save
         end
       elsif @mouse.sex == "F"
         breed = Breed.where(basket_id: @basket.id, mother_id: @mouse.id, is_usable: true).last
         if breed
           breed.is_usable = false
-          breed.cancel_date = Time.now.strftime("%Y-%m-%d")
+          breed.cancel_date = Date.today()
           breed.save
         end
       end
