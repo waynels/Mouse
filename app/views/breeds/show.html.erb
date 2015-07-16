@@ -33,14 +33,14 @@ $(function () {
             <div class="activity">
               <div class="user"></div>
               <p>
-              <%= "#{@breed.father.code}[#{@breed.father.strain.common_name}]和#{@breed.mother.code}[#{@breed.mother.strain.common_name}]在#{Framework.all.index(@breed.basket.framework)+1}-#{@breed.basket.code }处合笼"%>
+              <%= "#{@breed.father.show_sex}#{@breed.father.code}[#{@breed.father.strain.common_name}]和#{@breed.mother.show_sex}#{@breed.mother.code}[#{@breed.mother.strain.common_name}]在#{Framework.all.index(@breed.basket.framework)+1}-#{@breed.basket.code }处合笼"%>
               </p>
             </div>
           </div>
           <div class="line"></div>
           </li>
           <% if @breed.batches %>
-            <% @breed.batches.each do |batch| %>
+            <% @breed.batches.order("childbirthday desc").each do |batch| %>
             <li>
             <div class="timeline-content">
               <div class="left">
@@ -54,14 +54,9 @@ $(function () {
                   <div class="li-line"></div>
                     <li>
                     <div class="timeline-content">
-                      <div class="left">
-                        <div class="icon orange">
-                          <i class="icon-bullhorn"></i>
-                        </div>
-                      </div>
                       <div class="activity">
                         <div><%= batch.childbirthday %>
-                        小鼠出生
+                        小鼠出生(<%= batch.mice.size %>)只
                         </div>
                       </div>
                     </div>
@@ -71,11 +66,6 @@ $(function () {
                     <% batch.mice.where(life_status: "DD").each do |mouse| %>
                       <li>
                       <div class="timeline-content">
-                        <div class="left">
-                          <div class="icon green">
-                            <i class="icon-comment"></i>
-                          </div>
-                        </div>
                         <div class="activity">
                           <div><%= mouse.dead_date %>
                           小鼠发育不良死亡
@@ -89,14 +79,22 @@ $(function () {
                     <% if m  %>
                     <li>
                     <div class="timeline-content">
-                      <div class="left">
-                        <div class="icon orange">
-                          <i class="icon-bullhorn"></i>
-                        </div>
-                      </div>
                       <div class="activity">
                         <div><%= m.wean_date %>
-                        小鼠离乳
+                        小鼠离乳(<%= batch.mice.alive_mice.size %>)只
+                        <br/>
+                        <% alive_m = batch.mice.alive_mice %>
+                        <% alive_m.each do |mouse| %>
+                        <dl class="dl-horizontal">
+                          <dt><%= mouse.code %><%= mouse.show_sex %>&nbsp;</dt>
+                          <dd>
+                          <% mouse.mouse_genes.each do |gene| %>
+                            <%= mouse.strain.genes.find(gene.id).short_name %>:
+                            <%= mouse.alleles.find_by_gene_id(gene.id).try(:name) %> &nbsp; 
+                          <% end %>
+                          </dd>
+                        </dl>
+                        <% end %>
                         </div>
                       </div>
                     </div>

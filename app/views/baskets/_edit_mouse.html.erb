@@ -37,7 +37,7 @@
     <div class="control-group">
       <label for="textfield" class="control-label">Birthday</label>
       <div class="controls">
-        <%= f.text_field :birthday%>
+        <%= f.text_field :birthday, :disabled => true%>
       </div>
     </div>
     <% if @mouse.basket_id == nil or @mouse.basket_id == "" %>

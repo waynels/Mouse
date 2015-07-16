@@ -7,8 +7,8 @@
     <dt>Strain:</dt>
     <dd>
     <%= @mouse.strain.common_name %>&nbsp;
-    <% @mouse.mouse_genes.each do |gene| %>
     </dd>
+    <% @mouse.mouse_genes.each do |gene| %>
     <dt>
       <%= @mouse.strain.genes.find(gene.id).short_name%>:</dt>
     <dd>

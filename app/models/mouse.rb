@@ -59,6 +59,8 @@ class Mouse < ActiveRecord::Base
       return "♂"
     elsif self.sex == "F"
       return "♀"
+    else
+      return "-"
     end
   end
   def mouse_genes
