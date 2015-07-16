@@ -13,6 +13,7 @@ class Mouse < ActiveRecord::Base
   has_many :m_breeds, :foreign_key => "father_id" , :class_name => "Breed"
   scope :alive_mice, -> {where("life_status = 'A'") } 
   scope :not_alive_mice, -> {where("life_status <> 'A'") } 
+  scope :dd_mice, -> {where("life_status='DD'") } 
   scope :male_mice, -> {where("sex = 'M'") } 
   scope :female_mice, -> {where("sex = 'F' ") } 
   scope :litter_mice, -> {where("sex is NULL or sex= ''") } 
