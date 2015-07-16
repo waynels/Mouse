@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150713094751) do
     t.integer  "father_id",  limit: 4
     t.integer  "mother_id",  limit: 4
     t.date     "cage_at"
-    t.boolean  "is_usable",  limit: 1, default: true
+    t.boolean  "is_usable",  limit: 1
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "created_by", limit: 4
