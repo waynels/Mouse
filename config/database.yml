@@ -10,7 +10,7 @@ default: &default
   host: localhost
   pool: 5
   timeout: 5000
-  password: 1qaz2wsx
+  password: 
 
 development:
   <<: *default

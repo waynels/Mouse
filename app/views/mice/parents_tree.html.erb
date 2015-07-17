@@ -75,3 +75,14 @@ function elbow(d, i) {
 }
 
 </script>
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).ready(function(){
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#mouse_set_bar").addClass("seled");
+    });
+</script>
+<% content_for :sidebar do %>
+  <%= render :partial => "sidebar" %>
+<% end %>

@@ -329,9 +329,9 @@ class MiceController < ApplicationController
           alleles_str = alleles_str + "#{mother.strain.genes.find(gene.id).short_name}: #{mother.alleles.find_by_gene_id(gene.id).try(:name)}"
           end
       if mother.mother_id 
-        mother_hash = {"name" => mother.code ? "#{mother.code}♂(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str, "parents" => get_parents(mother)}
+        mother_hash = {"name" => mother.code ? "#{mother.code}♀(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str, "parents" => get_parents(mother)}
       else
-        mother_hash = {"name" => mother.code ? "#{mother.code}♂(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str}
+        mother_hash = {"name" => mother.code ? "#{mother.code}♀(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str}
       end
     else
       mother_hash = {"name" => "未知♀"}
