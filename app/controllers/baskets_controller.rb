@@ -253,10 +253,26 @@ class BasketsController < ApplicationController
     respond_to do |format|
       @operation_type = params[:operation_type]
       if @basket.update(basket_params)
-        if operation_type == "set_onwer"
-          if params[:other_basket_id] != nil or params[:other_basket_id] != ""
+        if @operation_type == "set_onwer"
+          if params[:other_basket_id] == nil or params[:other_basket_id] == ""
+            if @basket.mice.alive_mice
+              @basket.mice.alive_mice.each do |m|
+                m.onwer_id = @basket.onwer_id
+                m.save
+              end
+            end
+            if @basket.breeds.can_use_mate.size > 0
+              @basket.breeds.each do |br|
+                br.created_by = @basket.onwer_id
+                br.save
+              end
+            end
+          else
+            p "bbbbbbbbbb"
+            p @basket.onwer_id
             other_basket = Basket.find(params[:other_basket_id])
             other_basket.onwer_id = @basket.onwer_id
+            other_basket.cage_type = @basket.cage_type
             other_basket.save
             if @basket.mice.alive_mice
               @basket.mice.alive_mice.each do |m|
@@ -265,15 +281,20 @@ class BasketsController < ApplicationController
                 m.save
               end
             end
-             #小鼠有配对的配对的位置尚未改变 
-          else
-            if @basket.mice.alive_mice
-              @basket.mice.alive_mice.each do |m|
-                m.onwer_id = @basket.onwer_id
+            if @basket.breeds.can_use_mate.size > 0
+              @basket.breeds.each do |br|
+                br.created_by = @basket.onwer_id
+                br.basket_id = other_basket.id
+                br.save
               end
             end
+             #小鼠有配对的配对的位置尚未改变 
+            @basket.onwer_id = nil
+            @basket.cage_type == "S"
+            @basket.save
           end
         else
+          p "dddddddddd"
           if @basket.cage_type == "M"
             unless @basket.cage_type == old_type
               breed_cage_at  = params[:breed_cage_at]
