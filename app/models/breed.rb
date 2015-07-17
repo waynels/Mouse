@@ -6,6 +6,7 @@ class Breed < ActiveRecord::Base
   belongs_to :basket
   has_many :breeds_infos, :foreign_key => "breed_id", :class_name => "BreedsInfo"
   has_many :batches
+  scope :can_use_mate, -> {where("is_usable = true") } 
 
   def show_can_usable
     if self.is_usable

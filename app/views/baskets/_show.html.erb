@@ -207,16 +207,16 @@ $(function() {
   <% @mice.each do |m|%>
   <li class="ui-widget-content ui-corner-tr ui-draggable" style="display: list-item; width: 60px;" id="mouse_<%= m.id %>">
   <% if m.sex == "" or m.sex == nil %>
-    <h5 class="ui-widget-header">Litter</h5>
+    <%= m.code ? m.code : "Litter" %>&nbsp;
     <img width="96" height="72" alt="Planning the ascent" src="/assets/litter.png" style="display: inline-block; height: 36px;">
     <% if can? :handle_mouse, m %>
     <a title="Eidt Mouse" class="ui-icon ui-icon-contact" onclick="javascript: edit_mouse(<%= m.id %>)" >Edit Mouse</a> 
     <%end%>
   <% elsif m.sex == "M" %>
-    <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
+    <%= m.code %>&nbsp;
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_m.png" style="display: inline-block; height: 36px;">
   <%elsif m.sex == "F"%>
-    <h5 class="ui-widget-header"><%= m.code %>&nbsp;</h5>
+    <%= m.code %>&nbsp;
     <img width="96" height="72" alt="Planning the ascent" src="/assets/mouse_f.png" style="display: inline-block; height: 36px;">
   <%end%>
   <a title="Mouse Information" class="ui-icon ui-icon-comment" onclick="javascript: show_mouse(<%= m.id %>)" >Mouse Information</a>
