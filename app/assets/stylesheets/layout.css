@@ -212,7 +212,7 @@ label input { margin-right:5px; }
 
 .submitwarp { margin:15px 0 15px 36px;}
 .submit {   width:60px; height:26px;  color:#094267; margin-right:10px; cursor:pointer; }
-.cancel { width:80px; height:26px; ) no-repeat; color:#4b4b4b;  margin-right:10px;cursor:pointer; }
+/* .cancel { width:80px; height:26px; no-repeat; color:#4b4b4b;  margin-right:10px;cursor:pointer; } */
 
 
 .linetitle {
@@ -250,7 +250,7 @@ label input { margin-right:5px; }
 
 .tipinfo_wrong { margin-bottom:15px; padding-left:25px; height:30px; line-height:30px; background:#faeee9 url(../assets/tool_cancel.png) left no-repeat; background-position:5px;  border:1px solid #ce431e; color:#ce431e; font-weight:bold; font-size:12px;}
 .tipinfo_done { margin-bottom:15px; padding-left:25px; height:30px; line-height:30px; background:#f0fae9 url(../assets/tool_right.png) left no-repeat;background-position:5px; border:1px solid #408539; color:#408539;font-weight:bold; font-size:12px;}
-.tipinfo_oh { margin-bottom:15px; padding-left:25px; height:30px; line-height:30px; background:#fafae9 url(../assets/tool_!.png) left no-repeat;background-position:5px; border:1px solid #e2a753; color:#e2a753;font-weight:bold; font-size:12px;}
+.tipinfo_oh { margin-bottom:15px; padding-left:25px; height:30px; line-height:30px; background:#fafae9 url(../assets/tool.png) left no-repeat;background-position:5px; border:1px solid #e2a753; color:#e2a753;font-weight:bold; font-size:12px;}
 
 .rightM { width:130px; background:#e7f1f7 url(../assets/rightM_line.jpg) top repeat-x; padding-top:2px;}
 .rightM li { background:url(../assets/rightM_line.jpg) bottom repeat-x; padding-bottom:2px;}
