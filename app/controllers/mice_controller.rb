@@ -56,6 +56,7 @@ class MiceController < ApplicationController
       op_str = ""
       if can? :read, item 
         op_str = op_str + "<a href='#{mouse_path(item)}' data-remote=true class='btn btn-mini'>查看</a>"
+        op_str = op_str + " <a href='#{parents_tree_mouse_path(item)}' class='btn btn-mini'>祖籍</a>"
       end 
       if can? :manage, item 
         if item.life_status == "A" 
@@ -198,16 +199,40 @@ class MiceController < ApplicationController
     @mouse = Mouse.find(params[:id])
   end
 
-  def get_family_tree 
-    user = User.find(current_user.id)
+  def parents_tree
     @mouse = Mouse.find(params[:id])
-    if @mouse.gender == "M"
-      data = {"name" => @mouse.code ? "#{@mouse.code}♂" : "未编号", "children" => get_tree(@mouse, user)}
+  end
+
+  def get_parents_tree 
+    @mouse = Mouse.find(params[:id])
+    alleles_str = ""
+    @mouse.mouse_genes.each do |gene|
+      alleles_str = alleles_str + "#{@mouse.strain.genes.find(gene.id).short_name}: #{@mouse.alleles.find_by_gene_id(gene.id).try(:name)}"
+    end
+    if @mouse.sex == "M"
+      data = {"name" => @mouse.code ? "#{@mouse.code}♂(#{@mouse.strain.common_name})" : "未编号", "born" => @mouse.birthday,"location" => alleles_str, "parents" => get_parents(@mouse)}
+    elsif @mouse.sex == "F"
+      data = {"name" => @mouse.code ? "#{@mouse.code}♀(#{@mouse.strain.common_name})" : "未编号", "born" => @mouse.birthday, "location" => alleles_str,"parents" => get_parents(@mouse)}
     else
-      data = {"name" => @mouse.code ? "#{@mouse.code}♀" : "未编号", "children" => get_tree(@mouse, user)}
+      data = {"name" => @mouse.code ? "#{@mouse.code}♀(#{@mouse.strain.common_name})" : "Litter", "born" => @mouse.birthday,"location" => alleles_str, "parents" => get_parents(@mouse)}
     end
     render :json => data
   end
+
+  def get_family_tree 
+    user = User.find(current_user.id)
+    @mouse = Mouse.find(params[:id])
+    if @mouse.sex == "M"
+      data = {"name" => @mouse.code ? "#{@mouse.code}♂(#{@mouse.strain.common_name})" : "未编号", "children" => get_tree(@mouse, user)}
+    elsif @mouse.sex == "F"
+      data = {"name" => @mouse.code ? "#{@mouse.code}♀(#{@mouse.strain.common_name})" : "未编号", "children" => get_tree(@mouse, user)}
+    else
+      data = {"name" => @mouse.code ? "#{@mouse.code}(#{@mouse.strain.common_name})" : "Litter", "children" => get_tree(@mouse, user)}
+    end
+    render :json => data
+  end
+
+  def 
   # GET /mice/1
   # GET /mice/1.json
   def show
@@ -280,30 +305,66 @@ class MiceController < ApplicationController
   end
 
   protected
+
+  def get_parents(mouse)
+    data = []
+    if mouse.father_id
+      father = mouse.father_mouse
+      alleles_str = ""
+        father.mouse_genes.each do |gene|
+          alleles_str = alleles_str + "#{father.strain.genes.find(gene.id).short_name}: #{father.alleles.find_by_gene_id(gene.id).try(:name)}"
+        end
+      if father.father_id 
+        father_hash = {"name" => father.code ? "#{father.code}♂(#{father.strain.common_name})" : "未编号", "born" => father.birthday,"location" => alleles_str, "parents" => get_parents(father)}
+      else
+        father_hash = {"name" => father.code ? "#{father.code}♂(#{father.strain.common_name})" : "未编号", "born" => father.birthday,"location" => alleles_str}
+      end
+    else
+      father_hash = {"name" => "未知♂" }
+    end
+    if mouse.mother_id
+      mother = mouse.mother_mouse 
+      alleles_str = ""
+        mother.mouse_genes.each do |gene|
+          alleles_str = alleles_str + "#{mother.strain.genes.find(gene.id).short_name}: #{mother.alleles.find_by_gene_id(gene.id).try(:name)}"
+          end
+      if mother.mother_id 
+        mother_hash = {"name" => mother.code ? "#{mother.code}♂(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str, "parents" => get_parents(mother)}
+      else
+        mother_hash = {"name" => mother.code ? "#{mother.code}♂(#{mother.strain.common_name})" : "未编号", "born" => mother.birthday,"location" => alleles_str}
+      end
+    else
+      mother_hash = {"name" => "未知♀"}
+    end
+    data = [father_hash, mother_hash]
+    return data
+  end
+
   def get_tree( mouse, user)
     data = []
 
     if mouse.father_id
       father = mouse.father_mouse
-      if father.father_id or father.father_code
-        father_hash = {"name" => "#{father.code}♂",  "children" => get_tree( father, user)}
+      if father.father_id 
+        father_hash = {"name" => "#{@mouse.code}♀(#{@mouse.strain.common_name})", "children" => get_tree(@mouse, user)}
       else
-        father_hash = {"name" => "#{father.code}♂"}
+        father_hash = {"name" => "#{father.code}#{father.strain.common_name}♂"}
       end
     else
-      father_hash = {"name" => mouse.father_code ? "#{mouse.father_code}♂" : "WT♂" }
+      father_hash = {"name" => "未知♂" }
     end
     if mouse.mother_id
       mother = mouse.mother_mouse 
-      if mother.mother_id or mother.mother_code
-        mother_hash = {"name" => "#{mother.code}♀",  "children" => get_tree( mother, user)}
+      if mother.mother_id 
+        mother_hash = {"name" => "#{mother.code}#{mother.strain.common_name}♀",  "children" => get_tree( mother, user)}
       else
-        mother_hash = {"name" => "#{mother.code}♀"}
+        mother_hash = {"name" => "#{mother.code}#{mother.strain.common_name}♀"}
       end
     else
-      mother_hash = {"name" => mouse.mother_code ? "#{mouse.mother_code}♀" : "WT♀"}
+      mother_hash = {"name" => "未知♀"}
     end
     data = [father_hash, mother_hash]
+    p data
     return data
   end
   def aduit_mouse_to_cage(mouse,cage)
@@ -367,7 +428,7 @@ class MiceController < ApplicationController
         end
       end
     else
-        return true
+      return true
     end
   end
 
@@ -381,4 +442,4 @@ class MiceController < ApplicationController
   def mouse_params
     params[:mouse].permit(:basket_id, :strain_id, :generation, :birthday, :wean_date, :sex, :code, :life_status, :coat_color, :dead_date, :mother_id, :father_id, :batch_id,:dead_date , :dead , :onwer_id , :created_by, :is_dead, :description)
   end
-end
+  end

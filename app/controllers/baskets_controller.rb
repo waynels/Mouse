@@ -300,8 +300,10 @@ class BasketsController < ApplicationController
               breed_cage_at  = params[:breed_cage_at]
               male = @basket.mice.alive_mice.male_mice.first
               females = @basket.mice.alive_mice.female_mice
+              if male
               females.each do |f|
                 breed = Breed.create(basket_id: @basket.id,father_id: male.id, mother_id: f.id,cage_at: breed_cage_at, is_usable: true, created_by: current_user.id)
+              end
               end
             end
           else

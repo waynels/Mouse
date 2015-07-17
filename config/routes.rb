@@ -68,8 +68,10 @@ Rails.application.routes.draw do
     end
     member do
       get "family_tree"
-      get "want_to_do"
       get "get_family_tree"
+      get "parents_tree"
+      get "get_parents_tree"
+      get "want_to_do"
     end
   end
   resources :strains do
