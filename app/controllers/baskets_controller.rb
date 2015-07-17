@@ -262,7 +262,7 @@ class BasketsController < ApplicationController
               end
             end
             if @basket.breeds.can_use_mate.size > 0
-              @basket.breeds.each do |br|
+              @basket.breeds.can_use_mate.each do |br|
                 br.created_by = @basket.onwer_id
                 br.save
               end
@@ -282,7 +282,7 @@ class BasketsController < ApplicationController
               end
             end
             if @basket.breeds.can_use_mate.size > 0
-              @basket.breeds.each do |br|
+              @basket.breeds.can_use_mate.each do |br|
                 br.created_by = @basket.onwer_id
                 br.basket_id = other_basket.id
                 br.save
