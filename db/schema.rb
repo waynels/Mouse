@@ -46,20 +46,12 @@ ActiveRecord::Schema.define(version: 20150715095642) do
     t.integer  "father_id",   limit: 4
     t.integer  "mother_id",   limit: 4
     t.date     "cage_at"
-<<<<<<< HEAD
-    t.boolean  "is_usable",  limit: 1
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.integer  "created_by", limit: 4
-    t.boolean  "breeding",   limit: 1, default: false
-=======
-    t.boolean  "is_usable",   limit: 1, default: true
+    t.boolean  "is_usable",   limit: 1
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "created_by",  limit: 4
     t.boolean  "breeding",    limit: 1, default: false
     t.date     "cancel_date"
->>>>>>> FETCH_HEAD
   end
 
   create_table "breeds_infos", force: :cascade do |t|
