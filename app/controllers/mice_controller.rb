@@ -222,7 +222,13 @@ class MiceController < ApplicationController
   def get_family_tree 
     user = User.find(current_user.id)
     @mouse = Mouse.find(params[:id])
-    data = {"name" => @mouse.code ? "#{@mouse.code}#{@mouse.show_sex}(#{@mouse.strain.common_name})" : "未知", "born" => @mouse.birthday, "children" => get_tree(@mouse, 0)}
+    description = "
+    Father: #{@mouse.father_mouse.try(:code)}
+    Mother: #{@mouse.mother_mouse.try(:code)}
+    Birthday: #{@mouse.birthday}(#{@mouse.mouse_age})
+    "
+    description = description.html_safe
+    data = {"name" => @mouse.code ? "#{@mouse.code}#{@mouse.show_sex}(#{@mouse.strain.common_name})" : "未知",  "description" => description, "dead" => @mouse.is_deaded, "children" => get_tree(@mouse, 0)}
     render :json => data
   end
 
@@ -344,25 +350,40 @@ class MiceController < ApplicationController
       cmice = Mouse.where(father_id: mouse.id)
       cmice.each do |m|
         p m.children_mice
+        description = "
+    Father: #{m.father_mouse.try(:code)}
+    Mother: #{m.mother_mouse.try(:code)}
+    Birthday: #{m.birthday}(#{m.mouse_age})
+    "
         if m.children_mice > 0
-          father_hash = {"name" => "#{m.id}-#{m.code}#{m.show_sex}(#{m.strain.common_name})", "children" => get_tree(m, i)}
+          father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded, "children" => get_tree(m, i)}
         else
-          father_hash = {"name" => "#{m.id}-#{m.code}#{m.show_sex}(#{m.strain.common_name})"}
+          father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded}
         end
         data << father_hash
       end
     elsif mouse.sex == "F"
       cmice = Mouse.where(mother_id: mouse.id)
       cmice.each do |m|
+        description = "
+    Father: #{m.father_mouse.try(:code)}
+    Mother: #{m.mother_mouse.try(:code)}
+    Birthday: #{m.birthday}(#{m.mouse_age})
+    "
         if m.children_mice > 0
-          father_hash = {"name" => "#{m.id}-#{m.code}#{m.show_sex}(#{m.strain.common_name})", "children" => get_tree(m, i)}
+          father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded, "children" => get_tree(m, i)}
         else
-          father_hash = {"name" => "#{m.id}-#{m.code}#{m.show_sex}(#{m.strain.common_name})"}
+          father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded}
         end
         data << father_hash
       end
     else
-      father_hash = {"name" => "#{mouse.id}-#{mouse.code}L(#{mouse.strain.common_name})"}
+        description = "
+    Father: #{mouse.father_mouse.try(:code)}
+    Mother: #{mouse.mother_mouse.try(:code)}
+    Birthday: #{mouse.birthday}(#{mouse.mouse_age})
+    "
+      father_hash = {"name" => "#{mouse.id}-#{mouse.code}L(#{mouse.strain.common_name})", 'description' => description, "dead" => mouse.is_deaded}
       data = [father_hash]
     end
     p data

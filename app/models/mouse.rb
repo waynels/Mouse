@@ -94,4 +94,11 @@ class Mouse < ActiveRecord::Base
     end
     return size.to_i
   end
+  def is_deaded
+    if self.life_status == "A"
+      false
+    else
+      true
+    end
+  end
 end

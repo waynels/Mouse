@@ -16,6 +16,7 @@
         <%= f.select :onwer_id, User.all.collect { |p| [ p.full_name, p.id ] }, {include_blank: true},{:class=> 'select input-large'} %>  
       </div>
     </div>
+    <% if @basket.mice.alive_mice.size > 0 %>
     <div class="control-group">
       <label for="textfield" class="control-label">换位 </label>
       <div class="controls">
@@ -25,6 +26,7 @@
         <%= select_tag :other_basket_id, options_from_collection_for_select(nbaskets, :id, :get_cage_code),{include_blank: true, :class=> 'select input-large'}%>
       </div>
     </div>
+    <%end%>
     <% elsif @operation_type == "set_cage_type" %>
     <div class="control-group">
       <label for="textfield" class="control-label">笼子类型</label>

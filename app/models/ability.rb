@@ -23,6 +23,7 @@ class Ability
       can :manage, Gene
       can :manage, Basket 
       can :manage, Breed 
+      can :manage, TodoList, :created_by => user.id 
     end
     if user.has_role?(:Faculty)
       can :manage, User, :id => user.id 
@@ -31,6 +32,7 @@ class Ability
       can :edit, Basket, :onwer_id => user.id
       can :set_cage_type, Basket 
       can :manage, Breed 
+      can :manage, TodoList,:created_by => user.id 
     end
     #
     # The first argument to `can` is the action you are giving the user 
