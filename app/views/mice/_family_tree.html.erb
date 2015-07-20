@@ -1,49 +1,43 @@
+<div style="float:right;">
+  <%= link_to "parents",parents_tree_mouse_path(@mouse), "data-remote" => true, :class => 'btn' %>
+  <%= link_to "children",family_tree_mouse_path(@mouse), "data-remote" => true, :class => 'btn' %>
+  <%= link_to "返回","#", :class => 'btn btn_cancel' %>
+</div>
 
 <style>
-
 .node {
   cursor: pointer;
 }
-
 .overlay{
   background-cursorolor:#EEE;
 }
-
 .node circle {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;
 }
-
 .node text {
   font-size:10px; 
   font-family:sans-serif;
 }
-
 .link {
   fill: none;
   stroke: #ccc;
   stroke-width: 1.5px;
 }
-
 .templink {
   fill: none;
   stroke: red;
   stroke-width: 3px;
 }
-
 .ghostCircle.show{
   display:block;
 }
-
 .ghostCircle, .activeDrag .ghostCircle{
   display: none;
 }
-
-
 </style>
-
-<div class="mouse_family_tree" style="height:500px"></div>
+<div class="mouse_family_tree" style="height:600px"></div>
 <br/>
 <% content_for :sidebar do %>
   <%= render :partial => "sidebar" %>
@@ -452,3 +446,12 @@ $(document).ready(function(){
 
 });
 </script>
+<script type="text/javascript" language="javascript" charset="utf-8">
+$(document).ready(function(){
+    $(".nav li").removeClass("current");
+    $(".nav li.mice_show").addClass("current");
+    $(".item li").removeClass("seled");
+    $("#mouse_set_bar").addClass("seled");
+    });
+</script>
+

@@ -18,7 +18,7 @@
     </dd>
     <dt>Status:</dt>
     <dd>
-    <%= @strain.status%>&nbsp;
+    <%= @strain.status_lable%>&nbsp;
     </dd>
     <dt>Wean Age:</dt>
     <dd>
@@ -50,19 +50,19 @@
     </dd>
     <dt>Ref Website:</dt>
     <dd>
-    <%= @strain.ref_website %>&nbsp;
+    <a href="<%= @strain.ref_website %>" target="_blank"><%= @strain.ref_website %>&nbsp;</a>
     </dd>
     <dt>Female Mice:</dt>
     <dd>
-      <%= @strain.mice.female_mice.size %>&nbsp;  
+      <%= @strain.mice.alive_mice.female_mice.size %>&nbsp;  
     </dd>
     <dt>Male Mice:</dt>
     <dd>
-      <%= @strain.mice.male_mice.size %>&nbsp;  
+      <%= @strain.mice.alive_mice.male_mice.size %>&nbsp;  
     </dd>
     <dt>Litter Mice:</dt>
     <dd>
-      <%= @strain.mice.litter_mice.size %>&nbsp;  
+      <%= @strain.mice.alive_mice.litter_mice.size %>&nbsp;  
     </dd>
     <dt>Gene:</dt>
     <dd>

@@ -84,4 +84,14 @@ class Mouse < ActiveRecord::Base
       false
     end
   end
+  def children_mice
+    if self.sex == "M"
+     size = Mouse.where(father_id: self.id).size
+    elsif self.sex == "F"
+      size = Mouse.where(mother_id: self.id).size
+    else
+      size = 0
+    end
+    return size.to_i
+  end
 end

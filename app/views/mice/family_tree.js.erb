@@ -1,0 +1,6 @@
+$(".mouse_parents").empty()
+$(".mouse_parents").html("<%= j render "family_tree" %>")
+$(".btn_cancel").click(function(){
+  $(".mouse_box").show(); 
+  $(".mouse_parents").empty()
+});

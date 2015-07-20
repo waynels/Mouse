@@ -23,4 +23,16 @@ $(".multiselect").each(function(){
     selectableHeader : selectableHeader,
    });
 });
-
+$(".form-validate" ).validate({
+  errorElement:'span',
+  errorClass: 'help-inline help-block error',
+  errorPlacement:function(error, element){
+    element.parents('.controls').append(error);
+  },
+  highlight: function(label) {
+    $(label).closest('.control-group').removeClass('error success').addClass('error');
+  },
+  success: function(label) {
+    label.addClass('valid').closest('.control-group').removeClass('error success').addClass('success');
+  }
+});

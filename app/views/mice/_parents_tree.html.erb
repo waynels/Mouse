@@ -1,3 +1,8 @@
+<div style="float:right;">
+  <%= link_to "parents",parents_tree_mouse_path(@mouse), "data-remote" => true, :class => 'btn ' %>
+  <%= link_to "children",family_tree_mouse_path(@mouse), "data-remote" => true, :class => 'btn' %>
+  <%= link_to "返回","#", :class => 'btn btn_cancel' %>
+</div>
 <div class="mouse_parents_tree" style="height:500px"></div>
 <meta charset="utf-8">
 <style>

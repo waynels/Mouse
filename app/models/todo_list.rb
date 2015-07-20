@@ -1,5 +1,6 @@
 class TodoList < ActiveRecord::Base
   belongs_to :mouse
+  belongs_to :creator, :foreign_key => "created_by", :class_name => "User"
   STATUS = { "Doing" => "D","Cancel" => "C", "Finish" => "F"}
   OPERATION = {"Sacrifice" => "S", "Mate" => "M", "Breed" => "B", "Identify" => "I", "Experiment" => "E" }
   FINISH = { "Doing" => "D", "Finish" => "F"}
