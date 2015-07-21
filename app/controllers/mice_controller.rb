@@ -222,10 +222,15 @@ class MiceController < ApplicationController
   def get_family_tree 
     user = User.find(current_user.id)
     @mouse = Mouse.find(params[:id])
+    alleles_str = ""
+    @mouse.alleles.each do |allele|
+        alleles_str = alleles_str + "#{Gene.find(allele.gene_id).short_name}: #{allele.name}\n\t\s\s\s"
+    end
     description = "
     Father: #{@mouse.father_mouse.try(:code)}
     Mother: #{@mouse.mother_mouse.try(:code)}
     Birthday: #{@mouse.birthday}(#{@mouse.mouse_age})
+    #{alleles_str}
     "
     description = description.html_safe
     data = {"name" => @mouse.code ? "#{@mouse.code}#{@mouse.show_sex}(#{@mouse.strain.common_name})" : "未知",  "description" => description, "dead" => @mouse.is_deaded, "children" => get_tree(@mouse, 0)}
@@ -349,12 +354,16 @@ class MiceController < ApplicationController
     if mouse.sex == "M"
       cmice = Mouse.where(father_id: mouse.id)
       cmice.each do |m|
-        p m.children_mice
+        alleles_str = ""
+        m.alleles.each do |allele|
+          alleles_str = alleles_str + "#{Gene.find(allele.gene_id).short_name}: #{allele.name}\n\t\s\s\s"
+        end
         description = "
-    Father: #{m.father_mouse.try(:code)}
-    Mother: #{m.mother_mouse.try(:code)}
-    Birthday: #{m.birthday}(#{m.mouse_age})
-    "
+           Father: #{m.father_mouse.try(:code)}
+           Mother: #{m.mother_mouse.try(:code)}
+           Birthday: #{m.birthday}(#{m.mouse_age})
+           #{alleles_str}
+           "
         if m.children_mice > 0
           father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded, "children" => get_tree(m, i)}
         else
@@ -365,11 +374,16 @@ class MiceController < ApplicationController
     elsif mouse.sex == "F"
       cmice = Mouse.where(mother_id: mouse.id)
       cmice.each do |m|
+      alleles_str = ""
+        m.alleles.each do |allele|
+          alleles_str = alleles_str + "#{Gene.find(allele.gene_id).short_name}: #{allele.name}\n\t\s\s\s"
+        end
         description = "
-    Father: #{m.father_mouse.try(:code)}
-    Mother: #{m.mother_mouse.try(:code)}
-    Birthday: #{m.birthday}(#{m.mouse_age})
-    "
+           Father: #{m.father_mouse.try(:code)}
+           Mother: #{m.mother_mouse.try(:code)}
+           Birthday: #{m.birthday}(#{m.mouse_age})
+           #{alleles_str}
+           "
         if m.children_mice > 0
           father_hash = {"name" => "#{m.code}#{m.show_sex}(#{m.strain.common_name})", 'description' => description, "dead" => m.is_deaded, "children" => get_tree(m, i)}
         else
@@ -378,11 +392,16 @@ class MiceController < ApplicationController
         data << father_hash
       end
     else
-        description = "
-    Father: #{mouse.father_mouse.try(:code)}
-    Mother: #{mouse.mother_mouse.try(:code)}
-    Birthday: #{mouse.birthday}(#{mouse.mouse_age})
-    "
+      alleles_str = ""
+      mouse.alleles.each do |allele|
+        alleles_str = alleles_str + "#{Gene.find(allele.gene_id).short_name}: #{allele.name}\n\t\s\s\s"
+      end
+      description = "
+         Father: #{mouse.father_mouse.try(:code)}
+         Mother: #{mouse.mother_mouse.try(:code)}
+         Birthday: #{mouse.birthday}(#{mouse.mouse_age})
+         #{alleles_str}
+         "
       father_hash = {"name" => "#{mouse.id}-#{mouse.code}L(#{mouse.strain.common_name})", 'description' => description, "dead" => mouse.is_deaded}
       data = [father_hash]
     end

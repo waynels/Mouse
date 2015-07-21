@@ -30,7 +30,7 @@ class StrainsController < ApplicationController
         op_str = op_str + " <a href='#{edit_strain_path(item)}' data-remote=true class='btn btn-mini'>编辑</a>"
         op_str = op_str + " <a class='btn btn-mini btn-danger' data-remote=true rel='nofollow' data-method='delete' data-confirm='真要删除吗？' href='#{strain_path(item)}'>删除</a>"
       end
-      arr << [item.former_name, item.common_name, item.status_lable, item.genetic_type.full_name, item.source, item.origin, op_str]
+      arr << [item.former_name, item.common_name, "#{item.status_lable}(#{item.mice.alive_mice.size}只)", item.genetic_type.full_name, item.source, item.origin, op_str]
     end
     json = {"draw" => 0, "recordsTotal" => data[1], "recordsFiltered" => data[2], "data"=> arr}
     respond_to do |format|
