@@ -192,7 +192,7 @@ class BasketsController < ApplicationController
   def show
     @basket = Basket.find(params[:id])
     if current_user.has_role?(:PI)
-      @mice = Mouse.where(basket_id: nil)
+      @mice = Mouse.where(basket_id: nil,life_status: "A")
     else
       @mice = Mouse.where(onwer_id: current_user.id, basket_id: nil,life_status: "A")
     end
