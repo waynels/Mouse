@@ -3,6 +3,8 @@ class Strain < ActiveRecord::Base
   belongs_to :genetic_type
   has_many :genes
   has_and_belongs_to_many :genes, :join_table => "strains_genes", :foreign_key => "strain_id"
+  has_attached_file :attached
+  do_not_validate_attachment_file_type :attached
   STATUS = {"Active" => "A", "Discarded" => "D", "Frozen" => "F"}
   def status_lable 
     Strain::STATUS.invert[self.status]

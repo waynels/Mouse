@@ -74,5 +74,11 @@
     <dd>
     <%= @strain.description %>&nbsp;
     </dd>
+    <dt>品系鉴定方案:</dt>
+    <dd>
+                      <% if @strain.attached%>
+                        <a href="<%= @strain.attached.url %>"  target="_blank"><%= @strain.attached_file_name %></a>
+                      <% end %>
+    </dd>
   </dl>
 </div>

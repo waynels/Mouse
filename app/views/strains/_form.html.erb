@@ -6,7 +6,7 @@
           <h3><i class="icon-list"></i>Strain</h3>
         </div>
         <div class="box-content nopadding">
-          <%= form_for @strain, :remote => true, :html =>{:class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
+          <%= form_for @strain, :remote => true, :html =>{:multipart => true, :target => 'frame', :class => 'form-validate form-horizontal form-column form-bordered'} do |f| %>
             <div class="span6">
               <div class="control-group">
                 <label for="textfield" class="control-label">Former Name</label>
@@ -102,6 +102,28 @@
                   <%= f.text_area :description%>
                 </div>
               </div>
+              <div class="control-group">
+                <label class="control-label" for="inputEmail">品系鉴定方案</label>
+                <div class="controls">
+                  <div data-provides="fileupload" class="fileupload fileupload-new">
+                    <div class="input-append">
+                      <div class="uneditable-input">
+                        <i class="icon-file fileupload-exists"></i> 
+                        <span class="fileupload-preview"></span>
+                      </div>
+                      <span class="btn btn-file">
+                        <span class="fileupload-new">上传模板</span>
+                        <span class="fileupload-exists">更换</span>
+                        <%= f.file_field :attached %>
+                      </span>
+                      <a data-dismiss="fileupload" class="btn fileupload-exists" href="#">移除</a>
+                    </div>   
+                      <% if @strain.attached%>
+                        <a href="<%= @strain.attached.url %>"  target="_blank"><%= @strain.attached_file_name %></a>
+                      <% end %>
+                  </div>
+                </div>
+              </div>
             <div class="span12">
               <div class="form-actions">
                 <div class="actions">
@@ -117,4 +139,5 @@
     </div>
   </div>
 </div>
+<iframe id='frame' name="frame" style="display:none;"></iframe>
 

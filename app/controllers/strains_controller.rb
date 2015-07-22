@@ -1,6 +1,7 @@
 #encoding: utf-8
 class StrainsController < ApplicationController
   before_action :set_strain, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token, :only => [:create, :update] 
 
   # GET /strains
   # GET /strains.json
@@ -61,31 +62,35 @@ class StrainsController < ApplicationController
   # POST /strains.json
   def create
     @strain = Strain.new(strain_params)
-
-    respond_to do |format|
-      if @strain.save
-        @strain.gene_ids = params[:strain][:gene_ids]
-        format.js
-      else
-        format.html { render :new }
-        format.json { render json: @strain.errors, status: :unprocessable_entity }
-      end
+    @strain.gene_ids = params[:strain][:gene_ids]
+    @strain.save
+    if params[:strain][:attached]
+      responds_to_parent do 
+        render :js => '
+        $.jGrowl("品系创建成功！", { header: "提示"});
+        $(".strain_box").show()
+        $(".strain_form").empty()
+        $("#strain").DataTable().ajax.reload();
+        '
+      end  
     end
   end
 
   # PATCH/PUT /strains/1
   # PATCH/PUT /strains/1.json
   def update
-    respond_to do |format|
-      if @strain.update(strain_params)
-        @strain.gene_ids = params[:strain][:gene_ids].uniq
-        @strain.save
-
-        format.js
-      else
-        format.html { render :edit }
-        format.json { render json: @strain.errors, status: :unprocessable_entity }
-      end
+    @strain.update(strain_params)
+    @strain.gene_ids = params[:strain][:gene_ids].uniq
+    @strain.save
+    if params[:strain][:attached]
+      responds_to_parent do 
+        render :js => '
+        $.jGrowl("品系更新成功！", { header: "提示"});
+        $(".strain_box").show()
+        $(".strain_form").empty()
+        $("#strain").DataTable().ajax.reload();
+        '
+      end  
     end
   end
 
@@ -107,6 +112,6 @@ class StrainsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def strain_params
-      params[:strain].permit(:former_name, :common_name, :protocol, :status, :coat_color, :wean_age, :female_mature_age,:male_mature_age, :mating_system, :breeding_consideration, :source, :origin, :ref_website, :description, :gene_ids, :genetic_type_id)
+      params[:strain].permit(:former_name, :common_name, :protocol, :status, :coat_color, :wean_age, :female_mature_age,:male_mature_age, :mating_system, :breeding_consideration, :source, :origin, :ref_website, :description, :genes, :genetic_type_id, :attached)
     end
 end

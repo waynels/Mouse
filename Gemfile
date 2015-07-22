@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'spring',        group: :development
+gem 'responds_to_parent'
+gem 'paperclip'
 
 gem "devise"
 gem "cancan"

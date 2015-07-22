@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715095642) do
+ActiveRecord::Schema.define(version: 20150722091749) do
 
   create_table "alleles", force: :cascade do |t|
     t.integer  "gene_id",    limit: 4
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150715095642) do
     t.integer  "father_id",   limit: 4
     t.integer  "mother_id",   limit: 4
     t.date     "cage_at"
-    t.boolean  "is_usable",   limit: 1
+    t.boolean  "is_usable",   limit: 1, default: true
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "created_by",  limit: 4
@@ -161,6 +161,10 @@ ActiveRecord::Schema.define(version: 20150715095642) do
     t.text     "description",            limit: 65535
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.string   "attached_file_name",     limit: 255
+    t.string   "attached_content_type",  limit: 255
+    t.string   "attached_file_size",     limit: 255
+    t.datetime "attached_updated_at"
   end
 
   create_table "strains_genes", id: false, force: :cascade do |t|
