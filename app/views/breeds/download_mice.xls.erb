@@ -1,0 +1,97 @@
+<% @breeds.each do |breed| %>
+<table border="1">
+<tr>
+<th>位置</th>
+<th>品系</th>
+<th>代数</th>
+<th>生产日期</th>
+<th>离乳日期</th>
+<th>天龄</th>
+<th>周龄</th>
+<th>性别</th>
+<th>标记编号</th>
+<th>Allele</th>
+<th>父亲标记编号</th>
+<th>父亲标记编号</th>
+<th>Life Status</th>
+<th>配对日期</th>
+<th>标记</th>
+<th>配对状态</th>
+</tr>
+<tr>
+<td><%= breed.father.basket ? "#{Framework.all.index(breed.father.basket.framework)+1}-#{breed.father.basket.code}" : nil %></td>
+<td><%= breed.father.strain.common_name %></td>
+<td><%= breed.father.generation %></td>
+<td><%= breed.father.birthday %></td>
+<td><%= breed.father.wean_date %></td>
+<td><%= breed.father.day_age%></td>
+<td><%= breed.father.mouse_age %></td>
+<td><%= breed.father.show_sex %></td>
+<td><%= breed.father.code %></td>
+<td>
+<% breed.father.mouse_genes.each do |gene| %>
+  <%= breed.father.strain.genes.find(gene.id).short_name%>:</dt>
+  <%= breed.father.alleles.find_by_gene_id(gene.id).try(:name) %>; &nbsp; 
+<% end %>
+</td>
+<td><%= breed.father.father_mouse ? breed.father.father_mouse.code : nil %>&nbsp;</td>
+<td><%= breed.father.mother_mouse ? breed.father.mother_mouse.code : nil %>&nbsp;</td>
+<td><%= breed.father.life_status_lable %></td>
+<td><%= breed.cage_at %></td>
+<td>Father</td>
+<td><%= breed.show_can_usable.html_safe%></td>
+</tr>
+<tr>
+<td><%= breed.mother.basket ? "#{Framework.all.index(breed.mother.basket.framework)+1}-#{breed.mother.basket.code}" : nil %></td>
+<td><%= breed.mother.strain.common_name %></td>
+<td><%= breed.mother.generation %></td>
+<td><%= breed.mother.birthday %></td>
+<td><%= breed.mother.wean_date %></td>
+<td><%= breed.mother.day_age%></td>
+<td><%= breed.mother.mouse_age %></td>
+<td><%= breed.mother.show_sex %></td>
+<td><%= breed.mother.code %></td>
+<td>
+<% breed.mother.mouse_genes.each do |gene| %>
+  <%= breed.mother.strain.genes.find(gene.id).short_name%>:</dt>
+  <%= breed.mother.alleles.find_by_gene_id(gene.id).try(:name) %>; &nbsp; 
+<% end %>
+</td>
+<td><%= breed.mother.father_mouse ? breed.mother.father_mouse.code : nil %>&nbsp;</td>
+<td><%= breed.mother.mother_mouse ? breed.mother.mother_mouse.code : nil %>&nbsp;</td>
+<td><%= breed.mother.life_status_lable %></td>
+<td><%= breed.cage_at %></td>
+<td>Mother</td>
+<td><%= breed.show_can_usable.html_safe %></td>
+</tr>
+<% breed.batches.each do |batch| %>
+  <% batch.mice.each do |mouse| %>
+    <tr>
+    <td><%= mouse.basket ? "#{Framework.all.index(mouse.basket.framework)+1}-#{mouse.basket.code}" : nil %></td>
+    <td><%= mouse.strain.common_name %></td>
+    <td><%= mouse.generation %></td>
+    <td><%= mouse.birthday %></td>
+    <td><%= mouse.wean_date %></td>
+    <td><%= mouse.day_age%></td>
+    <td><%= mouse.mouse_age %></td>
+    <td><%= mouse.show_sex %></td>
+    <td><%= mouse.code %></td>
+    <td>
+    <% mouse.mouse_genes.each do |gene| %>
+      <%= mouse.strain.genes.find(gene.id).short_name%>:</dt>
+      <%= mouse.alleles.find_by_gene_id(gene.id).try(:name) %>; &nbsp; 
+    <% end %>
+    </td>
+    <td><%= mouse.father_mouse ? mouse.father_mouse.code : nil %>&nbsp;</td>
+    <td><%= mouse.mother_mouse ? mouse.mother_mouse.code : nil %>&nbsp;</td>
+    <td><%= mouse.life_status_lable %></td>
+    <td></td>
+    <td>Children</td>
+    <td></td>
+    </tr>
+  <%end%>
+<%end%>
+</table>
+<br/>
+<%end%>
+

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       get "cage"
       get "cage_info"
       get "show_mouse"
+      get "download_mice"
       get "edit_mouse"
       get "die_record"
     end
@@ -60,6 +61,7 @@ Rails.application.routes.draw do
   resources :mice do
     collection do
       post 'get_data'
+      get "download_mice"
       get 'autocomplete'
       get "mouse_remove"
       get "remove_out"

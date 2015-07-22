@@ -34,13 +34,26 @@ class Mouse < ActiveRecord::Base
     end
     
   end
+  def day_age 
+    if self.birthday
+      if self.life_status == "A"
+        "#{(Date.today() - self.birthday).to_i}D"
+      else
+        if self.dead_date
+          "#{(self.dead_date - self.birthday).to_i}D"
+        else
+          "未知"
+        end
+      end
+    end
+  end
   def mouse_age
     if self.birthday
       if self.life_status == "A"
-        "#{(Date.today() - self.birthday).to_i/7}周"
+        "#{(Date.today() - self.birthday).to_i/7}W"
       else
         if self.dead_date
-          "#{(self.dead_date - self.birthday).to_i/7}周"
+          "#{(self.dead_date - self.birthday).to_i/7}W"
         else
           "未知"
         end
@@ -61,7 +74,7 @@ class Mouse < ActiveRecord::Base
     elsif self.sex == "F"
       return "♀"
     else
-      return "-"
+      return "L"
     end
   end
   def mouse_genes

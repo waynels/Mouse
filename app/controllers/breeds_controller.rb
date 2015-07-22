@@ -11,6 +11,18 @@ class BreedsController < ApplicationController
  #     format.json { head :no_content }
  #   end
   end
+  def download_mice
+    if current_user.has_role?(:PI)
+    @breeds = Breed.where("is_usable = true or breeding = true")
+    else
+    @breeds = current_user.breeds.where("is_usable = true or breeding = true")
+    end
+    respond_to do |format|  
+      format.html {render :partial => "download_mice" }
+      format.xls  
+      headers["Content-Disposition"] = "attachment; filename=\"breeds_#{Time.now.strftime("%Y%m%d%H%M%S")}.xls\""
+    end  
+  end
 
   def get_data 
     key = params[:search][:value] if params[:search]

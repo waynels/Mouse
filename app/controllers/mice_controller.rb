@@ -10,6 +10,19 @@ class MiceController < ApplicationController
       format.js 
     end
   end
+  def download_mice
+    if current_user.has_role?(:PI)
+      @mice = Mouse.alive_mice
+    else
+      @mice = current_user.mice.alive_mice
+    end
+    @strain_ids = @mice.select(:strain_id).group(:strain_id)
+    respond_to do |format|  
+      format.html {render :partial => "download_mice" }
+      format.xls  
+      headers["Content-Disposition"] = "attachment; filename=\"mice_#{Time.now.strftime("%Y%m%d%H%M%S")}.xls\""
+    end  
+  end
 
   #<%= select_tag "mouse_life_status", options_for_select([ "alive", "not_alive" ], "alive"), :class => " input-small" %> 
   def get_data 

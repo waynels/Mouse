@@ -55,6 +55,7 @@ $(document).ready(function(){
           <a data-remote=true id="alive" class="btn btn_status btn-info" href="<%= mice_url(status: :alive)%>">Alive</a>
           <a data-remote=true id="not_alive" class="btn btn_status" href="<%= mice_url(status: :not_alive) %>">Not Alive</a>
           <%= link_to 'New', new_mouse_path , :remote => true, :class => 'new btn add_meet' %>
+          <%= link_to 'Download', download_mice_mice_path(format: "xls"),:class => 'btn' %>
         </div>
       </div>
       <div class="box-content nopadding">

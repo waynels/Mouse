@@ -1,0 +1,42 @@
+<% @strain_ids.each do |o| %>
+<table border="1">
+<tr>
+<th>位置</th>
+<th>品系</th>
+<th>代数</th>
+<th>生产日期</th>
+<th>离乳日期</th>
+<th>天龄</th>
+<th>周龄</th>
+<th>性别</th>
+<th>标记编号</th>
+<% Strain.find(o.strain_id).genes.each do |gene| %>
+<th><%= gene.name %></th>
+<%end%>
+<th>父亲标记编号</th>
+<th>母亲标记编号</th>
+</tr>
+
+<% @mice.where(:strain_id=> o.strain_id).each do |mouse| %>
+<tr>
+<td><%= mouse.basket ? "#{Framework.all.index(mouse.basket.framework)+1}-#{mouse.basket.code}" : nil %></td>
+<td><%= mouse.strain.common_name %></td>
+<td><%= mouse.generation %></td>
+<td><%= mouse.birthday %></td>
+<td><%= mouse.wean_date %></td>
+<td><%= mouse.day_age%></td>
+<td><%= mouse.mouse_age %></td>
+<td><%= mouse.show_sex %></td>
+<td><%= mouse.code %></td>
+<% Strain.find(o.strain_id).genes.each do |gene| %>
+<td><%= mouse.alleles.find_by_gene_id(gene.id).try(:name) %></td>
+<%end%>
+<td><%= mouse.father_mouse ? mouse.father_mouse.code : nil %>&nbsp;</td>
+<td><%= mouse.mother_mouse ? mouse.mother_mouse.code : nil %>&nbsp;</td>
+
+</tr>
+<%end%>
+</table>
+<br/>
+<%end%>
+
