@@ -16,10 +16,14 @@ class Breed < ActiveRecord::Base
     end
   end
   def mate_age
-    if self.cancel_date
+    if self.cage_at
+      if self.cancel_date
         "#{(self.cancel_date - self.cage_at).to_i/7}周"
       else
         "#{(Date.today() - self.cage_at).to_i/7}周"
       end
+    else
+        "-"
+    end
   end
 end

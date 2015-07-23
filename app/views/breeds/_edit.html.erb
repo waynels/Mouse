@@ -32,7 +32,7 @@
           <div class="control-group">
             <label for="textfield" class="control-label">合笼日期</label>
             <div class="controls">
-              <%= f.text_field :cage_at%>
+              <%= f.text_field :cage_at,{"data-rule-required" => "true","data-rule-dateiso" => "true"}%>
             </div>
           </div>
 
