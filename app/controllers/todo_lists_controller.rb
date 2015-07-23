@@ -9,7 +9,7 @@ class TodoListsController < ApplicationController
   end
   def get_data
     key = params[:search][:value] if params[:search]
-    column = ["mice.code","users.full_name", "todo_lists.status", "todo_lists.operation","todo_lists.description","users.full_name",["todo_lists.created_at"], ["todo_lists.created_at"]]
+    column = ["mice.code","users.full_name","todo_lists.operation","todo_lists.status","todo_lists.description","users.full_name",["todo_lists.created_at"], ["todo_lists.created_at"]]
     if params[:order]
       order_column = params[:order]["0"][:column].to_i
       dir = params[:order]["0"][:dir]
