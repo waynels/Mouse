@@ -39,9 +39,11 @@ $(document).ready(function(){
         <h3><i class="icon-list"></i>
          Strain Info 
         </h3>
+        <%if current_user.has_role?(:PI) %>
         <div style="float:right; padding-right:2px;">
           <%= link_to 'New', new_strain_path , :remote => true, :class => 'new btn add_meet' %>
         </div>
+        <%end%>
       </div>
       <div class="box-content nopadding">
         <table id="strain" class="table table-bordered dataTable-scroll-x">

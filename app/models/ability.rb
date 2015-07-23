@@ -19,7 +19,7 @@ class Ability
       can :manage, User, :id => user.id 
       can :read, Mouse
       can :manage, Mouse, :onwer_id => user.id
-      can :manage, Strain
+      can :read, Strain
       can :manage, Gene
       can :manage, Basket 
       can :manage, Breed 
@@ -27,6 +27,7 @@ class Ability
     end
     if user.has_role?(:Faculty)
       can :manage, User, :id => user.id 
+      can :read, Strain
       can :read, Mouse
       can :manage, Mouse, :onwer_id => user.id
       can :edit, Basket, :onwer_id => user.id
