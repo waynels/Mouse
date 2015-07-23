@@ -19,7 +19,7 @@ class Ability
       can :manage, User, :id => user.id 
       can :read, Mouse
       can :manage, Mouse, :onwer_id => user.id
-      can :read, Strain
+      can :manage, Strain
       can :manage, Gene
       can :manage, Basket 
       can :manage, Breed 
