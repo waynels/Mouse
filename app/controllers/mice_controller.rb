@@ -92,7 +92,12 @@ class MiceController < ApplicationController
         end
       end
       code = "#{item.code}"
-        arr << [code, item.strain ? item.strain.common_name : nil, "#{item.birthday}(#{item.mouse_age})", item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,item.life_status_lable, item.onwer.try(:full_name), op_str]
+      if item.life_status == "A"
+        status_lable = "#{item.life_status_lable}"
+      else
+        status_lable = "#{item.life_status_lable}[#{item.dead_date ? item.dead_date : 'Date Lose'}]"
+      end
+        arr << [code, item.strain ? item.strain.common_name : nil, "#{item.birthday}(#{item.mouse_age})", item.wean_date, item.show_sex, item.father_mouse ? item.father_mouse.code : nil, item.mother_mouse ? item.mother_mouse.code : nil, basket_code,item.generation,status_lable, item.onwer.try(:full_name), op_str]
     end
     json = {"draw" => 0, "recordsTotal" => total, "recordsFiltered" => filter_total, "data"=> arr}
     respond_to do |format|

@@ -19,7 +19,7 @@
 
 <% @mice.where(:strain_id=> o.strain_id).each do |mouse| %>
 <tr>
-<td><%= mouse.basket ? "#{Framework.all.index(mouse.basket.framework)+1}-#{mouse.basket.code}" : nil %></td>
+<td><%= mouse.basket ? "#{Framework.all.index(mouse.basket.framework)+1}-#{mouse.basket.code}(#{mouse.basket.basket_type_label})" : nil %></td>
 <td><%= mouse.strain.common_name %></td>
 <td><%= mouse.generation %></td>
 <td><%= mouse.birthday %></td>

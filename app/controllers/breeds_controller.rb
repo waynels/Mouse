@@ -13,9 +13,9 @@ class BreedsController < ApplicationController
   end
   def download_mice
     if current_user.has_role?(:PI)
-    @breeds = Breed.where("is_usable = true or breeding = true")
+    @breeds = Breed.includes({father: :strain}).where("is_usable = true").references({father: :strain}).order("strains.id")
     else
-    @breeds = current_user.breeds.where("is_usable = true or breeding = true")
+    @breeds = current_user.breeds.includes({father: :strain}).where("is_usable = true").references({father: :strain}).order("strains.id")
     end
     respond_to do |format|  
       format.html {render :partial => "download_mice" }
