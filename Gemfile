@@ -31,6 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'spring',        group: :development
 gem 'responds_to_parent'
 gem 'paperclip'
+gem 'thin'
 
 gem "devise"
 gem "cancan"
