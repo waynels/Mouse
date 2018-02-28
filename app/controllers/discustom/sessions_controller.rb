@@ -22,7 +22,7 @@ class Discustom::SessionsController < Devise::SessionsController
    def create
      respond_to do |format|
        format.html{ 
-         devise_parameter_sanitizer.for(:sign_in) << :attribute
+         devise_parameter_sanitizer.permit(:sign_in) #<< :attribute
          super 
        }
        format.js do
